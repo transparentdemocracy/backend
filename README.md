@@ -1,6 +1,6 @@
-# hexa
+# Transparent Democray Voting backend
 
-Explain the purposes and responsibility of your application
+Makes the [public information](https://www.dekamer.be/kvvcr/index.cfm) of the government regarding motions and their votes easily searchable. Note that this is just the backend that exposes the information through rest services.
 
 ## Documentation
 
@@ -50,7 +50,13 @@ You can build everything locally using maven using the following commands
 ### Run
 
 #### Run the main application
-  
-        
+
+To run the application, execute the script
+
+```bash  
+./runApplication     
+```  
+This will build and run the application.
+
 ### Docker scripts
 

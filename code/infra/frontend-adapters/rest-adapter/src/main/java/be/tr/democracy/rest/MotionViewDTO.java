@@ -1,4 +1,4 @@
 package be.tr.democracy.rest;
 
-public record MotionViewDTO(String id, String description) {
+public record MotionViewDTO(ProposalViewDTO proposal) {
 }
