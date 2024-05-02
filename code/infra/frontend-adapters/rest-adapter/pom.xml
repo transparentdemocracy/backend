@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.tr.democracy</groupId>
+        <artifactId>voting-frontend-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <packaging>jar</packaging>
+    <name>rest-adapter</name>
+    <artifactId>rest-adapter</artifactId>
+
+    <description>The front rest adapter</description>
+
+    <properties>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
+</project>

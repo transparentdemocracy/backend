@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.tr.democracy</groupId>
+        <artifactId>voting-backend-root-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <name>code</name>
+    <artifactId>voting-code-parent</artifactId>
+    <description>The module contains all the code</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.1.5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>be.tr.democracy</groupId>
+                <artifactId>rest-adapter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>vocabulary</module>
+        <module>application</module>
+        <module>infra</module>
+        <module>main</module>
+    </modules>
+
+</project>
