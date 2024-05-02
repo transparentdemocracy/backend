@@ -7,6 +7,13 @@
     <groupId>be.tr.democracy</groupId>
     <version>1.0.0-SNAPSHOT</version>
 
+    <!-- Inherit defaults from Spring Boot -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+    </parent>
+
     <description>The backend to the voting visualization</description>
 
     <properties>
@@ -52,6 +59,8 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
                 </plugin>
+
+
             </plugins>
         </pluginManagement>
     </build>
