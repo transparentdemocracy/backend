@@ -35,12 +35,10 @@ public class MotionController {
     }
 
     @GetMapping("/motions/")
-    public Flux<List<MotionViewDTO>> getMotions() {
+    public Flux<MotionViewDTO> getMotions() {
         logger.info("***** Get motions **");
         final List<MotionViewDTO> motionViewDTOS = HardCodedMotions.getMotionViewDTOS();
-        return Flux.just(
-                motionViewDTOS
-        );
+        return Flux.fromIterable(motionViewDTOS);
     }
 
     private static MotionViewDTO map(Motion x) {
