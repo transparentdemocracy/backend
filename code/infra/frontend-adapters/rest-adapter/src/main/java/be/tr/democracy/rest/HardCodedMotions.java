@@ -5,11 +5,11 @@ import java.util.List;
 public class HardCodedMotions {
     public static MotionViewDTO createHardCodedMotion(int id) {
         return new MotionViewDTO("Wetsontwerp betreffende de deelneming van België aan de zevende algemene kapitaalverhoging van de Afrikaanse Ontwikkelingsbank (2060/3)", "03/05/2024",
-                new ProposalViewDTO(id, "toffe jongen met id " + id), true);
+                "toffe jongen met id ", true);
     }
 
     public static List<MotionViewDTO> getMotionViewDTOS() {
-        return List.of(new MotionViewDTO("Moties ingediend tot besluit van de interpellatie van de heer Theo Francken over \"De escalatie in Oekraïne\" (nr. 237)", "03/05/2024", new ProposalViewDTO(1, "Cette interpellation a été développée en réunion publique de la commission des Relations extérieures du 1er février 2022.\n" +
+        return List.of(new MotionViewDTO("Moties ingediend tot besluit van de interpellatie van de heer Theo Francken over \"De escalatie in Oekraïne\" (nr. 237)", "03/05/2024", "Cette interpellation a été développée en réunion publique de la commission des Relations extérieures du 1er février 2022.\n" +
                         "\n" +
                         "Deze interpellatie werd gehouden in de openbare vergadering van de commissie voor Buitenlandse Betrekkingen van 1 februari 2022.\n" +
                         "\n" +
@@ -79,8 +79,8 @@ public class HardCodedMotions {
                         "\n" +
                         "La motion pure et simple est adoptée. Par conséquent, la motion de recommandation est caduque.\n" +
                         "\n" +
-                        "De eenvoudige motie is aangenomen. Bijgevolg vervalt de motie van aanbeveling."), true),
-                new MotionViewDTO("De aanslagen in Spanje van 2017 (nr. 230)", "31/03/2024", new ProposalViewDTO(2, "Peter De Roover (N-VA): Mevrouw de voorzitster, onze geachte collega Loones is geveld door de omikronvariant en volgt deze vergadering met enige beperkte ademtocht van thuis uit. Daarom vervang ik hem vandaag voor de verdediging van de motie bij zijn interpellatie.\n" +
+                        "De eenvoudige motie is aangenomen. Bijgevolg vervalt de motie van aanbeveling.", true),
+                new MotionViewDTO("De aanslagen in Spanje van 2017 (nr. 230)", "31/03/2024","Peter De Roover (N-VA): Mevrouw de voorzitster, onze geachte collega Loones is geveld door de omikronvariant en volgt deze vergadering met enige beperkte ademtocht van thuis uit. Daarom vervang ik hem vandaag voor de verdediging van de motie bij zijn interpellatie.\n" +
                         "\n" +
                         " \n" +
                         "\n" +
@@ -100,8 +100,8 @@ public class HardCodedMotions {
                         "\n" +
                         " \n" +
                         "\n" +
-                        "Collega's, wij hopen dat u ons volgt in onze vraag aan de regering, zoals geformuleerd door onze aanbeveling, om aandachtig te blijven voor de uitkomst van het onderzoek, bevolen door de Catalaanse president Pere Aragonès, naar de bewering van voormalig politiecommissaris José Manuel Villarejo."), false),
-                new MotionViewDTO("Wetsvoorstel tot wijziging van het Wetboek van economisch recht inzake de handelsagentuurovereenkomsten houdende de bescherming van handelsagenten tegen de eenzijdige verhoging of oplegging van de kosten door de principaal", "12/12/2023", new ProposalViewDTO(666, "Quelqu'un demande-t-il la parole pour une déclaration avant le vote? (Non)\n" +
+                        "Collega's, wij hopen dat u ons volgt in onze vraag aan de regering, zoals geformuleerd door onze aanbeveling, om aandachtig te blijven voor de uitkomst van het onderzoek, bevolen door de Catalaanse president Pere Aragonès, naar de bewering van voormalig politiecommissaris José Manuel Villarejo.", false),
+                new MotionViewDTO("Wetsvoorstel tot wijziging van het Wetboek van economisch recht inzake de handelsagentuurovereenkomsten houdende de bescherming van handelsagenten tegen de eenzijdige verhoging of oplegging van de kosten door de principaal", "12/12/2023", "Quelqu'un demande-t-il la parole pour une déclaration avant le vote? (Non)\n" +
                         "\n" +
                         "Vraagt iemand het woord voor een stemverklaring? (Nee)\n" +
                         "\n" +
@@ -145,8 +145,8 @@ public class HardCodedMotions {
                         "\n" +
                         "Bijgevolg neemt de Kamer het wetsvoorstel aan. Het zal als wetsontwerp aan de Koning ter bekrachtiging worden voorgelegd. (2109/8)\n" +
                         "\n" +
-                        "En conséquence, la Chambre adopte la proposition de loi. Elle sera soumise en tant que projet de loi à la sanction royale. (2109/8)"), true),
-                new MotionViewDTO("Voorstel tot verwerping door de commissie voor Binnenlandse Zaken, Veiligheid, Migratie en Bestuurszaken van het wetsvoorstel tot wijziging van de wet van 15 mei 2007 betreffende de civiele veiligheid met het oog op de institutionalisering van een globaal debriefingsrapport (1338/1-3)", "12/02/2024", new ProposalViewDTO(3, "Quelqu'un demande-t-il la parole pour une déclaration avant le vote? (Non)\n" +
+                        "En conséquence, la Chambre adopte la proposition de loi. Elle sera soumise en tant que projet de loi à la sanction royale. (2109/8)", true),
+                new MotionViewDTO("Voorstel tot verwerping door de commissie voor Binnenlandse Zaken, Veiligheid, Migratie en Bestuurszaken van het wetsvoorstel tot wijziging van de wet van 15 mei 2007 betreffende de civiele veiligheid met het oog op de institutionalisering van een globaal debriefingsrapport (1338/1-3)", "12/02/2024", "Quelqu'un demande-t-il la parole pour une déclaration avant le vote? (Non)\n" +
                         "\n" +
                         "Vraagt iemand het woord voor een stemverklaring? (Nee)\n" +
                         "\n" +
@@ -266,6 +266,6 @@ public class HardCodedMotions {
                         "\n" +
                         "- Mme Julie Chanson a voté comme son groupe.\n" +
                         "\n" +
-                        "- De heer Kristof Calvo heeft zoals zijn fractie gestemd."), true));
+                        "- De heer Kristof Calvo heeft zoals zijn fractie gestemd.", true));
     }
 }

@@ -44,11 +44,8 @@ public class MotionController {
     }
 
     private static MotionViewDTO map(Motion x) {
-        final var proposal = new ProposalViewDTO(
-                x.numberInPlenary(),
-                x.description());
         return new MotionViewDTO("Motion " + x.numberInPlenary() + " from Plenary " + x.plenaryId(), "01/01/1830",
-                proposal, true);
+                "This is an example description of a motion", true);
     }
 
     private List<MotionViewDTO> loadMotions() {
