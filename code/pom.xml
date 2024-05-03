@@ -16,7 +16,27 @@
         <dependencies>
             <dependency>
                 <groupId>be.tr.democracy</groupId>
+                <artifactId>vocabulary</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>be.tr.democracy</groupId>
                 <artifactId>rest-adapter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>be.tr.democracy</groupId>
+                <artifactId>application-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>be.tr.democracy</groupId>
+                <artifactId>queries</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>be.tr.democracy</groupId>
+                <artifactId>in-memory-adapter</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

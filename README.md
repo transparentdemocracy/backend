@@ -11,6 +11,18 @@ Makes the [public information](https://www.dekamer.be/kvvcr/index.cfm) of the go
 
 ## Technical Choices
 
+For now, we have opted not using a database. The data that is served is loaded from prepared json files that are included in the jar and loaded into memory when the application starts up. The data files are not part of this project. It is expected that the companion project voting-data is located next to this project. Upon building the application, maven will copy those resources into the jar.
+
+```log
+...
+INFO 27436 --- [           main] be.tr.democracy.main.VotingApplication   : No active profile set, falling back to 1 default profile: "default"
+INFO 27436 --- [           main] b.t.d.inmem.DataFileMotionsReadModel     : Loading DataFileMotions from data/plenaries.json
+INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 300 PlenaryDTO in 123 milisec from data/plenaries.json
+INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 192 PoliticianDTO in 4 milisec from data/politicians.json
+INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 381567 VoteDTO in 212 milisec from data/votes.json
+INFO 27436 --- [           main] b.t.d.inmem.DataFileMotionsReadModel     : Data loaded in memory.
+...
+```
 
 ## Get started setup
 
@@ -41,12 +53,6 @@ You can build everything locally using maven using the following commands
 ./mvnw test
 ```
 
-+ To run the Integration tests
-
-+ To build a fat, executable jar
-
-+ To Build the **docker** image from the fat, executable jar.
-
 ### Run
 
 #### Run the main application
@@ -56,7 +62,4 @@ To run the application, execute the script
 ```bash  
 ./runApplication     
 ```  
-This will build and run the application.
-
-### Docker scripts
-
+This will build and run the application. In order to have a frontend, you will need the companion project voting-website which will connect to this server. The configuration is currently limited to both application running on the same machine, 

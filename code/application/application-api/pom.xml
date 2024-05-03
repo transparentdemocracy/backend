@@ -9,9 +9,15 @@
     <packaging>jar</packaging>
     <name>application-api</name>
     <artifactId>application-api</artifactId>
-
-
     <description>The outward facing application API, the ports.</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>be.tr.democracy</groupId>
+            <artifactId>vocabulary</artifactId>
+        </dependency>
+    </dependencies>
 
 
     <build>

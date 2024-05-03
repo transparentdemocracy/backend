@@ -1,5 +1,7 @@
 package be.tr.democracy.rest;
 
+import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.vocabulary.Motion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,32 +11,50 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
+import static java.util.Objects.requireNonNull;
+
 @CrossOrigin
 @RestController
 public class MotionController {
     private final Logger logger = LoggerFactory.getLogger(MotionController.class);
+    private final MotionsService motionsService;
 
-    public MotionController() {
-        logger.info("***** HERE WE ARE!! **");
+    public MotionController(MotionsService motionsService) {
+        requireNonNull(motionsService);
+        this.motionsService = motionsService;
+
+        logger.info("Motions controller has {} motions", motionsService.getMotions().size());
     }
 
     @GetMapping("/motions/{id}")
     public Mono<MotionViewDTO> getMotionById(@PathVariable int id) {
-        logger.info("***** Get motion by id **");
-        final var hardCoded = new MotionViewDTO(new ProposalViewDTO(id, "toffe jongen met id " + id));
+        final var hardCoded = HardCodedMotions.createHardCodedMotion(id);
         return Mono.just(hardCoded);
     }
 
     @GetMapping("/motions/")
-    public Flux<MotionViewDTO> getMotions() {
+    public Flux<List<MotionViewDTO>> getMotions() {
         logger.info("***** Get motions **");
+        final List<MotionViewDTO> motionViewDTOS = HardCodedMotions.getMotionViewDTOS();
         return Flux.just(
-                new MotionViewDTO(new ProposalViewDTO(1, "toffe jongen")),
-                new MotionViewDTO(new ProposalViewDTO(2, "jongen")),
-                new MotionViewDTO(new ProposalViewDTO(666, "Franky")),
-                new MotionViewDTO(new ProposalViewDTO(3, "peeut"))
+                motionViewDTOS
         );
     }
 
+    private static MotionViewDTO map(Motion x) {
+        final var proposal = new ProposalViewDTO(
+                x.numberInPlenary(),
+                x.description());
+        return new MotionViewDTO("Motion " + x.numberInPlenary() + " from Plenary " + x.plenaryId(), "01/01/1830",
+                proposal, true);
+    }
+
+    private List<MotionViewDTO> loadMotions() {
+        return this.motionsService.getMotions()
+                .stream().map(MotionController::map)
+                .toList();
+    }
 
 }
