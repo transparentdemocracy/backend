@@ -35,15 +35,32 @@ public class MotionController {
     }
 
     @GetMapping("/motions/")
-    public Flux<MotionViewDTO> getMotions() {
-        logger.info("***** Get motions **");
-        final List<MotionViewDTO> motionViewDTOS = HardCodedMotions.getMotionViewDTOS();
-        return Flux.fromIterable(motionViewDTOS);
+    public Flux<List<MotionViewDTO>> getMotions() {
+        return getHardCodedMotions();
+        //return getActualMotions();
     }
 
     private static MotionViewDTO map(Motion x) {
         return new MotionViewDTO("Motion " + x.numberInPlenary() + " from Plenary " + x.plenaryId(), "01/01/1830",
                 "This is an example description of a motion", true);
+    }
+
+    /**
+     * Get the actual parsed data from the json files which are loaded at startup.
+     */
+    private Flux<List<MotionViewDTO>> getActualMotions() {
+        logger.info("***** Get parsed motions **");
+        final List<MotionViewDTO> motionViewDTOS = loadMotions();
+        return Flux.just(motionViewDTOS);
+    }
+
+    /**
+     * Temporary hardcoded data which is only here for quick development purposes
+     */
+    private Flux<List<MotionViewDTO>> getHardCodedMotions() {
+        logger.info("***** Get hardcoded motions **");
+        final List<MotionViewDTO> motionViewDTOS = HardCodedMotions.getMotionViewDTOS();
+        return Flux.just(motionViewDTOS);
     }
 
     private List<MotionViewDTO> loadMotions() {
