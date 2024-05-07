@@ -13,6 +13,9 @@ Makes the [public information](https://www.dekamer.be/kvvcr/index.cfm) of the go
 
 For now, we have opted not using a database. The data that is served is loaded from prepared json files that are included in the jar and loaded into memory when the application starts up. The data files are not part of this project. It is expected that the companion project voting-data is located next to this project. Upon building the application, maven will copy those resources into the jar.
 
+If you run the application directly from your IDEA, make sure to have run the mvn build once before. Otherwise, the data files from the other project will not be copied and thus not present.
+
+
 ```log
 ...
 INFO 27436 --- [           main] be.tr.democracy.main.VotingApplication   : No active profile set, falling back to 1 default profile: "default"
@@ -62,4 +65,6 @@ To run the application, execute the script
 ```bash  
 ./runApplication     
 ```  
-This will build and run the application. In order to have a frontend, you will need the companion project voting-website which will connect to this server. The configuration is currently limited to both application running on the same machine, 
+This will build and run the application. In order to have a frontend, you will need the companion project voting-website which will connect to this server. The configuration is currently limited to both application running on the same machine.
+
+If you run the application directly from your IDEA, make sure to have run the mvn build once before. Otherwise the data files from the other project will not be copied and thus not present. 

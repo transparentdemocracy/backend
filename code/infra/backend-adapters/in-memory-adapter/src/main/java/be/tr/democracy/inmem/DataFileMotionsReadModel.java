@@ -54,15 +54,23 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         } else if (allProposals.size() > 1) {
             logger.error("More than one proposal was found for proposalId {} for the motion {}", proposalId, motionsDTO.id());
         } else {
-            final var propForMotion = allProposals.getFirst();
-            return Optional.of(buildMotion(motionsDTO, propForMotion));
+            final var builder = Motion.newBuilder().withDate(plenaryDTO.date());
+            mapProposalFields(builder, allProposals.getFirst());
+            mapMotionsField(motionsDTO, builder);
+            return Optional.of(builder.build());
         }
         return Optional.empty();
     }
 
-    private Motion buildMotion(MotionsDTO motionsDTO, ProposalsDTO propForMotion) {
-        final var voteCount = buildVoteCount(motionsDTO);
-        return new Motion(motionsDTO.id(), propForMotion.plenary_id(), motionsDTO.number(), propForMotion.description(), voteCount);
+    private void mapMotionsField(MotionsDTO motionsDTO, Motion.Builder builder) {
+        builder.withVoteCount(buildVoteCount(motionsDTO));
+        builder.withMotionId(motionsDTO.id())
+                .withNumberInPlenary(motionsDTO.number());
+    }
+
+    private static void mapProposalFields(Motion.Builder builder, ProposalsDTO propForMotion) {
+        builder.withPlenaryId(propForMotion.plenary_id())
+                .withDescription(propForMotion.description());
     }
 
     private VoteCount buildVoteCount(MotionsDTO motionsDTO) {

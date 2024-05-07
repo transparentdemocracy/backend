@@ -76,6 +76,7 @@ public class JSONDataFileLoader {
 
     private File loadResourceFile(String fileName) throws URISyntaxException {
         final var resource = getClass().getClassLoader().getResource(fileName);
+        if(resource == null) logger.error("Unable to load the file {}",fileName);
         final Path path = Paths.get(requireNonNull(resource).toURI());
         return path.toFile();
     }

@@ -51,7 +51,7 @@ class JSONDataFileLoaderTest {
         final var first = politicianDTOS.getFirst();
         assertEquals(7220, first.id());
         assertEquals("Moyaers Bert", first.full_name());
-        assertEquals("Vooruit", first.fraction());
+        assertEquals("Vooruit", first.party());
     }
 
 

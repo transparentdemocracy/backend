@@ -2,6 +2,7 @@
   {
     "id": "55_160",
     "number": 160,
+    "date": "2022-02-03",
     "legislature": 55,
     "pdf_report_url": "https://www.dekamer.be/doc/PCRI/pdf/55/ip160.pdf",
     "html_report_url": "https://www.dekamer.be/doc/PCRI/html/55/ip160x.html",
@@ -73,6 +74,7 @@
   {
     "id": "55_125",
     "number": 125,
+    "date": "2022-04-03",
     "legislature": 55,
     "pdf_report_url": "https://www.dekamer.be/doc/PCRI/pdf/55/ip125.pdf",
     "html_report_url": "https://www.dekamer.be/doc/PCRI/html/55/ip125x.html",
