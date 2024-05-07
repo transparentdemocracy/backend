@@ -18,53 +18,53 @@ import static java.util.Objects.requireNonNull;
 @CrossOrigin
 @RestController
 public class MotionController {
+    private static final int MOTION_PAGE_SIZE = 20;
     private final Logger logger = LoggerFactory.getLogger(MotionController.class);
     private final MotionsService motionsService;
 
     public MotionController(MotionsService motionsService) {
         requireNonNull(motionsService);
         this.motionsService = motionsService;
-
-        logger.info("Motions controller has {} motions", motionsService.getMotions().size());
     }
 
     @GetMapping("/motions/{id}")
     public Mono<MotionViewDTO> getMotionById(@PathVariable int id) {
-        final var hardCoded = HardCodedMotions.createHardCodedMotion(id);
-        return Mono.just(hardCoded);
+//        final var hardCoded = HardCodedMotions.createHardCodedMotion(id);
+        return Mono.just(loadMotions().stream().filter(x -> x.title().contains(id + "")).toList().getFirst());
     }
 
     @GetMapping("/motions/")
-    public Flux<List<MotionViewDTO>> getMotions() {
-        return getHardCodedMotions();
-        //return getActualMotions();
+    public Flux<MotionViewDTO> getMotions() {
+//        return getHardCodedMotions();
+        return getActualMotions();
     }
 
     private static MotionViewDTO map(Motion x) {
-        return new MotionViewDTO("Motion " + x.numberInPlenary() + " from Plenary " + x.plenaryId(), "01/01/1830",
-                "This is an example description of a motion", true);
+        return new MotionViewDTO("Motion " + x.numberInPlenary() + " from Plenary " + x.plenaryId(), x.date(),
+                x.description(), true);
     }
 
     /**
      * Get the actual parsed data from the json files which are loaded at startup.
      */
-    private Flux<List<MotionViewDTO>> getActualMotions() {
+    private Flux<MotionViewDTO> getActualMotions() {
         logger.info("***** Get parsed motions **");
         final List<MotionViewDTO> motionViewDTOS = loadMotions();
-        return Flux.just(motionViewDTOS);
+        logger.info("***** Loaded {} motions **", motionViewDTOS.size());
+        return Flux.fromStream(motionViewDTOS.stream());
     }
 
     /**
      * Temporary hardcoded data which is only here for quick development purposes
      */
-    private Flux<List<MotionViewDTO>> getHardCodedMotions() {
+    private Flux<MotionViewDTO> getHardCodedMotions() {
         logger.info("***** Get hardcoded motions **");
         final List<MotionViewDTO> motionViewDTOS = HardCodedMotions.getMotionViewDTOS();
-        return Flux.just(motionViewDTOS);
+        return Flux.fromStream(motionViewDTOS.stream());
     }
 
     private List<MotionViewDTO> loadMotions() {
-        return this.motionsService.getMotions()
+        return this.motionsService.getMotions(MOTION_PAGE_SIZE)
                 .stream().map(MotionController::map)
                 .toList();
     }

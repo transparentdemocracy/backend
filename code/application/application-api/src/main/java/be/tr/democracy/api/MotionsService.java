@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MotionsService {
 
-    List<Motion> getMotions();
+    List<Motion> getMotions(int maximum);
 }

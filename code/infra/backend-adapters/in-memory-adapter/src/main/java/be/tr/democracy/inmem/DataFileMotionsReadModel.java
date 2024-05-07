@@ -14,6 +14,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     private final List<PlenaryDTO> plenaryDTOS;
     private final List<PoliticianDTO> politicianDTOS;
     private final List<VoteDTO> voteDTOS;
+    private List<Motion> allMotionsReadmodel;
 
     public DataFileMotionsReadModel(String plenariesFileName, String votesFileName, String politiciansFileName) {
         logger.info("Loading DataFileMotions from {}", plenariesFileName);
@@ -22,20 +23,31 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         politicianDTOS = dataFileLoader.loadPolitician(politiciansFileName);
         voteDTOS = dataFileLoader.loadVotes(votesFileName);
         logger.info("Data loaded in memory.");
+        allMotionsReadmodel = buildAllMotionsReadmodel();
+        logger.info("Read Models build.");
 
     }
 
     @Override
     public List<Motion> loadAll() {
-        return plenaryDTOS.stream()
-                .map(this::buildMotions)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return allMotionsReadmodel;
     }
 
     private static int countVotes(List<VoteDTO> motionVotes, String voteType) {
         final var count = motionVotes.stream().filter(x -> x.vote_type().equalsIgnoreCase(voteType)).count();
         return Long.valueOf(count).intValue();
+    }
+
+    private static void mapProposalFields(Motion.Builder builder, ProposalsDTO propForMotion) {
+        builder.withPlenaryId(propForMotion.plenary_id())
+                .withDescription(propForMotion.description());
+    }
+
+    private List<Motion> buildAllMotionsReadmodel() {
+        return plenaryDTOS.stream()
+                .map(this::buildMotions)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     private List<Motion> buildMotions(PlenaryDTO plenaryDTO) {
@@ -66,11 +78,6 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         builder.withVoteCount(buildVoteCount(motionsDTO));
         builder.withMotionId(motionsDTO.id())
                 .withNumberInPlenary(motionsDTO.number());
-    }
-
-    private static void mapProposalFields(Motion.Builder builder, ProposalsDTO propForMotion) {
-        builder.withPlenaryId(propForMotion.plenary_id())
-                .withDescription(propForMotion.description());
     }
 
     private VoteCount buildVoteCount(MotionsDTO motionsDTO) {
