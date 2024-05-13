@@ -83,7 +83,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
                 mapMotionsField(motionsDTO, builder);
                 return Optional.of(builder.build());
             } else {
-                logger.error("There is no proposal discussion for motion number " + motionsDTO.number() + " and motions ID " + motionsDTO.id() + " for plenary " + plenaryDTO.id());
+                logger.error("There is no proposal discussion for motion number {} and motions ID {} for plenary {}", motionsDTO.number(), motionsDTO.id(), plenaryDTO.id());
                 return Optional.empty();
             }
 
