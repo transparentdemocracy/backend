@@ -1,10 +1,8 @@
 package be.tr.democracy.inmem;
 
 public record ProposalsDTO(
-        String id,
-        int number,
-        String plenary_id,
-        String description
-
+        String document_reference,
+        String title_nl,
+        String title_fr
 ) {
 }

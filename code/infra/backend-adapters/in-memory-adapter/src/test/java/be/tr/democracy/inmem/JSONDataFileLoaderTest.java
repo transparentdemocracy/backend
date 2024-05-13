@@ -15,11 +15,12 @@ class JSONDataFileLoaderTest {
 
         final var plenaryDTOS = jsonPlenariesLoader.loadPlenaries(fileName);
         assertNotNull(plenaryDTOS);
-        assertEquals(2, plenaryDTOS.size());
+        assertEquals(4, plenaryDTOS.size());
 
         final var first = plenaryDTOS.getFirst();
-        assertEquals(5, first.proposals().size());
-        assertEquals(5, first.motions().size());
+        assertEquals(4, first.proposal_discussions().size());
+        assertEquals(1, first.motions().size());
+        assertEquals(5, first.proposal_discussions().getFirst().proposals().size());
     }
 
     @Test
@@ -34,7 +35,7 @@ class JSONDataFileLoaderTest {
 
         final var first = voteDTOS.getFirst();
         assertEquals( "7124",first.politician_id());
-        assertEquals("55_160_1", first.motion_id());
+        assertEquals("55_261_1", first.motion_id());
         assertEquals("YES", first.vote_type());
     }
 

@@ -14,7 +14,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     private final List<PlenaryDTO> plenaryDTOS;
     private final List<PoliticianDTO> politicianDTOS;
     private final List<VoteDTO> voteDTOS;
-    private List<Motion> allMotionsReadmodel;
+    private final List<Motion> allMotionsReadmodel;
 
     public DataFileMotionsReadModel(String plenariesFileName, String votesFileName, String politiciansFileName) {
         logger.info("Loading DataFileMotions from {}", plenariesFileName);
@@ -25,12 +25,6 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         logger.info("Data loaded in memory.");
         allMotionsReadmodel = buildAllMotionsReadmodel();
         logger.info("Read Models build.");
-
-    }
-
-    @Override
-    public List<Motion> loadAll() {
-        return allMotionsReadmodel;
     }
 
     private static int countVotes(List<VoteDTO> motionVotes, String voteType) {
@@ -38,16 +32,37 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         return Long.valueOf(count).intValue();
     }
 
-    private static void mapProposalFields(Motion.Builder builder, ProposalsDTO propForMotion) {
+    @Override
+    public List<Motion> loadAll() {
+        return allMotionsReadmodel;
+    }
+
+    private void mapProposalFields(Motion.Builder builder, ProposalDiscussionDTO propForMotion) {
+        if (propForMotion.proposals().isEmpty())
+            logger.error("There are no Proposals for the motion!");
+        if (propForMotion.proposals().size() > 1)
+            logger.warn("There are multiple Proposals for the motion. Not yet mapped correctly.");
+
+        final var proposalsDTO = propForMotion.proposals().getFirst();
         builder.withPlenaryId(propForMotion.plenary_id())
-                .withDescription(propForMotion.description());
+                .withTitleFR(proposalsDTO.title_fr())
+                .withTitleNL(proposalsDTO.title_nl())
+                .withDocumentReference(proposalsDTO.document_reference())
+                .withDescriptionFR(propForMotion.description_fr())
+                .withDescriptionNL(propForMotion.description_nl());
     }
 
     private List<Motion> buildAllMotionsReadmodel() {
-        return plenaryDTOS.stream()
-                .map(this::buildMotions)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        try {
+            return plenaryDTOS.stream()
+                    .map(this::buildMotions)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+        } catch (Throwable e) {
+            logger.error("UNABLE TO BUILD READ MODELS: ", e);
+            return List.of();
+        }
     }
 
     private List<Motion> buildMotions(PlenaryDTO plenaryDTO) {
@@ -59,19 +74,23 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     }
 
     private Optional<Motion> buildMotion(PlenaryDTO plenaryDTO, MotionsDTO motionsDTO) {
-        final var proposalId = motionsDTO.proposal_id();
-        final var allProposals = plenaryDTO.proposals().stream().filter(proposalsDTO -> proposalsDTO.id().equals(proposalId)).toList();
-        if (allProposals.isEmpty()) {
-            logger.error("No matching proposal was found for proposalId {} for the motion {}", proposalId, motionsDTO.id());
-        } else if (allProposals.size() > 1) {
-            logger.error("More than one proposal was found for proposalId {} for the motion {}", proposalId, motionsDTO.id());
-        } else {
+        try {
             final var builder = Motion.newBuilder().withDate(plenaryDTO.date());
-            mapProposalFields(builder, allProposals.getFirst());
-            mapMotionsField(motionsDTO, builder);
-            return Optional.of(builder.build());
+            final int index = motionsDTO.number() - 1;
+            if (plenaryDTO.proposal_discussions().size() > index) {
+                final ProposalDiscussionDTO proposalDiscussionDTO1 = plenaryDTO.proposal_discussions().get(index);
+                mapProposalFields(builder, proposalDiscussionDTO1);
+                mapMotionsField(motionsDTO, builder);
+                return Optional.of(builder.build());
+            } else {
+                logger.error("There is no proposal discussion for motion number " + motionsDTO.number() + " and motions ID " + motionsDTO.id() + " for plenary " + plenaryDTO.id());
+                return Optional.empty();
+            }
+
+        } catch (Throwable exception) {
+            logger.error("Error occured when building motion {}", motionsDTO.id(), exception);
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     private void mapMotionsField(MotionsDTO motionsDTO, Motion.Builder builder) {

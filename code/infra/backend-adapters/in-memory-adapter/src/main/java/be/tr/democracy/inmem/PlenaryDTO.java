@@ -8,7 +8,7 @@ public record PlenaryDTO(String id,
                          String date,
                          String pdf_report_url,
                          String html_report_url,
-                         List<ProposalsDTO> proposals,
+                         List<ProposalDiscussionDTO> proposal_discussions,
                          List<MotionsDTO> motions
 
 ) {

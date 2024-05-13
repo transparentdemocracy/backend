@@ -1,4 +1,13 @@
 package be.tr.democracy.rest;
 
-public record MotionViewDTO(String title, String votingDate, String description, Boolean votingResult) {
+//TODO add votes
+public record MotionViewDTO(String titleNL,
+                            String titleFR,
+                            Integer nrOfYesVotes,
+                            Integer nrOfNoVotes,
+                            Integer nrOfAbsentVotes,
+                            String votingDate,
+                            String descriptionNL,
+                            String descriptionFR,
+                            Boolean votingResult) {
 }

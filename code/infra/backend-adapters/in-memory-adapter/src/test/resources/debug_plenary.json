@@ -1,0 +1,115 @@
+[
+  {
+    "id": "55_241",
+    "number": 241,
+    "date": "2023-04-27",
+    "legislature": 55,
+    "pdf_report_url": "https://www.dekamer.be/doc/PCRI/pdf/55/ip241.pdf",
+    "html_report_url": "https://www.dekamer.be/doc/PCRI/html/55/ip241x.html",
+    "proposal_discussions": [],
+    "motions": [
+      {
+        "id": "55_241_1",
+        "number": 1,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_2",
+        "number": 2,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_3",
+        "number": 3,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_4",
+        "number": 4,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_5",
+        "number": 5,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_6",
+        "number": 6,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_7",
+        "number": 7,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_8",
+        "number": 8,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_9",
+        "number": 9,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_10",
+        "number": 10,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_11",
+        "number": 11,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_12",
+        "number": 12,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_13",
+        "number": 13,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_14",
+        "number": 14,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_15",
+        "number": 15,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_16",
+        "number": 16,
+        "proposal_id": "",
+        "cancelled": false
+      },
+      {
+        "id": "55_241_17",
+        "number": 17,
+        "proposal_id": "",
+        "cancelled": false
+      }
+    ]
+  }
+]
