@@ -7,6 +7,8 @@ public record VoteCount(int nrOfYesVotes, int nrOfNoVotes, int nrOfAbsentees) {
         validateVotes(nrOfAbsentees);
     }
 
+
+
     public boolean votePassed() {
         return nrOfYesVotes > nrOfNoVotes;
     }

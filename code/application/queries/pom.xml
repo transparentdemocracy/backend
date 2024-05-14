@@ -20,6 +20,10 @@
             <groupId>be.tr.democracy</groupId>
             <artifactId>application-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -5,19 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
 @CrossOrigin
 @RestController
 public class MotionController {
-    private static final int MOTION_PAGE_SIZE = 20;
     private final Logger logger = LoggerFactory.getLogger(MotionController.class);
     private final MotionsService motionsService;
 
@@ -26,29 +24,38 @@ public class MotionController {
         this.motionsService = motionsService;
     }
 
-    @GetMapping("/motions/{searchTerm}")
-    public Flux<MotionViewDTO> searchMotions(@PathVariable String searchTerm) {
-        return Flux.fromStream(findMotion(searchTerm));
+    @GetMapping("/motions/")
+    public Mono<PageViewDTO<MotionViewDTO>> getMotions(@RequestParam(value = "search", required = false) String searchTerm,
+                                                       @RequestParam("page") int page,
+                                                       @RequestParam("size") int size) {
+        logger.info("Getting motions for search {}", searchTerm);
+        logger.info("Getting motions for page {}", page);
+        logger.info("Getting motions for size {}", size);
+        //TODO move to query
+        final var stream = this.motionsService.getMotions(-1)
+                .stream()
+                .map(MotionMapper::map);
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            final var viewDTOS = stream
+                    .filter(x -> x.titleNL().toLowerCase().contains(searchTerm.toLowerCase())).toList();
+            return Mono.just(sliceInPage(page, size, viewDTOS));
+        } else {
+            final var list = stream.toList();
+            return Mono.just(sliceInPage(page, size, list));
+        }
     }
 
-    @GetMapping("/motions/")
-    public Flux<MotionViewDTO> getMotions() {
-        logger.info("***** Get parsed motions **");
-        final List<MotionViewDTO> motionViewDTOS = loadMotions();
-        logger.info("***** Loaded {} motions **", motionViewDTOS.size());
-        return Flux.fromStream(motionViewDTOS.stream());
-    }
 
     //TODO move to query
-    private Stream<MotionViewDTO> findMotion(String searchTerm) {
-        return loadMotions().stream().filter(x -> x.titleNL().toLowerCase().contains(searchTerm.toLowerCase()));
+    private static PageViewDTO<MotionViewDTO> sliceInPage(int page, int size, List<MotionViewDTO> motionViewDTOS) {
+        //TODO refactor this, move pagination to query
+        int totalPages = (int) Math.ceil((double) motionViewDTOS.size() / size);
+        int requestedPage = Math.min(totalPages, page);
+        int startIndex = (requestedPage - 1) * size;
+        final var pageResult = motionViewDTOS.subList(startIndex, Math.min(startIndex + size, motionViewDTOS.size()));
+        final var result = new PageViewDTO<MotionViewDTO>(requestedPage, size, totalPages, pageResult);
+        return result;
     }
 
-    private List<MotionViewDTO> loadMotions() {
-        return this.motionsService.getMotions(MOTION_PAGE_SIZE)
-                .stream()
-                .map(MotionMapper::map)
-                .toList();
-    }
 
 }
