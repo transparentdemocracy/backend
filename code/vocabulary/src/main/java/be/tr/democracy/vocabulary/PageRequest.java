@@ -7,7 +7,6 @@ public record PageRequest(
     public PageRequest {
         validatePositive(pageNr);
         validatePositive(pageSize);
-
     }
 
     private void validatePositive(int number) {

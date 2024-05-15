@@ -2,7 +2,9 @@ package be.tr.democracy.inmem;
 
 import be.tr.democracy.query.MotionsReadModel;
 import be.tr.democracy.vocabulary.Motion;
+import be.tr.democracy.vocabulary.PartyVotes;
 import be.tr.democracy.vocabulary.VoteCount;
+import be.tr.democracy.vocabulary.Votes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,14 +24,10 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         plenaryDTOS = dataFileLoader.loadPlenaries(plenariesFileName);
         politicianDTOS = dataFileLoader.loadPolitician(politiciansFileName);
         voteDTOS = dataFileLoader.loadVotes(votesFileName);
+
         logger.info("Data loaded in memory.");
         allMotionsReadmodel = buildAllMotionsReadmodel();
         logger.info("Read Models build.");
-    }
-
-    private static int countVotes(List<VoteDTO> motionVotes, String voteType) {
-        final var count = motionVotes.stream().filter(x -> x.vote_type().equalsIgnoreCase(voteType)).count();
-        return Long.valueOf(count).intValue();
     }
 
     @Override
@@ -107,10 +105,19 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         if ((yesVotes + noVotes + absentVotes) != motionVotes.size()) {
             logger.error("The votes do not match. Total nr of votes {} yes: {} no: {} absent: {}", motionVotes.size(), yesVotes, noVotes, absentVotes);
         }
-        return new VoteCount(yesVotes, noVotes, absentVotes);
+        //TODO hardcoded for now
+        final List<PartyVotes> yesPartVotes = List.of(new PartyVotes("G&F",yesVotes));
+        final List<PartyVotes> noPartVotes = List.of(new PartyVotes("G&F",noVotes));
+        final List<PartyVotes> abstPartVotes = List.of(new PartyVotes("G&F",absentVotes));
+        return new VoteCount(Votes.yesVotes(yesVotes, yesPartVotes), Votes.noVotes(noVotes, noPartVotes), Votes.absVotes(absentVotes,abstPartVotes));
     }
 
     private List<VoteDTO> getMotionVotes(MotionsDTO motionsDTO) {
         return voteDTOS.stream().filter(v -> v.motion_id().equals(motionsDTO.id())).toList();
+    }
+
+    private static int countVotes(List<VoteDTO> motionVotes, String voteType) {
+        final var count = motionVotes.stream().filter(x -> x.vote_type().equalsIgnoreCase(voteType)).count();
+        return Long.valueOf(count).intValue();
     }
 }

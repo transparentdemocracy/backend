@@ -3,9 +3,9 @@ package be.tr.democracy.rest;
 //TODO add votes
 public record MotionViewDTO(String titleNL,
                             String titleFR,
-                            Integer nrOfYesVotes,
-                            Integer nrOfNoVotes,
-                            Integer nrOfAbsentVotes,
+                            VotesViewDTO yesVotes,
+                            VotesViewDTO noVotes,
+                            VotesViewDTO absVotes,
                             String votingDate,
                             String descriptionNL,
                             String descriptionFR,

@@ -28,8 +28,8 @@ class DataFileMotionsReadModelTest {
         assertNotNull(motion.titleNL());
         assertNotNull(motion.documentReference());
         assertNotNull(motion.voteCount());
-        assertEquals(1, motion.voteCount().nrOfNoVotes());
-        assertEquals(4, motion.voteCount().nrOfYesVotes());
-        assertEquals(1, motion.voteCount().nrOfAbsentees());
+        assertEquals(1, motion.voteCount().noVotes().nrOfVotes());
+        assertEquals(4, motion.voteCount().yesVotes().nrOfVotes());
+        assertEquals(1, motion.voteCount().absentees().nrOfVotes());
     }
 }

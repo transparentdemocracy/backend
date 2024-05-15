@@ -50,7 +50,7 @@ public class MotionController {
     private static PageViewDTO<MotionViewDTO> sliceInPage(int page, int size, List<MotionViewDTO> motionViewDTOS) {
         //TODO refactor this, move pagination to query
         int totalPages = (int) Math.ceil((double) motionViewDTOS.size() / size);
-        int requestedPage = Math.min(totalPages, page);
+        int requestedPage = Math.max(1, Math.min(totalPages, page));
         int startIndex = (requestedPage - 1) * size;
         final var pageResult = motionViewDTOS.subList(startIndex, Math.min(startIndex + size, motionViewDTOS.size()));
         final var result = new PageViewDTO<MotionViewDTO>(requestedPage, size, totalPages, pageResult);

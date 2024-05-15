@@ -17,8 +17,6 @@ class MotionControllerTest {
 
         final var pageViewDTOMono = motionController.getMotions("",2, 2);
 
-        pageViewDTOMono.subscribe(this::validateSecondPage);
-
         StepVerifier.create(pageViewDTOMono)
                 .expectNextMatches(this::validateSecondPage)
                 .expectComplete()
@@ -31,8 +29,6 @@ class MotionControllerTest {
 
         final var pageViewDTOMono = motionController.getMotions("",5, 2);
 
-        pageViewDTOMono.subscribe(this::validateSecondPage);
-
         StepVerifier.create(pageViewDTOMono)
                 .expectNextMatches(this::validateSecondPage)
                 .expectComplete()
@@ -44,8 +40,6 @@ class MotionControllerTest {
         final var motionController = new MotionController(maximum -> MotionsMother.THREE_MOTIONS);
 
         final var pageViewDTOMono = motionController.getMotions("",2, 2);
-
-        pageViewDTOMono.subscribe(this::validateSecondPage);
 
         StepVerifier.create(pageViewDTOMono)
                 .expectNextMatches(this::validateUnevenSecondPage)
@@ -68,6 +62,7 @@ class MotionControllerTest {
         assertEquals(expectedResult, x.values());
         return expectedResult.equals(x.values());
     }
+
     private boolean validateSecondPage(PageViewDTO<MotionViewDTO> x) {
         assertNotNull(x);
         assertEquals(2, x.pageSize());

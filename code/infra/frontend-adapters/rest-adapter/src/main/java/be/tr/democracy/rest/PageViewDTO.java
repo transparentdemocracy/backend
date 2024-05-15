@@ -8,3 +8,16 @@ public record PageViewDTO<T>(int pageNr,
                              List<T> values
 ) {
 }
+/**
+ * export interface PartyVotes {
+ *   partyName: string;
+ *   votePercentage: number;
+ * }
+ *
+ * export interface Page<T> {
+ *   pageNr: number;
+ *   pageSize: number;
+ *   totalPages: number;
+ *   values: T[];
+ * }
+ */
