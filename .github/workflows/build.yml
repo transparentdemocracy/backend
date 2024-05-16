@@ -12,15 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.5
       - name: Set up JDK 22
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.2.1
         with:
           java-version: '22'
           distribution: 'temurin'
           cache: maven
       - name: Cache the Maven packages to speed up build
-        uses: actions/cache@v1
+        uses: actions/cache@v4.0.2
         with:
            path: ~/.m2
            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
