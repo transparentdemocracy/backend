@@ -47,7 +47,9 @@ public class MotionMapper {
         if (total == 0) return 0;
         else {
             final double percentage = (numberOfVotes / total) * 100;
-            return Double.valueOf(percentage).intValue();
+
+            final var round = Math.round(percentage);
+            return Long.valueOf(round).intValue();
         }
     }
 
