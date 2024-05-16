@@ -19,6 +19,6 @@ public class ObjectMother {
     }
 
     private static VoteCount createVoteCount() {
-        return new VoteCount(yesVotes, noVotes, absVotes);
+        return new VoteCount("51_216", yesVotes, noVotes, absVotes);
     }
 }

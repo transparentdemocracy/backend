@@ -1,7 +1,7 @@
 package be.tr.democracy.inmem;
 
 public record PoliticianDTO(
-        int id,
+        String id,
         String full_name,
         String party
 ) {

@@ -57,7 +57,7 @@ class MotionControllerTest {
         assertEquals(2, x.pageSize());
         assertEquals(2, x.totalPages());
         assertEquals(2, x.pageNr());
-        final var result = List.of(MotionsMother.THIRD);
+        final var result = List.of(MotionsMother.THIRD_MOTION);
         final var expectedResult = mapToViewDTOs(result);
         assertEquals(expectedResult, x.values());
         return expectedResult.equals(x.values());
@@ -68,7 +68,7 @@ class MotionControllerTest {
         assertEquals(2, x.pageSize());
         assertEquals(2, x.totalPages());
         assertEquals(2, x.pageNr());
-        final var result = List.of(MotionsMother.THIRD, MotionsMother.FOURTH);
+        final var result = List.of(MotionsMother.THIRD_MOTION, MotionsMother.FOURTH);
         final var expectedResult = mapToViewDTOs(result);
         assertEquals(expectedResult, x.values());
         return expectedResult.equals(x.values());

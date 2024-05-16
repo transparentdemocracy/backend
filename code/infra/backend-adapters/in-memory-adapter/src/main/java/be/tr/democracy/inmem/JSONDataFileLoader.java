@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Clock;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,8 +30,8 @@ public class JSONDataFileLoader {
         return parseJSONFileWithLogging(fileName, this::parseVoteJSON, VoteDTO.class);
     }
 
-    public List<PoliticianDTO> loadPolitician(String fileName) {
-        return parseJSONFileWithLogging(fileName, this::parsePoliticianJSON, PoliticianDTO.class);
+    public Map<String, PoliticianDTO> loadPolitician(String fileName) {
+        return parseJSONFileWithLogging(fileName, this::parsePoliticianJSON, PoliticianDTO.class).stream().collect(Collectors.toMap(PoliticianDTO::id, politicianDTO -> politicianDTO));
     }
 
     private <T> List<T> parseJSONFileWithLogging(String fileName, FileParser<T> f, Class<T> dataType) {
