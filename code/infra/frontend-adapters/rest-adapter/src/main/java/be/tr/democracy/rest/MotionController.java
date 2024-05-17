@@ -1,7 +1,6 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.Page;
 import be.tr.democracy.vocabulary.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +34,6 @@ public class MotionController {
 
 
         return Mono.just(MotionMapper.mapViewPage(motionPage));
-    }
-
-
-    //TODO move to query
-    private static PageViewDTO<MotionViewDTO> sliceInPage(Page<MotionViewDTO> motionViewDTOS) {
-        return new PageViewDTO<MotionViewDTO>(motionViewDTOS.pageNr(), motionViewDTOS.pageSize(), motionViewDTOS.totalPages(), motionViewDTOS.values());
     }
 
 
