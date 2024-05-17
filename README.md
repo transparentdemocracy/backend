@@ -43,7 +43,9 @@ INFO 27436 --- [           main] b.t.d.inmem.DataFileMotionsReadModel     : Data
 
 ### Build
 
-You can build everything locally using maven using the following commands
+You will need to have Java 21 installed on your system.
+
+You can build everything locally using maven and the following commands
 
 + To build it from the terminal
 
