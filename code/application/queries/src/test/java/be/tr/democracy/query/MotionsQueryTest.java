@@ -2,38 +2,30 @@ package be.tr.democracy.query;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static be.tr.democracy.query.ObjectMother.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MotionsQueryTest {
 
-    private static final MotionsReadModel MOTIONS_READ_MODEL = () -> List.of(
-            ObjectMother.FOURTH,
-            FIRST,
-            THIRD,
-            SECOND
-    );
 
     @Test
     void loadMotions() {
-        final var motionsQuery = new MotionsQuery(MOTIONS_READ_MODEL);
+        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
 
-        final var motions = motionsQuery.getMotions(3);
+        final var motions = motionsQuery.findMotions(3);
 
         assertEquals(3, motions.size());
+        assertTrue(motions.contains(FOURTH));
         assertTrue(motions.contains(FIRST));
-        assertTrue(motions.contains(SECOND));
         assertTrue(motions.contains(THIRD));
-        assertFalse(motions.contains(FOURTH));
+        assertFalse(motions.contains(SECOND));
     }
 
     @Test
     void loadAllMotions() {
-        final var motionsQuery = new MotionsQuery(MOTIONS_READ_MODEL);
+        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
 
-        final var motions = motionsQuery.getMotions(10);
+        final var motions = motionsQuery.findMotions(10);
 
         assertEquals(4, motions.size());
         assertTrue(motions.contains(FIRST));
@@ -44,9 +36,9 @@ class MotionsQueryTest {
 
     @Test
     void loadExactMotions() {
-        final var motionsQuery = new MotionsQuery(MOTIONS_READ_MODEL);
+        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
 
-        final var motions = motionsQuery.getMotions(4);
+        final var motions = motionsQuery.findMotions(4);
 
         assertEquals(4, motions.size());
         assertTrue(motions.contains(FIRST));
@@ -54,4 +46,6 @@ class MotionsQueryTest {
         assertTrue(motions.contains(THIRD));
         assertTrue(motions.contains(FOURTH));
     }
+
+
 }

@@ -13,36 +13,12 @@ class MotionControllerTest {
 
     @Test
     void pageMotions() {
-        final var motionController = new MotionController(maximum -> MotionsMother.DUMMY_MOTIONS);
+        final var motionController = new MotionController(DummyMotionsService.INSTANCE);
 
-        final var pageViewDTOMono = motionController.getMotions("",2, 2);
-
-        StepVerifier.create(pageViewDTOMono)
-                .expectNextMatches(this::validateSecondPage)
-                .expectComplete()
-                .verify();
-    }
-
-    @Test
-    void tooLargePage() {
-        final var motionController = new MotionController(maximum -> MotionsMother.DUMMY_MOTIONS);
-
-        final var pageViewDTOMono = motionController.getMotions("",5, 2);
+        final var pageViewDTOMono = motionController.getMotions("", 2, 2);
 
         StepVerifier.create(pageViewDTOMono)
-                .expectNextMatches(this::validateSecondPage)
-                .expectComplete()
-                .verify();
-    }
-
-    @Test
-    void unevenMotionsInPage() {
-        final var motionController = new MotionController(maximum -> MotionsMother.THREE_MOTIONS);
-
-        final var pageViewDTOMono = motionController.getMotions("",2, 2);
-
-        StepVerifier.create(pageViewDTOMono)
-                .expectNextMatches(this::validateUnevenSecondPage)
+                .expectNextMatches(this::validatePage)
                 .expectComplete()
                 .verify();
     }
@@ -52,23 +28,13 @@ class MotionControllerTest {
         return result.stream().map(MotionMapper::map).toList();
     }
 
-    private boolean validateUnevenSecondPage(PageViewDTO<MotionViewDTO> x) {
-        assertNotNull(x);
-        assertEquals(2, x.pageSize());
-        assertEquals(2, x.totalPages());
-        assertEquals(2, x.pageNr());
-        final var result = List.of(MotionsMother.THIRD_MOTION);
-        final var expectedResult = mapToViewDTOs(result);
-        assertEquals(expectedResult, x.values());
-        return expectedResult.equals(x.values());
-    }
 
-    private boolean validateSecondPage(PageViewDTO<MotionViewDTO> x) {
+    private boolean validatePage(PageViewDTO<MotionViewDTO> x) {
         assertNotNull(x);
-        assertEquals(2, x.pageSize());
-        assertEquals(2, x.totalPages());
-        assertEquals(2, x.pageNr());
-        final var result = List.of(MotionsMother.THIRD_MOTION, MotionsMother.FOURTH);
+        assertEquals(1, x.pageSize());
+        assertEquals(1, x.totalPages());
+        assertEquals(1, x.pageNr());
+        final var result = MotionsMother.DUMMY_MOTIONS;
         final var expectedResult = mapToViewDTOs(result);
         assertEquals(expectedResult, x.values());
         return expectedResult.equals(x.values());

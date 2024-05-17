@@ -2,11 +2,14 @@ package be.tr.democracy.inmem;
 
 import be.tr.democracy.query.MotionsReadModel;
 import be.tr.democracy.vocabulary.Motion;
+import be.tr.democracy.vocabulary.Page;
+import be.tr.democracy.vocabulary.PageRequest;
 import be.tr.democracy.vocabulary.VoteCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DataFileMotionsReadModel implements MotionsReadModel {
@@ -33,6 +36,32 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     @Override
     public List<Motion> loadAll() {
         return allMotionsReadmodel;
+    }
+
+    @Override
+    public Page<Motion> find(String searchTerm, PageRequest pageRequest) {
+        final var motions = findMotions(searchTerm);
+        return Page.slicePageFromList(pageRequest, motions);
+    }
+
+    private static Predicate<Motion> createFilter(String searchTerm) {
+        return x -> containsSearchTerm(x.titleNL(), searchTerm) ||
+                    containsSearchTerm(x.titleFR(), searchTerm) ||
+                    containsSearchTerm(x.descriptionFR(), searchTerm) ||
+                    containsSearchTerm(x.descriptionNL(), searchTerm);
+    }
+
+    private static boolean containsSearchTerm(String subject, String searchTerm) {
+        return subject.toLowerCase().contains(searchTerm.toLowerCase());
+    }
+
+    private List<Motion> findMotions(String searchTerm) {
+        if (searchTerm != null && !searchTerm.isBlank()) {
+            return allMotionsReadmodel
+                    .stream()
+                    .filter(createFilter(searchTerm)).toList();
+        } else
+            return allMotionsReadmodel;
     }
 
     private void mapProposalFields(Motion.Builder builder, ProposalDiscussionDTO propForMotion) {

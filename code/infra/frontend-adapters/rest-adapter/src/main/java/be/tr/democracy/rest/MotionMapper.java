@@ -1,6 +1,7 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.vocabulary.Motion;
+import be.tr.democracy.vocabulary.Page;
 import be.tr.democracy.vocabulary.PartyVotes;
 import be.tr.democracy.vocabulary.Votes;
 
@@ -23,6 +24,14 @@ public class MotionMapper {
                 motion.descriptionNL(),
                 motion.descriptionFR(),
                 voteCount.votePassed());
+    }
+
+    public static PageViewDTO<MotionViewDTO> mapViewPage(Page<Motion> motionPage) {
+        final var motionViewDTOS = motionPage.values().stream().map(MotionMapper::map).toList();
+        return new PageViewDTO<MotionViewDTO>(motionPage.pageNr(),
+                motionPage.pageSize(),
+                motionPage.totalPages(),
+                motionViewDTOS);
     }
 
     private static VotesViewDTO mapVotes(Votes yesVotes) {
