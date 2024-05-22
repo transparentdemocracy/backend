@@ -1,46 +1,51 @@
 [
   {
-    "motion_id": "55_261_1",
+    "voting_id": "55_160_v1",
     "vote_type": "YES",
     "politician_id": "7220"
   },
   {
-    "motion_id": "55_261_1",
-    "vote_type": "YES",
+    "voting_id": "55_160_v1",
+    "vote_type": "NO",
     "politician_id": "7261"
   },
   {
-    "motion_id": "55_261_1",
+    "voting_id": "55_160_v1",
+    "vote_type": "ABSTENTION",
+    "politician_id": "6309"
+  },
+  {
+    "voting_id": "55_160_v2",
     "vote_type": "YES",
     "politician_id": "6759"
   },
   {
-    "motion_id": "55_261_1",
+    "voting_id": "55_160_v2",
     "vote_type": "ABSTENTION",
     "politician_id": "6309"
   },
   {
-    "motion_id": "55_261_1",
+    "voting_id": "55_160_v2",
     "vote_type": "YES",
     "politician_id": "7076"
   },
   {
-    "motion_id": "55_261_1",
+    "voting_id": "55_160_v2",
     "vote_type": "NO",
     "politician_id": "6722"
   },
   {
-    "motion_id": "55_162_1",
+    "voting_id": "55_162_v1",
     "vote_type": "ABSTENTION",
     "politician_id": "6309"
   },
   {
-    "motion_id": "55_162_1",
+    "voting_id": "55_162_v1",
     "vote_type": "YES",
     "politician_id": "7076"
   },
   {
-    "motion_id": "55_162_1",
+    "voting_id": "55_162_v1",
     "vote_type": "NO",
     "politician_id": "6722"
   }

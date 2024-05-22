@@ -26,9 +26,9 @@ class DataFileMotionsReadModelTest {
         assertEquals(2, motions.size());
 
         final var motion = motions.getFirst();
-        assertEquals("55_261_1", motion.motionId());
-        assertEquals("55_261", motion.plenaryId());
-        assertEquals(1, motion.numberInPlenary());
+        assertEquals("55_160_mg_19_m0", motion.motionId());
+        assertEquals("55_160", motion.plenaryId());
+        assertEquals(0, motion.sequenceNumberInPlenary());
         assertNotNull(motion.descriptionNL());
         assertNotNull(motion.descriptionFR());
         assertNotNull(motion.titleFR());
@@ -36,17 +36,17 @@ class DataFileMotionsReadModelTest {
         assertNotNull(motion.documentReference());
         assertNotNull(motion.voteCount());
         assertEquals(1, motion.voteCount().noVotes().nrOfVotes());
-        assertEquals(4, motion.voteCount().yesVotes().nrOfVotes());
+        assertEquals(1, motion.voteCount().yesVotes().nrOfVotes());
         assertEquals(1, motion.voteCount().abstention().nrOfVotes());
     }
 
     @Test
     void findMotions() {
-        final var motionPage = readModel.find("Wetsontwerp", new PageRequest(1, 10));
+        final var motionPage = readModel.find("interpellatie", new PageRequest(1, 10));
         assertNotNull(motionPage);
         assertEquals(10, motionPage.pageSize());
         assertEquals(1, motionPage.pageNr());
-        assertEquals(1, motionPage.values().size());
+        assertEquals(2, motionPage.values().size());
     }
 
     @Test

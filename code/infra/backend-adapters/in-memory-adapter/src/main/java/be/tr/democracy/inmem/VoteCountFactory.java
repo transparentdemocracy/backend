@@ -73,7 +73,7 @@ public class VoteCountFactory {
             logger.error("No motion votes received!");
             return Optional.empty();
         }
-        final long uniqueMotionIdCount = motionVotes.stream().map(VoteDTO::motion_id).distinct().count();
+        final long uniqueMotionIdCount = motionVotes.stream().map(VoteDTO::voting_id).distinct().count();
         if (uniqueMotionIdCount != 1) {
             logger.error("More than one motion id received: {}", uniqueMotionIdCount);
             return Optional.empty();
@@ -84,6 +84,6 @@ public class VoteCountFactory {
         if ((yesVotes.nrOfVotes() + noVotes.nrOfVotes() + absentVotes.nrOfVotes()) != motionVotes.size()) {
             logger.error("The votes do not match. Total nr of votes {} yes: {} no: {} absent: {}", motionVotes.size(), yesVotes, noVotes, absentVotes);
         }
-        return Optional.of(new VoteCount(motionVotes.getFirst().motion_id(), yesVotes, noVotes, absentVotes));
+        return Optional.of(new VoteCount(motionVotes.getFirst().voting_id(), yesVotes, noVotes, absentVotes));
     }
 }

@@ -1,7 +1,10 @@
 package be.tr.democracy.vocabulary;
 
+import org.hamcrest.Matchers;
+import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -36,5 +39,17 @@ class PageTest {
         assertThat(page.pageSize(), is(5));
         assertThat(page.totalPages(), is(4));
         assertThat(page.pageNr(), is(2));
+    }
+
+    @Test
+    void sliceEmptyList() {
+        final var list = Collections.emptyList();
+        final var page = Page.slicePageFromList(new PageRequest(1, 5), list);
+
+        assertNotNull(page);
+        assertThat(page.pageSize(), is(5));
+        assertThat(page.totalPages(), is(1));
+        assertThat(page.pageNr(), is(1));
+        assertThat(page.values(), Matchers.empty());
     }
 }

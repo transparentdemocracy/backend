@@ -7,7 +7,9 @@ public record ProposalDiscussionDTO(
         int plenary_agenda_item_number,
         String plenary_id,
         String description_nl,
+        List<String> description_nl_tags,
         String description_fr,
-        List<ProposalsDTO> proposals
+        List<String> description_fr_tags,
+        List<ProposalDTO> proposals
 ) {
 }

@@ -2,12 +2,11 @@ package be.tr.democracy.vocabulary;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO add proposal title fr/nl and document reference
 public record Motion(
         String motionId,
         String plenaryId,
         String date,
-        int numberInPlenary,
+        int sequenceNumberInPlenary,
         String titleNL,
         String titleFR,
         String documentReference,
@@ -25,8 +24,8 @@ public record Motion(
         requireNonNull(descriptionFR, "descriptionFR must not be null");
         requireNonNull(voteCount, "voteCount must not be null");
         requireNonNull(date, "date must not be null");
-        if (numberInPlenary < 0) {
-            throw new RuntimeException("numberInPlenary must be greater than 0");
+        if (sequenceNumberInPlenary < 0) {
+            throw new RuntimeException("sequenceNumberInPlenary must be greater than 0");
         }
     }
 

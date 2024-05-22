@@ -19,7 +19,7 @@ public record Page<T>(int pageNr,
 
     public static <T> Page<T> slicePageFromList(PageRequest pageRequest, List<T> list) {
         final var size = pageRequest.pageSize();
-        int totalPages = (int) Math.ceil((double) list.size() / size);
+        int totalPages =  Math.max(1,(int) Math.ceil((double) list.size() / size));
         int requestedPage = Math.max(1, Math.min(totalPages, pageRequest.pageNr()));
         int startIndex = (requestedPage - 1) * size;
         final var pageResult = list.subList(startIndex, Math.min(startIndex + size, list.size()));
