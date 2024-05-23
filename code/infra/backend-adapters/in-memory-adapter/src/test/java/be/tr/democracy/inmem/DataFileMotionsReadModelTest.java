@@ -11,8 +11,9 @@ class DataFileMotionsReadModelTest {
     private final DataFileMotionsReadModel readModel;
 
     public DataFileMotionsReadModelTest() {
+        final var plenaryDTOFileLoader = new PlenaryDTOFileLoader("test-plenaries.json");
         readModel = new DataFileMotionsReadModel(
-                "test-plenaries.json",
+                plenaryDTOFileLoader,
                 "test-votes.json",
                 "test-politician.json");
     }

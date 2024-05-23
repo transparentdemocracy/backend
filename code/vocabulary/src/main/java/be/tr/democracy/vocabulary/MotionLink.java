@@ -1,7 +1,7 @@
-package be.tr.democracy.rest;
+package be.tr.democracy.vocabulary;
 
-public record MotionLinkDTO(String motionId,
-                            String titleNL,
-                            String titleFR
+public record MotionLink(String motionId,
+                         String titleNL,
+                         String titleFR
 ) {
 }

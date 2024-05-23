@@ -1,6 +1,6 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.vocabulary.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,35 +11,33 @@ import static java.util.Objects.requireNonNull;
 
 @CrossOrigin
 @RestController
-public class MotionController {
-    private final Logger logger = LoggerFactory.getLogger(MotionController.class);
-    private final MotionsService motionsService;
+public class PlenaryController {
+    private final Logger logger = LoggerFactory.getLogger(PlenaryController.class);
+    private final PlenaryService plenaryService;
 
-    public MotionController(MotionsService motionsService) {
-        requireNonNull(motionsService);
-        this.motionsService = motionsService;
+    public PlenaryController(PlenaryService plenaryService) {
+        requireNonNull(plenaryService);
+        this.plenaryService = plenaryService;
     }
 
-    @GetMapping("/motions/")
-    public Mono<PageViewDTO<MotionViewDTO>> getMotions(@RequestParam(value = "search", required = false) String searchTerm,
+    @GetMapping("/plenaries/")
+    public Mono<PageViewDTO<PlenaryViewDTO>> getPlenaries(@RequestParam(value = "search", required = false) String searchTerm,
                                                        @RequestParam("page") int page,
                                                        @RequestParam("size") int size) {
-        logger.info("Getting motions for search {}", searchTerm);
-        logger.info("Getting motions for page {}", page);
-        logger.info("Getting motions for size {}", size);
-        final var motionPage = this.motionsService.findMotions(searchTerm, new PageRequest(page, size));
-
-
-        return Mono.just(MotionMapper.mapViewPage(motionPage));
+        logger.info("Getting plenaries for search {}", searchTerm);
+        logger.info("Getting plenaries for page {}", page);
+        logger.info("Getting plenaries for size {}", size);
+        final var motionPage = this.plenaryService.findPlenaries(searchTerm, new PageRequest(page, size));
+        return Mono.just(PlenaryMapper.mapViewPage(motionPage));
     }
 
 
-    @GetMapping("/motions/{id}")
-    public Mono<MotionViewDTO> getMotion(@PathVariable String id) {
-        logger.info("Getting motion for id {}", id);
-        final var motion = this.motionsService.getMotion(id);
+    @GetMapping("/plenaries/{id}")
+    public Mono<PlenaryViewDTO> getPlenary(@PathVariable String id) {
+        logger.info("Getting plenaries for id {}", id);
+        final var motion = this.plenaryService.getPlenary(id);
         return motion
-                .map(MotionMapper::map)
+                .map(PlenaryMapper::map)
                 .map(Mono::just)
                 .orElseGet(Mono::empty);
     }

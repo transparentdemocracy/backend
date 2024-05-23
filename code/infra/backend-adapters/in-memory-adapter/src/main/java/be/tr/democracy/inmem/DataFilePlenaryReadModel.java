@@ -1,38 +1,37 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.query.MotionsReadModel;
+import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.vocabulary.Motion;
 import be.tr.democracy.vocabulary.Page;
 import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-public class DataFileMotionsReadModel implements MotionsReadModel {
-    private final Logger logger = LoggerFactory.getLogger(DataFileMotionsReadModel.class);
-    private final List<Motion> allMotionsReadModel;
+public class DataFilePlenaryReadModel implements PlenariesReadModel {
+    private final Logger logger = LoggerFactory.getLogger(DataFilePlenaryReadModel.class);
+    private final List<Plenary> allPlenariesReadModel;
 
-    public DataFileMotionsReadModel(String plenariesFileName, String votesFileName, String politiciansFileName) {
-        this.allMotionsReadModel = MotionsReadModelFactory.INSTANCE.create(plenariesFileName, votesFileName, politiciansFileName);
+    public DataFilePlenaryReadModel(Supplier<List<PlenaryDTO>> supplier) {
+        final var plenaryDTOS = supplier.get();
+        this.allPlenariesReadModel = mapThem(plenaryDTOS);
         logger.info("Read Models build.");
     }
 
-    public List<Motion> loadAll() {
-        return allMotionsReadModel;
-    }
-
     @Override
-    public Page<Motion> find(String searchTerm, PageRequest pageRequest) {
+    public Page<Plenary> find(String searchTerm, PageRequest pageRequest) {
         final var motions = findMotions(searchTerm);
         return Page.slicePageFromList(pageRequest, motions);
     }
 
     @Override
-    public Optional<Motion> getMotion(String motionId) {
-        return allMotionsReadModel.stream().filter(x -> x.motionId().equalsIgnoreCase(motionId)).findFirst();
+    public Optional<Plenary> getPlenary(String plenaryId) {
+        return allPlenariesReadModel.stream().filter(x -> x.id().equalsIgnoreCase(plenaryId)).findFirst();
     }
 
     private static Predicate<Motion> createFilter(String searchTerm) {
@@ -46,13 +45,12 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         return subject.toLowerCase().contains(searchTerm.toLowerCase());
     }
 
-    private List<Motion> findMotions(String searchTerm) {
-        if (searchTerm != null && !searchTerm.isBlank()) {
-            return allMotionsReadModel
-                    .stream()
-                    .filter(createFilter(searchTerm)).toList();
-        } else
-            return allMotionsReadModel;
+    private List<Plenary> mapThem(List<PlenaryDTO> plenaryDTOS) {
+        return null;
+    }
+
+    private List<Plenary> findMotions(String searchTerm) {
+        return allPlenariesReadModel;
     }
 
 

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -30,14 +30,6 @@ public class MotionsQuery implements MotionsService {
         this.motionsReadModel = motionsReadModel;
     }
 
-    @Override
-    public List<Motion> findMotions(int maximum) {
-        final var motions = motionsReadModel.loadAll();
-        logger.info("Loaded {} motions from database", motions.size());
-        if (maximum > 0 && motions.size() > maximum)
-            return motions.subList(0, maximum);
-        else return motions;
-    }
 
     @Override
     public Page<Motion> findMotions(String searchTerm, PageRequest pageRequest) {
@@ -45,6 +37,11 @@ public class MotionsQuery implements MotionsService {
         final var sorted = motionPage.sortedPage(motionComparator);
         logger.info("Loaded page {} motions from database for searchTerm {}", sorted.pageNr(), searchTerm);
         return sorted;
+    }
+
+    @Override
+    public Optional<Motion> getMotion(String motionId) {
+        return motionsReadModel.getMotion(motionId);
     }
 
 }

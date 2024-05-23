@@ -4,10 +4,7 @@ import be.tr.democracy.api.MotionsService;
 import be.tr.democracy.vocabulary.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import static java.util.Objects.requireNonNull;
@@ -37,4 +34,13 @@ public class MotionController {
     }
 
 
+    @GetMapping("/motions/{id}")
+    public Mono<MotionViewDTO> getMotion(@PathVariable String id) {
+        logger.info("Getting motion for id {}", id);
+        final var motion = this.motionsService.getMotion(id);
+        return motion
+                .map(MotionMapper::map)
+                .map(Mono::just)
+                .orElseGet(Mono::empty);
+    }
 }

@@ -1,9 +1,14 @@
 package be.tr.democracy.main;
 
 import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.inmem.DataFileMotionsReadModel;
+import be.tr.democracy.inmem.DataFilePlenaryReadModel;
+import be.tr.democracy.inmem.PlenaryDTOFileLoader;
 import be.tr.democracy.query.MotionsQuery;
 import be.tr.democracy.query.MotionsReadModel;
+import be.tr.democracy.query.PlenariesQuery;
+import be.tr.democracy.query.PlenariesReadModel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +28,23 @@ public class VotingApplication {
     }
 
     @Bean
-    MotionsReadModel dataFileQuery() {
-        return new DataFileMotionsReadModel("data/plenaries.json","data/votes.json","data/politicians.json");
+    PlenaryService plenaryQuery(PlenariesReadModel plenariesReadModel) {
+        return new PlenariesQuery(plenariesReadModel);
+    }
+
+    @Bean
+    PlenaryDTOFileLoader plenaryFileLoader() {
+        return new PlenaryDTOFileLoader("data/plenaries.json");
+    }
+
+    @Bean
+    DataFileMotionsReadModel dataFileQuery(PlenaryDTOFileLoader p) {
+        return new DataFileMotionsReadModel(p, "data/votes.json", "data/politicians.json");
+    }
+
+    @Bean
+    DataFilePlenaryReadModel plenaryDataFileQuery(PlenaryDTOFileLoader p) {
+        return new DataFilePlenaryReadModel(p);
     }
 
 }

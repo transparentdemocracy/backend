@@ -15,6 +15,7 @@ public class MotionMapper {
     public static MotionViewDTO map(Motion motion) {
         final var voteCount = motion.voteCount();
         return new MotionViewDTO(
+                motion.motionId(),
                 motion.titleNL(),
                 motion.titleFR(),
                 mapVotes(voteCount.yesVotes()),

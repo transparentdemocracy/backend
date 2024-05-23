@@ -23,11 +23,26 @@ class MotionControllerTest {
                 .verify();
     }
 
+    @Test
+    void singleMotion() {
+        final var motionController = new MotionController(DummyMotionsService.INSTANCE);
+
+        final var pageViewDTOMono = motionController.getMotion("third");
+
+        StepVerifier.create(pageViewDTOMono)
+                .expectNextMatches(this::validateThirdMotion)
+                .expectComplete()
+                .verify();
+    }
 
     private static List<MotionViewDTO> mapToViewDTOs(List<Motion> result) {
         return result.stream().map(MotionMapper::map).toList();
     }
 
+    private boolean validateThirdMotion(MotionViewDTO o) {
+        final var thirdMotion = MotionMapper.map(MotionsMother.THIRD_MOTION);
+        return o.equals(thirdMotion);
+    }
 
     private boolean validatePage(PageViewDTO<MotionViewDTO> x) {
         assertNotNull(x);

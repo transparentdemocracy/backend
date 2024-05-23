@@ -1,6 +1,7 @@
 package be.tr.democracy.rest;
 
-public record MotionViewDTO(String titleNL,
+public record MotionViewDTO(String id,
+                            String titleNL,
                             String titleFR,
                             VotesViewDTO yesVotes,
                             VotesViewDTO noVotes,

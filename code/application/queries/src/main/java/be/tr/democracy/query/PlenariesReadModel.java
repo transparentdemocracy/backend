@@ -1,14 +1,14 @@
 package be.tr.democracy.query;
 
-import be.tr.democracy.vocabulary.Motion;
 import be.tr.democracy.vocabulary.Page;
 import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.Plenary;
 
 import java.util.Optional;
 
-public interface MotionsReadModel {
+public interface PlenariesReadModel {
 
-    Page<Motion> find(String searchTerm, PageRequest pageRequest);
+    Page<Plenary> find(String date, PageRequest pageRequest);
 
-    Optional<Motion> getMotion(String motionId);
+    Optional<Plenary> getPlenary(String plenary);
 }

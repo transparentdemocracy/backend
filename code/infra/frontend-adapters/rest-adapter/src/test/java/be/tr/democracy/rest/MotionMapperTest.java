@@ -14,6 +14,7 @@ class MotionMapperTest {
     void mapping() {
         final MotionViewDTO mappedDTO = MotionMapper.map(FIRST_MOTION);
 
+        assertEquals(FIRST_MOTION.motionId(), mappedDTO.id());
         assertEquals(FIRST_MOTION.titleNL(), mappedDTO.titleNL());
         assertEquals(FIRST_MOTION.titleFR(), mappedDTO.titleFR());
         assertEquals(FIRST_MOTION.descriptionNL(), mappedDTO.descriptionNL());
