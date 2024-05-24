@@ -23,18 +23,27 @@ public class JSONDataFileLoader {
     private final Clock clock = Clock.systemDefaultZone();
 
     public List<PlenaryDTO> loadPlenaries(String fileName) {
-        return parseJSONFileWithLogging(fileName, this::parsePlenaryJSON, PlenaryDTO.class);
+        return loadFile(fileName, this::parsePlenaryJSON, PlenaryDTO.class);
     }
 
     public List<VoteDTO> loadVotes(String fileName) {
-        return parseJSONFileWithLogging(fileName, this::parseVoteJSON, VoteDTO.class);
+        return loadFile(fileName, this::parseVoteJSON, VoteDTO.class);
     }
 
     public Map<String, PoliticianDTO> loadPolitician(String fileName) {
-        return parseJSONFileWithLogging(fileName, this::parsePoliticianJSON, PoliticianDTO.class).stream().collect(Collectors.toMap(PoliticianDTO::id, politicianDTO -> politicianDTO));
+        return loadFile(fileName, this::parsePoliticianJSON, PoliticianDTO.class).stream().collect(Collectors.toMap(PoliticianDTO::id, politicianDTO -> politicianDTO));
     }
 
-    private <T> List<T> parseJSONFileWithLogging(String fileName, FileParser<T> f, Class<T> dataType) {
+    //TODO doesn't this make the other parse methods obsolete?
+    <T> List<T> loadFile(String fileName, Class<T> dataType) {
+        return loadFile(fileName, file -> {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(file, new TypeReference<List<T>>() {
+            });
+        }, dataType);
+    }
+
+    private <T> List<T> loadFile(String fileName, FileParser<T> f, Class<T> dataType) {
         final var start = clock.millis();
 
         final var result = parseJSOnFile(fileName, f, dataType);
@@ -78,13 +87,13 @@ public class JSONDataFileLoader {
 
     private File loadResourceFile(String fileName) throws URISyntaxException {
         final var resource = getClass().getClassLoader().getResource(fileName);
-        if(resource == null) logger.error("Unable to load the file {}",fileName);
+        if (resource == null) logger.error("Unable to load the file {}", fileName);
         final Path path = Paths.get(requireNonNull(resource).toURI());
         return path.toFile();
     }
 
     @FunctionalInterface
-    private interface FileParser<T> {
+    interface FileParser<T> {
         List<T> parse(File file) throws IOException;
     }
 

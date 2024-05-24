@@ -1,32 +1,31 @@
 package be.tr.democracy.inmem;
 
 import be.tr.democracy.query.PlenariesReadModel;
-import be.tr.democracy.vocabulary.Motion;
 import be.tr.democracy.vocabulary.Page;
 import be.tr.democracy.vocabulary.PageRequest;
 import be.tr.democracy.vocabulary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class DataFilePlenaryReadModel implements PlenariesReadModel {
+    private static final String PLENARY_CACHE_JSON = "plenaryCache.json";
     private final Logger logger = LoggerFactory.getLogger(DataFilePlenaryReadModel.class);
     private final List<Plenary> allPlenariesReadModel;
 
     public DataFilePlenaryReadModel(Supplier<List<PlenaryDTO>> supplier) {
-        final var plenaryDTOS = supplier.get();
-        this.allPlenariesReadModel = mapThem(plenaryDTOS);
-        logger.info("Read Models build.");
+        this.allPlenariesReadModel = createCachedSupplier(supplier).get();
+        logger.info("Plenary read models loaded.");
     }
 
     @Override
     public Page<Plenary> find(String searchTerm, PageRequest pageRequest) {
-        final var motions = findMotions(searchTerm);
-        return Page.slicePageFromList(pageRequest, motions);
+        final var plenaries = findPlenaries(searchTerm);
+        return Page.slicePageFromList(pageRequest, plenaries);
     }
 
     @Override
@@ -34,23 +33,17 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         return allPlenariesReadModel.stream().filter(x -> x.id().equalsIgnoreCase(plenaryId)).findFirst();
     }
 
-    private static Predicate<Motion> createFilter(String searchTerm) {
-        return x -> containsSearchTerm(x.titleNL(), searchTerm) ||
-                    containsSearchTerm(x.titleFR(), searchTerm) ||
-                    containsSearchTerm(x.descriptionFR(), searchTerm) ||
-                    containsSearchTerm(x.descriptionNL(), searchTerm);
-    }
 
-    private static boolean containsSearchTerm(String subject, String searchTerm) {
-        return subject.toLowerCase().contains(searchTerm.toLowerCase());
-    }
-
-    private List<Plenary> mapThem(List<PlenaryDTO> plenaryDTOS) {
-        return null;
-    }
-
-    private List<Plenary> findMotions(String searchTerm) {
+    private List<Plenary> findPlenaries(String searchTerm) {
         return allPlenariesReadModel;
+    }
+
+    private LocalFileCache<Plenary> createCachedSupplier(Supplier<List<PlenaryDTO>> plenariesSupplier) {
+        final Supplier<List<Plenary>> motionSupplier = () -> {
+            final var plenaryDTOS = plenariesSupplier.get();
+            return PlenaryMapper.INSTANCE.mapThem(plenaryDTOS);
+        };
+        return new LocalFileCache<Plenary>(motionSupplier, new File("target"), PLENARY_CACHE_JSON, Plenary.class);
     }
 
 

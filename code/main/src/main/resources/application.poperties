@@ -1,1 +1,2 @@
 debug
+management.endpoints.web.exposure.include=info, health, mappings

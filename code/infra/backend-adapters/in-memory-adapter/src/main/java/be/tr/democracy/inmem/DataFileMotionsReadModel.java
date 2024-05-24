@@ -7,18 +7,26 @@ import be.tr.democracy.vocabulary.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class DataFileMotionsReadModel implements MotionsReadModel {
+    private static final String MOTION_CACHE_JSON = "motionCache.json";
     private final Logger logger = LoggerFactory.getLogger(DataFileMotionsReadModel.class);
     private final List<Motion> allMotionsReadModel;
 
-    public DataFileMotionsReadModel(Supplier<List<PlenaryDTO>> plenariesSupplier, String votesFileName, String politiciansFileName) {
-        this.allMotionsReadModel = MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName);
-        logger.info("Read Models build.");
+    public DataFileMotionsReadModel(Supplier<List<PlenaryDTO>> plenariesSupplier,
+                                    String votesFileName,
+                                    String politiciansFileName) {
+        this(createCachedSupplier(plenariesSupplier, votesFileName, politiciansFileName));
+    }
+
+    public DataFileMotionsReadModel(Supplier<List<Motion>> motions) {
+        this.allMotionsReadModel = motions.get();
+        logger.info("Motions read models loaded.");
     }
 
     public List<Motion> loadAll() {
@@ -34,6 +42,11 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     @Override
     public Optional<Motion> getMotion(String motionId) {
         return allMotionsReadModel.stream().filter(x -> x.motionId().equalsIgnoreCase(motionId)).findFirst();
+    }
+
+    private static LocalFileCache<Motion> createCachedSupplier(Supplier<List<PlenaryDTO>> plenariesSupplier, String votesFileName, String politiciansFileName) {
+        final Supplier<List<Motion>> motionSupplier = () -> MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName);
+        return new LocalFileCache<Motion>(motionSupplier, new File("target"), MOTION_CACHE_JSON, Motion.class);
     }
 
     private static Predicate<Motion> createFilter(String searchTerm) {

@@ -1,6 +1,6 @@
 package be.tr.democracy.inmem;
 
-import org.hamcrest.Matchers;
+import be.tr.democracy.vocabulary.Motion;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,35 +14,57 @@ class DataModelMapperTest {
 
     @Test
     void basicMapping() {
+        //GIVEN
         final Map<String, PoliticianDTO> politicianDTO = politicianDTOMap();
         final List<VoteDTO> votes = twoMotionVotes();
+        final var plenaries = buildPlenaries();
+        final var dataModelMapper = new DataModelMapper(politicianDTO, votes, plenaries);
 
-        final var dataModelMapper = new DataModelMapper(politicianDTO, votes);
+        //WHEN
+        final var motions = dataModelMapper.buildAllMotions();
 
-        final var plenaryToMap = buildPlenary();
-        final var motions = dataModelMapper.buildMotions(plenaryToMap);
+        //THEN
+        validate(motions);
 
+
+    }
+
+    private static void validate(List<Motion> motions) {
         assertThat(motions, notNullValue());
-        assertThat(motions, hasSize(2));
+        assertThat(motions, hasSize(4));
 
-        final var firstMotion = motions.getFirst();
+        final var firstMotion = motions.get(0);
         assertThat(firstMotion.motionId(), is(MOTION_ID_1));
-        assertThat(firstMotion.date(), is(PLENARY_DATE));
+        assertThat(firstMotion.date(), is(PLENARY_DATE_A));
         assertThat(firstMotion.descriptionNL(), is(MOTION_DESCRIPTION_1));
         assertThat(firstMotion.descriptionFR(), is(MOTION_DESCRIPTION_1));
-        assertThat(firstMotion.titleNL(), is(MOTION_TITLE_NL_1));
-        assertThat(firstMotion.titleFR(), is(MOTION_TITLE_FR_1));
+        assertThat(firstMotion.titleNL(), is(PROPOSAL_TITLE_NL_1));
+        assertThat(firstMotion.titleFR(), is(PROPOSAL_TITLE_FR_1));
 
 
-        final var secondMotion = motions.getLast();
+        final var secondMotion = motions.get(1);
         assertThat(secondMotion.motionId(), is(MOTION_ID_2));
-        assertThat(secondMotion.date(), is(PLENARY_DATE));
+        assertThat(secondMotion.date(), is(PLENARY_DATE_A));
         assertThat(secondMotion.descriptionNL(), is(MOTION_DESCRIPTION_2));
         assertThat(secondMotion.descriptionFR(), is(MOTION_DESCRIPTION_2));
-        assertThat(secondMotion.titleNL(), is(MOTION_TITLE_NL_2));
-        assertThat(secondMotion.titleFR(), is(MOTION_TITLE_FR_2));
+        assertThat(secondMotion.titleNL(), is(PROPOSAL_TITLE_NL_2));
+        assertThat(secondMotion.titleFR(), is(PROPOSAL_TITLE_FR_2));
 
+        final var third = motions.get(2);
+        assertThat(third.motionId(), is(MOTION_ID_3));
+        assertThat(third.date(), is(PLENARY_DATE_B));
+        assertThat(third.descriptionNL(), is(MOTION_DESCRIPTION_3));
+        assertThat(third.descriptionFR(), is(MOTION_DESCRIPTION_3));
+        assertThat(third.titleNL(), is(PROPOSAL_TITLE_NL_3));
+        assertThat(third.titleFR(), is(PROPOSAL_TITLE_FR_3));
 
+        final var fourth = motions.get(3);
+        assertThat(fourth.motionId(), is(MOTION_ID_4));
+        assertThat(fourth.date(), is(PLENARY_DATE_B));
+        assertThat(fourth.descriptionNL(), is(MOTION_DESCRIPTION_4));
+        assertThat(fourth.descriptionFR(), is(MOTION_DESCRIPTION_4));
+        assertThat(fourth.titleNL(), is(PROPOSAL_TITLE_NL_4));
+        assertThat(fourth.titleFR(), is(PROPOSAL_TITLE_FR_4));
     }
 
 

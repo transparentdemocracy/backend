@@ -28,7 +28,8 @@ public class PlenaryController {
         logger.info("Getting plenaries for page {}", page);
         logger.info("Getting plenaries for size {}", size);
         final var motionPage = this.plenaryService.findPlenaries(searchTerm, new PageRequest(page, size));
-        return Mono.just(PlenaryMapper.mapViewPage(motionPage));
+        final var data = PlenaryMapper.mapViewPage(motionPage);
+        return Mono.just(data);
     }
 
 
