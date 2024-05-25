@@ -1,8 +1,8 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class MotionController {
     }
 
     @GetMapping("/motions/")
-    public Mono<PageViewDTO<MotionViewDTO>> getMotions(@RequestParam(value = "search", required = false) String searchTerm,
+    public Mono<PageViewDTO<MotionGroupViewDTO>> getMotions(@RequestParam(value = "search", required = false) String searchTerm,
                                                        @RequestParam("page") int page,
                                                        @RequestParam("size") int size) {
         logger.info("Getting motions for search {}", searchTerm);
@@ -36,7 +36,7 @@ public class MotionController {
 
 
     @GetMapping("/motions/{id}")
-    public Mono<MotionViewDTO> getMotion(@PathVariable String id) {
+    public Mono<MotionGroupViewDTO> getMotion(@PathVariable String id) {
         logger.info("Getting motion for id {}", id);
         final var motion = this.motionsService.getMotion(id);
         logMotions(id, motion);

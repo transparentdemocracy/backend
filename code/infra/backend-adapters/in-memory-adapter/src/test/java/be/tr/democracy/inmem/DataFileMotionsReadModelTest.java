@@ -1,6 +1,6 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

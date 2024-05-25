@@ -1,9 +1,9 @@
 package be.tr.democracy.inmem;
 
 import be.tr.democracy.query.MotionsReadModel;
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

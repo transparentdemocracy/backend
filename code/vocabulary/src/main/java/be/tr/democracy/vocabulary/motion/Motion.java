@@ -1,11 +1,11 @@
-package be.tr.democracy.vocabulary;
+package be.tr.democracy.vocabulary.motion;
 
 import static java.util.Objects.requireNonNull;
 
 public record Motion(
         String motionId,
         String plenaryId,
-        String date,
+        String votingDate,
         int sequenceNumberInPlenary,
         String titleNL,
         String titleFR,
@@ -23,7 +23,7 @@ public record Motion(
         requireNonNull(descriptionNL, "descriptionNL must not be null");
         requireNonNull(descriptionFR, "descriptionFR must not be null");
         requireNonNull(voteCount, "voteCount must not be null");
-        requireNonNull(date, "date must not be null");
+        requireNonNull(votingDate, "votingDate must not be null");
         if (sequenceNumberInPlenary < 0) {
             throw new RuntimeException("sequenceNumberInPlenary must be greater than 0");
         }

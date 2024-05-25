@@ -1,9 +1,8 @@
 package be.tr.democracy.api;
 
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
-import be.tr.democracy.vocabulary.Plenary;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
+import be.tr.democracy.vocabulary.plenary.Plenary;
 
 import java.util.Optional;
 

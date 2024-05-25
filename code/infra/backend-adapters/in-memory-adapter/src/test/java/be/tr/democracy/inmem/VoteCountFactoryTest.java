@@ -1,7 +1,7 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.PartyVotes;
-import be.tr.democracy.vocabulary.VoteCount;
+import be.tr.democracy.vocabulary.motion.PartyVotes;
+import be.tr.democracy.vocabulary.motion.VoteCount;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

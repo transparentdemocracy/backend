@@ -1,7 +1,7 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.api.PlenaryService;
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;

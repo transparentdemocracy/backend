@@ -1,5 +1,7 @@
 package be.tr.democracy.vocabulary;
 
+import be.tr.democracy.vocabulary.motion.VoteType;
+import be.tr.democracy.vocabulary.motion.Votes;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

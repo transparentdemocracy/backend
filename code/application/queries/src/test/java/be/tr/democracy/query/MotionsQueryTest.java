@@ -1,6 +1,6 @@
 package be.tr.democracy.query;
 
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
 
 import static be.tr.democracy.query.ObjectMother.*;

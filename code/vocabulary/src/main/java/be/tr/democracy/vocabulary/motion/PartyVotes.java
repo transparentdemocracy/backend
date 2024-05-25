@@ -1,4 +1,4 @@
-package be.tr.democracy.vocabulary;
+package be.tr.democracy.vocabulary.motion;
 
 public record PartyVotes(String partyName, int numberOfVotes) {
     public PartyVotes {

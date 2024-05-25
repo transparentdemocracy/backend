@@ -1,9 +1,8 @@
-package be.tr.democracy.vocabulary;
+package be.tr.democracy.vocabulary.page;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public record Page<T>(int pageNr,
                       int pageSize,

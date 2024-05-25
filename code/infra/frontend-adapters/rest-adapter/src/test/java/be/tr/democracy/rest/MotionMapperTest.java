@@ -1,6 +1,6 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.VoteCount;
+import be.tr.democracy.vocabulary.motion.VoteCount;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,14 +12,15 @@ class MotionMapperTest {
 
     @Test
     void mapping() {
-        final MotionViewDTO mappedDTO = MotionMapper.map(FIRST_MOTION);
+        final MotionGroupViewDTO group = MotionMapper.map(FIRST_MOTION);
+        final var mappedDTO = group.motionViewDTOs().getFirst();
 
         assertEquals(FIRST_MOTION.motionId(), mappedDTO.id());
         assertEquals(FIRST_MOTION.titleNL(), mappedDTO.titleNL());
         assertEquals(FIRST_MOTION.titleFR(), mappedDTO.titleFR());
         assertEquals(FIRST_MOTION.descriptionNL(), mappedDTO.descriptionNL());
         assertEquals(FIRST_MOTION.descriptionFR(), mappedDTO.descriptionFR());
-        assertEquals(FIRST_MOTION.date(), mappedDTO.votingDate());
+        assertEquals(FIRST_MOTION.votingDate(), mappedDTO.votingDate());
 
         final VoteCount voteCount = FIRST_MOTION.voteCount();
         assertEquals(voteCount.yesVotes().nrOfVotes(), mappedDTO.yesVotes().nrOfVotes());
@@ -58,7 +59,7 @@ class MotionMapperTest {
 
     @Test
     void percentagesAmountToHundred() {
-        final MotionViewDTO mappedDTO = MotionMapper.map(THIRD_MOTION);
+        final MotionViewDTO mappedDTO = MotionMapper.map(THIRD_MOTION).motionViewDTOs().getFirst();
 
         final var yesPartyVotes = mappedDTO.yesVotes().partyVotes();
         final var noPartyVotes = mappedDTO.noVotes().partyVotes();
@@ -71,13 +72,13 @@ class MotionMapperTest {
 
     @Test
     void mappingWithNoVotes() {
-        final MotionViewDTO mappedDTO = MotionMapper.map(SECOND_MOTION);
+        final MotionViewDTO mappedDTO = MotionMapper.map(SECOND_MOTION).motionViewDTOs().getFirst();
 
         assertEquals(SECOND_MOTION.titleNL(), mappedDTO.titleNL());
         assertEquals(SECOND_MOTION.titleFR(), mappedDTO.titleFR());
         assertEquals(SECOND_MOTION.descriptionNL(), mappedDTO.descriptionNL());
         assertEquals(SECOND_MOTION.descriptionFR(), mappedDTO.descriptionFR());
-        assertEquals(SECOND_MOTION.date(), mappedDTO.votingDate());
+        assertEquals(SECOND_MOTION.votingDate(), mappedDTO.votingDate());
 
         final VoteCount voteCount = SECOND_MOTION.voteCount();
         assertEquals(voteCount.yesVotes().nrOfVotes(), mappedDTO.yesVotes().nrOfVotes());

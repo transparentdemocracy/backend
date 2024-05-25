@@ -1,6 +1,5 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.Plenary;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

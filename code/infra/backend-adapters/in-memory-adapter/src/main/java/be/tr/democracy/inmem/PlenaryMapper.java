@@ -1,7 +1,7 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.MotionLink;
-import be.tr.democracy.vocabulary.Plenary;
+import be.tr.democracy.vocabulary.plenary.MotionLink;
+import be.tr.democracy.vocabulary.plenary.Plenary;
 
 import java.util.Collection;
 import java.util.List;

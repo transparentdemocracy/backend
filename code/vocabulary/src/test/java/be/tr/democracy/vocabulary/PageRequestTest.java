@@ -1,5 +1,6 @@
 package be.tr.democracy.vocabulary;
 
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

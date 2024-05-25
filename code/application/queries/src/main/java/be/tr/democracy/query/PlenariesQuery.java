@@ -1,10 +1,9 @@
 package be.tr.democracy.query;
 
 import be.tr.democracy.api.PlenaryService;
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
-import be.tr.democracy.vocabulary.Plenary;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
+import be.tr.democracy.vocabulary.plenary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +17,8 @@ import static java.util.Objects.requireNonNull;
 public class PlenariesQuery implements PlenaryService {
 
     private static final Comparator<Plenary> plenaryComparator = (o1, o2) -> {
-        final var first = LocalDate.parse(o1.date());
-        final var second = LocalDate.parse(o2.date());
+        final var first = LocalDate.parse(o1.plenaryDate());
+        final var second = LocalDate.parse(o2.plenaryDate());
         return second.compareTo(first);
     };
 

@@ -1,7 +1,8 @@
 package be.tr.democracy.vocabulary;
 
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.hamcrest.Matchers;
-import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

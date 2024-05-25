@@ -3,12 +3,6 @@
 An overview of the concepts that are used in the real world and are represented here in the code as well.
 [Federal parliament](https://www.senate.be/english/federal_parliament_en.html#T.5.3)
 
-# The data model
-
-The data extracted from the public documents. This does not correspond completely to the internal model of how the information is organised. 
-
-![The data model](./img/data-model.png)
-
 # The concepts
 
 ## Plenary

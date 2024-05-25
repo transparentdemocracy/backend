@@ -1,11 +1,10 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
 
-import java.util.List;
 import java.util.Optional;
 
 public enum DummyMotionsService implements MotionsService {

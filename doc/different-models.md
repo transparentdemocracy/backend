@@ -7,11 +7,15 @@ Through the application we make use of different models for different purposes. 
 
 ## Data Model
 
-The model of the data that is delivered ot the backend, containing all the necessary information. This is a contract from the data project, if the data structure changes, the APi is broken.
+The model of the [import data](import-data.md) that is delivered ot the backend, contains all the necessary information. This is a contract from the data project, if the data structure changes, the APi is broken.
+
+![Data model](./img/data-model.png)
 
 ## Domain Model
 
 The internal representation of the concepts which we are free to use and adapt since it is NOT exposed to the outside world.
+
+![Domain model](./img/domain-model.png)
 
 ## View model
 

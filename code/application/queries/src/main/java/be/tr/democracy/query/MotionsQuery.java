@@ -1,9 +1,9 @@
 package be.tr.democracy.query;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +17,8 @@ import static java.util.Objects.requireNonNull;
 public class MotionsQuery implements MotionsService {
 
     private static final Comparator<Motion> motionComparator = (o1, o2) -> {
-        final var first = LocalDate.parse(o1.date());
-        final var second = LocalDate.parse(o2.date());
+        final var first = LocalDate.parse(o1.votingDate());
+        final var second = LocalDate.parse(o2.votingDate());
         return second.compareTo(first);
     };
 

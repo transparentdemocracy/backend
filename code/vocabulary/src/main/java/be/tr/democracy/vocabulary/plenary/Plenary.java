@@ -1,10 +1,10 @@
-package be.tr.democracy.vocabulary;
+package be.tr.democracy.vocabulary.plenary;
 
 import java.util.List;
 
 public record Plenary(String id,
                       String legislature,
-                      String date,
+                      String plenaryDate,
                       String pdfReportUrl,
                       String htmlReportUrl,
                       List<MotionLink> motions) {

@@ -1,9 +1,9 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PartyVotes;
-import be.tr.democracy.vocabulary.Votes;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.motion.PartyVotes;
+import be.tr.democracy.vocabulary.motion.Votes;
 
 import java.util.List;
 
@@ -12,24 +12,29 @@ public class MotionMapper {
     private MotionMapper() {
     }
 
-    public static MotionViewDTO map(Motion motion) {
+    public static MotionGroupViewDTO map(Motion motion) {
         final var voteCount = motion.voteCount();
-        return new MotionViewDTO(
+        final var motionViewDTO = new MotionViewDTO(
                 motion.motionId(),
                 motion.titleNL(),
                 motion.titleFR(),
                 mapVotes(voteCount.yesVotes()),
                 mapVotes(voteCount.noVotes()),
                 mapVotes(voteCount.abstention()),
-                motion.date(),
+                motion.votingDate(),
                 motion.descriptionNL(),
                 motion.descriptionFR(),
                 voteCount.votePassed());
+        return toMotionGroup( motionViewDTO);
     }
 
-    public static PageViewDTO<MotionViewDTO> mapViewPage(Page<Motion> motionPage) {
+    private static MotionGroupViewDTO toMotionGroup( MotionViewDTO motionViewDTO) {
+        return new MotionGroupViewDTO(motionViewDTO.id(), motionViewDTO.titleNL(), motionViewDTO.titleFR(), List.of(motionViewDTO), motionViewDTO.votingDate());
+    }
+
+    public static PageViewDTO<MotionGroupViewDTO> mapViewPage(Page<Motion> motionPage) {
         final var motionViewDTOS = motionPage.values().stream().map(MotionMapper::map).toList();
-        return new PageViewDTO<MotionViewDTO>(motionPage.pageNr(),
+        return new PageViewDTO<MotionGroupViewDTO>(motionPage.pageNr(),
                 motionPage.pageSize(),
                 motionPage.totalPages(),
                 motionViewDTOS);

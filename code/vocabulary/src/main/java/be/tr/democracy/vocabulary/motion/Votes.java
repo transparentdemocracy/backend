@@ -1,4 +1,4 @@
-package be.tr.democracy.vocabulary;
+package be.tr.democracy.vocabulary.motion;
 
 import java.util.List;
 import java.util.Objects;

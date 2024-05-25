@@ -1,9 +1,9 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.PartyVotes;
-import be.tr.democracy.vocabulary.VoteCount;
-import be.tr.democracy.vocabulary.VoteType;
-import be.tr.democracy.vocabulary.Votes;
+import be.tr.democracy.vocabulary.motion.PartyVotes;
+import be.tr.democracy.vocabulary.motion.VoteCount;
+import be.tr.democracy.vocabulary.motion.VoteType;
+import be.tr.democracy.vocabulary.motion.Votes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

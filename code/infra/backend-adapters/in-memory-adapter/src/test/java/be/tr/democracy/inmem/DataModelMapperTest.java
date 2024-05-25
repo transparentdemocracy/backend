@@ -1,6 +1,6 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.Motion;
+import be.tr.democracy.vocabulary.motion.Motion;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,7 +35,7 @@ class DataModelMapperTest {
 
         final var firstMotion = motions.get(0);
         assertThat(firstMotion.motionId(), is(MOTION_ID_1));
-        assertThat(firstMotion.date(), is(PLENARY_DATE_A));
+        assertThat(firstMotion.votingDate(), is(PLENARY_DATE_A));
         assertThat(firstMotion.descriptionNL(), is(MOTION_DESCRIPTION_1));
         assertThat(firstMotion.descriptionFR(), is(MOTION_DESCRIPTION_1));
         assertThat(firstMotion.titleNL(), is(PROPOSAL_TITLE_NL_1));
@@ -44,7 +44,7 @@ class DataModelMapperTest {
 
         final var secondMotion = motions.get(1);
         assertThat(secondMotion.motionId(), is(MOTION_ID_2));
-        assertThat(secondMotion.date(), is(PLENARY_DATE_A));
+        assertThat(secondMotion.votingDate(), is(PLENARY_DATE_A));
         assertThat(secondMotion.descriptionNL(), is(MOTION_DESCRIPTION_2));
         assertThat(secondMotion.descriptionFR(), is(MOTION_DESCRIPTION_2));
         assertThat(secondMotion.titleNL(), is(PROPOSAL_TITLE_NL_2));
@@ -52,7 +52,7 @@ class DataModelMapperTest {
 
         final var third = motions.get(2);
         assertThat(third.motionId(), is(MOTION_ID_3));
-        assertThat(third.date(), is(PLENARY_DATE_B));
+        assertThat(third.votingDate(), is(PLENARY_DATE_B));
         assertThat(third.descriptionNL(), is(MOTION_DESCRIPTION_3));
         assertThat(third.descriptionFR(), is(MOTION_DESCRIPTION_3));
         assertThat(third.titleNL(), is(PROPOSAL_TITLE_NL_3));
@@ -60,7 +60,7 @@ class DataModelMapperTest {
 
         final var fourth = motions.get(3);
         assertThat(fourth.motionId(), is(MOTION_ID_4));
-        assertThat(fourth.date(), is(PLENARY_DATE_B));
+        assertThat(fourth.votingDate(), is(PLENARY_DATE_B));
         assertThat(fourth.descriptionNL(), is(MOTION_DESCRIPTION_4));
         assertThat(fourth.descriptionFR(), is(MOTION_DESCRIPTION_4));
         assertThat(fourth.titleNL(), is(PROPOSAL_TITLE_NL_4));

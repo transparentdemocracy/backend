@@ -1,9 +1,9 @@
 package be.tr.democracy.inmem;
 
 import be.tr.democracy.query.PlenariesReadModel;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.PageRequest;
-import be.tr.democracy.vocabulary.Plenary;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.page.PageRequest;
+import be.tr.democracy.vocabulary.plenary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

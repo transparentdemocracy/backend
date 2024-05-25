@@ -1,8 +1,8 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.MotionLink;
-import be.tr.democracy.vocabulary.Page;
-import be.tr.democracy.vocabulary.Plenary;
+import be.tr.democracy.vocabulary.plenary.MotionLink;
+import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.plenary.Plenary;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class PlenaryMapper {
     }
 
     public static PlenaryViewDTO map(Plenary plenary) {
-        return new PlenaryViewDTO(plenary.id(), plenary.legislature(), plenary.date(), plenary.pdfReportUrl(), plenary.htmlReportUrl(),
+        return new PlenaryViewDTO(plenary.id(), plenary.legislature(), plenary.plenaryDate(), plenary.pdfReportUrl(), plenary.htmlReportUrl(),
                 mapMotions(plenary.motions()));
     }
 

@@ -1,9 +1,9 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.Motion;
-import be.tr.democracy.vocabulary.PartyVotes;
-import be.tr.democracy.vocabulary.VoteCount;
-import be.tr.democracy.vocabulary.Votes;
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.PartyVotes;
+import be.tr.democracy.vocabulary.motion.VoteCount;
+import be.tr.democracy.vocabulary.motion.Votes;
 
 import java.util.List;
 

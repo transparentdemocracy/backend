@@ -5,7 +5,7 @@ Makes the [public information](https://www.dekamer.be/kvvcr/index.cfm) of the go
 ## Documentation
 
 * [Ubiquitous language](doc/ubiquitous-language.md)
-* [Import Data Structure](doc/import-data.md)
+* [Different Models](doc/different-models.md)
 * [Application Architecture](doc/application-architecture.md)
 * [ADR - Architectural Decision Records](ADR/index.md)
 * [Codebase Guidelines](doc/codebase-guidelines.md)
