@@ -1,7 +1,7 @@
 package be.tr.democracy.query;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.Page;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 public class MotionsQuery implements MotionsService {
 
-    private static final Comparator<Motion> motionComparator = (o1, o2) -> {
+    private static final Comparator<MotionGroup> motionComparator = (o1, o2) -> {
         final var first = LocalDate.parse(o1.votingDate());
         final var second = LocalDate.parse(o2.votingDate());
         return second.compareTo(first);
@@ -32,7 +32,7 @@ public class MotionsQuery implements MotionsService {
 
 
     @Override
-    public Page<Motion> findMotions(String searchTerm, PageRequest pageRequest) {
+    public Page<MotionGroup> findMotions(String searchTerm, PageRequest pageRequest) {
         final var motionPage = motionsReadModel.find(searchTerm, pageRequest);
         final var sorted = motionPage.sortedPage(motionComparator);
         logger.info("Loaded page {} motions from database for searchTerm {}", sorted.pageNr(), searchTerm);
@@ -40,7 +40,7 @@ public class MotionsQuery implements MotionsService {
     }
 
     @Override
-    public Optional<Motion> getMotion(String motionId) {
+    public Optional<MotionGroup> getMotionGroup(String motionId) {
         return motionsReadModel.getMotion(motionId);
     }
 

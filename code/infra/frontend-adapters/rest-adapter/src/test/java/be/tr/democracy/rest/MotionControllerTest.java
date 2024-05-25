@@ -1,6 +1,6 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -35,13 +35,13 @@ class MotionControllerTest {
                 .verify();
     }
 
-    private static List<MotionGroupViewDTO> mapToViewDTOs(List<Motion> result) {
+    private static List<MotionGroupViewDTO> mapToViewDTOs(List<MotionGroup> result) {
         return result.stream().map(MotionMapper::map).toList();
     }
 
     private boolean validateThirdMotion(MotionGroupViewDTO o) {
         final var thirdMotion = MotionMapper.map(MotionsMother.THIRD_MOTION);
-        return o.equals(thirdMotion);
+        return o.motions().contains(thirdMotion);
     }
 
     private boolean validatePage(PageViewDTO<MotionGroupViewDTO> x) {
@@ -49,8 +49,8 @@ class MotionControllerTest {
         assertEquals(1, x.pageSize());
         assertEquals(1, x.totalPages());
         assertEquals(1, x.pageNr());
-        final var result = MotionsMother.DUMMY_MOTIONS;
-        final var expectedResult = mapToViewDTOs(result);
+
+        final var expectedResult = mapToViewDTOs(MotionsMother.DUMMY_MOTION_GROUPS);
         assertEquals(expectedResult, x.values());
         return expectedResult.equals(x.values());
     }

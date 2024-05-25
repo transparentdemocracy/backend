@@ -1,6 +1,7 @@
 package be.tr.democracy.inmem;
 
 import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.motion.VoteCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,23 +30,40 @@ class DataModelMapper {
         this.voteCountFactory = new VoteCountFactory(politicianDTOS);
     }
 
-    public List<Motion> buildAllMotions() {
+    public List<MotionGroup> buildAllMotionGroups() {
         return plenaryDTOS.stream()
                 .map(this::buildMotions)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
-    private List<Motion> buildMotions(PlenaryDTO plenaryDTO) {
+    private List<MotionGroup> buildMotions(PlenaryDTO plenaryDTO) {
         return plenaryDTO.motion_groups().stream()
                 .map(x -> this.mapMotionGroup(plenaryDTO, x))
-                .flatMap(Collection::stream)
                 .flatMap(Optional::stream)
                 .toList();
     }
 
-    private List<Optional<Motion>> mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
-        return motionGroupDTO.motions().stream().map(x -> buildMotion(x, plenaryDTO.id(), plenaryDTO.date())).toList();
+    private Optional<MotionGroup> mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
+        final var motions = mapMotions(plenaryDTO, motionGroupDTO);
+        if (motions.isEmpty()) {
+            logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
+            return Optional.empty();
+        }
+        return Optional.of(new MotionGroup(motionGroupDTO.id(),
+                motionGroupDTO.title_nl(),
+                motionGroupDTO.title_fr(),
+                motions,
+                plenaryDTO.date()));
+
+    }
+
+    private List<Motion> mapMotions(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
+        return motionGroupDTO.motions()
+                .stream()
+                .map(x -> buildMotion(x, plenaryDTO.id(), plenaryDTO.date()))
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     private Optional<Motion> buildMotion(MotionDTO motionDTO, String plenaryId, String plenaryDate) {

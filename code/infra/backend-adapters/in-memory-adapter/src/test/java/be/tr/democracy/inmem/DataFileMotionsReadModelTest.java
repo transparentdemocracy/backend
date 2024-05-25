@@ -21,12 +21,13 @@ class DataFileMotionsReadModelTest {
     @Test
     void loadMotionsOnStartUp() {
 
-        final var motions = readModel.loadAll();
+        final var motionGroups = readModel.loadAll();
 
-        assertNotNull(motions);
-        assertEquals(2, motions.size());
+        assertNotNull(motionGroups);
+        assertEquals(2, motionGroups.size());
 
-        final var motion = motions.getFirst();
+        final var motionGroup = motionGroups.getFirst();
+        final var motion = motionGroup.motions().getFirst();
         assertEquals("55_160_mg_19_m0", motion.motionId());
         assertEquals("55_160", motion.plenaryId());
         assertEquals(0, motion.sequenceNumberInPlenary());

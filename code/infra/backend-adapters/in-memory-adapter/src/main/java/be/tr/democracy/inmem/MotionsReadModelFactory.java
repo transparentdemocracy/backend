@@ -1,6 +1,6 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ enum MotionsReadModelFactory {
     INSTANCE;
     private final Logger logger = LoggerFactory.getLogger(MotionsReadModelFactory.class);
 
-    public List<Motion> create(Supplier<List<PlenaryDTO>> plenariesFileName, String votesFileName, String politiciansFileName) {
+    public List<MotionGroup> create(Supplier<List<PlenaryDTO>> plenariesFileName, String votesFileName, String politiciansFileName) {
         logger.info("Loading DataFileMotions from {}", plenariesFileName);
         final var dataFileLoader = new JSONDataFileLoader();
         final List<PlenaryDTO> plenaryDTOS = plenariesFileName.get();
@@ -24,9 +24,9 @@ enum MotionsReadModelFactory {
         return buildAllMotionsReadModel(dataModelMapper);
     }
 
-    private List<Motion> buildAllMotionsReadModel(DataModelMapper dataModelMapper) {
+    private List<MotionGroup> buildAllMotionsReadModel(DataModelMapper dataModelMapper) {
         try {
-            return dataModelMapper.buildAllMotions();
+            return dataModelMapper.buildAllMotionGroups();
         } catch (Throwable e) {
             logger.error("UNABLE TO BUILD READ MODELS: ", e);
             return List.of();

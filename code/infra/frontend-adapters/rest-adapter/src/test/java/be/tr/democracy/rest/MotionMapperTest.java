@@ -12,8 +12,7 @@ class MotionMapperTest {
 
     @Test
     void mapping() {
-        final MotionGroupViewDTO group = MotionMapper.map(FIRST_MOTION);
-        final var mappedDTO = group.motions().getFirst();
+        final MotionViewDTO mappedDTO = MotionMapper.map(FIRST_MOTION);
 
         assertEquals(FIRST_MOTION.motionId(), mappedDTO.id());
         assertEquals(FIRST_MOTION.titleNL(), mappedDTO.titleNL());
@@ -59,7 +58,7 @@ class MotionMapperTest {
 
     @Test
     void percentagesAmountToHundred() {
-        final MotionViewDTO mappedDTO = MotionMapper.map(THIRD_MOTION).motions().getFirst();
+        final MotionViewDTO mappedDTO = MotionMapper.map(THIRD_MOTION);
 
         final var yesPartyVotes = mappedDTO.yesVotes().partyVotes();
         final var noPartyVotes = mappedDTO.noVotes().partyVotes();
@@ -72,7 +71,7 @@ class MotionMapperTest {
 
     @Test
     void mappingWithNoVotes() {
-        final MotionViewDTO mappedDTO = MotionMapper.map(SECOND_MOTION).motions().getFirst();
+        final MotionViewDTO mappedDTO = MotionMapper.map(SECOND_MOTION);
 
         assertEquals(SECOND_MOTION.titleNL(), mappedDTO.titleNL());
         assertEquals(SECOND_MOTION.titleFR(), mappedDTO.titleFR());

@@ -1,6 +1,7 @@
 package be.tr.democracy.inmem;
 
 import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,7 +22,7 @@ class DataModelMapperTest {
         final var dataModelMapper = new DataModelMapper(politicianDTO, votes, plenaries);
 
         //WHEN
-        final var motions = dataModelMapper.buildAllMotions();
+        final var motions = dataModelMapper.buildAllMotionGroups();
 
         //THEN
         validate(motions);
@@ -29,11 +30,12 @@ class DataModelMapperTest {
 
     }
 
-    private static void validate(List<Motion> motions) {
-        assertThat(motions, notNullValue());
-        assertThat(motions, hasSize(4));
-
-        final var firstMotion = motions.get(0);
+    private static void validate(List<MotionGroup> motionGroups) {
+        assertThat(motionGroups, notNullValue());
+        assertThat(motionGroups, hasSize(2));
+        final var firstMotionGroup = motionGroups.get(0);
+        final var motionsFirstGroup = firstMotionGroup.motions();
+        final var firstMotion = motionsFirstGroup.get(0);
         assertThat(firstMotion.motionId(), is(MOTION_ID_1));
         assertThat(firstMotion.votingDate(), is(PLENARY_DATE_A));
         assertThat(firstMotion.descriptionNL(), is(MOTION_DESCRIPTION_1));
@@ -42,7 +44,7 @@ class DataModelMapperTest {
         assertThat(firstMotion.titleFR(), is(PROPOSAL_TITLE_FR_1));
 
 
-        final var secondMotion = motions.get(1);
+        final var secondMotion = motionsFirstGroup.get(1);
         assertThat(secondMotion.motionId(), is(MOTION_ID_2));
         assertThat(secondMotion.votingDate(), is(PLENARY_DATE_A));
         assertThat(secondMotion.descriptionNL(), is(MOTION_DESCRIPTION_2));
@@ -50,7 +52,9 @@ class DataModelMapperTest {
         assertThat(secondMotion.titleNL(), is(PROPOSAL_TITLE_NL_2));
         assertThat(secondMotion.titleFR(), is(PROPOSAL_TITLE_FR_2));
 
-        final var third = motions.get(2);
+        final var secondmmotionGroup = motionGroups.get(1);
+        final var motionsSecondGroup = secondmmotionGroup.motions();
+        final var third = motionsSecondGroup.get(0);
         assertThat(third.motionId(), is(MOTION_ID_3));
         assertThat(third.votingDate(), is(PLENARY_DATE_B));
         assertThat(third.descriptionNL(), is(MOTION_DESCRIPTION_3));
@@ -58,7 +62,7 @@ class DataModelMapperTest {
         assertThat(third.titleNL(), is(PROPOSAL_TITLE_NL_3));
         assertThat(third.titleFR(), is(PROPOSAL_TITLE_FR_3));
 
-        final var fourth = motions.get(3);
+        final var fourth = motionsSecondGroup.get(1);
         assertThat(fourth.motionId(), is(MOTION_ID_4));
         assertThat(fourth.votingDate(), is(PLENARY_DATE_B));
         assertThat(fourth.descriptionNL(), is(MOTION_DESCRIPTION_4));

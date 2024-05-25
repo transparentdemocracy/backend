@@ -2,6 +2,7 @@ package be.tr.democracy.rest;
 
 import be.tr.democracy.api.MotionsService;
 import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class MotionController {
     @GetMapping("/motions/{id}")
     public Mono<MotionGroupViewDTO> getMotion(@PathVariable String id) {
         logger.info("Getting motion for id {}", id);
-        final var motion = this.motionsService.getMotion(id);
+        final var motion = this.motionsService.getMotionGroup(id);
         logMotions(id, motion);
         return motion
                 .map(MotionMapper::map)
@@ -46,8 +47,8 @@ public class MotionController {
                 .orElseGet(Mono::empty);
     }
 
-    private void logMotions(String id, Optional<Motion> motion) {
-        motion.ifPresentOrElse(motionViewDTO -> logger.info("Found motion {}", motionViewDTO),
+    private void logMotions(String id, Optional<MotionGroup> motion) {
+        motion.ifPresentOrElse(motionViewDTO -> logger.info("Found motion in motiongroup {}", motionViewDTO),
                 () -> logger.info("No motion found for id {}", id)
         );
     }
