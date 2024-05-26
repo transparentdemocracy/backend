@@ -21,6 +21,14 @@ The internal representation of the concepts which we are free to use and adapt s
 
 The model that is exposed to the outside world, specifically the front-end, through a REST-api, so that the data can be shown. This is a public contract so any changes here can break the client.
 
+## Model mappings
+
+Below an overview of how the different models relate to each other, how the data gets mapped and eventually visualized.
+
+![Model Mappings](./img/models-mapping.png)
+
 ## Overview
 
-![Models](./img/models.png)
+Below an overview of the models and their location in the backend architecture
+
+![Models](./img/models-place-in-architecture.png)

@@ -34,14 +34,6 @@ public class JSONDataFileLoader {
         return loadFile(fileName, this::parsePoliticianJSON, PoliticianDTO.class).stream().collect(Collectors.toMap(PoliticianDTO::id, politicianDTO -> politicianDTO));
     }
 
-    //TODO doesn't this make the other parse methods obsolete?
-    <T> List<T> loadFile(String fileName, Class<T> dataType) {
-        return loadFile(fileName, file -> {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(file, new TypeReference<List<T>>() {
-            });
-        }, dataType);
-    }
 
     private <T> List<T> loadFile(String fileName, FileParser<T> f, Class<T> dataType) {
         final var start = clock.millis();
