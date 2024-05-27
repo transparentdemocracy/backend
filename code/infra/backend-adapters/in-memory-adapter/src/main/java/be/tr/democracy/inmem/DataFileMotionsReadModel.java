@@ -21,8 +21,9 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
 
     public DataFileMotionsReadModel(Supplier<List<PlenaryDTO>> plenariesSupplier,
                                     String votesFileName,
-                                    String politiciansFileName) {
-        this(createCachedSupplier(plenariesSupplier, votesFileName, politiciansFileName));
+                                    String politiciansFileName,
+                                    String cacheTargetFolder) {
+        this(createCachedSupplier(cacheTargetFolder, plenariesSupplier, votesFileName, politiciansFileName));
     }
 
     public DataFileMotionsReadModel(Supplier<List<MotionGroup>> motions) {
@@ -45,9 +46,12 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         return allMotionsReadModel.stream().filter(x -> x.containsMotion(motionId)).findFirst();
     }
 
-    private static LocalFileCache<MotionGroup> createCachedSupplier(Supplier<List<PlenaryDTO>> plenariesSupplier, String votesFileName, String politiciansFileName) {
+    private static LocalFileCache<MotionGroup> createCachedSupplier(String cacheTargetFolder,
+                                                                    Supplier<List<PlenaryDTO>> plenariesSupplier,
+                                                                    String votesFileName,
+                                                                    String politiciansFileName) {
         final Supplier<List<MotionGroup>> motionSupplier = () -> MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName);
-        return new LocalFileCache<MotionGroup>(motionSupplier, new File("target"), MOTION_CACHE_JSON, MotionGroup.class);
+        return new LocalFileCache<MotionGroup>(motionSupplier, new File(cacheTargetFolder), MOTION_CACHE_JSON, MotionGroup.class);
     }
 
     private static Predicate<MotionGroup> createFilter(String searchTerm) {

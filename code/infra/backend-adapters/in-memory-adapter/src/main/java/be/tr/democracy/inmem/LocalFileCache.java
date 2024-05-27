@@ -63,6 +63,11 @@ public class LocalFileCache<T> implements Supplier<List<T>> {
 
     }
 
+    private static <T> void writeData(File cacheFile, T data) throws IOException {
+        final var objectMapper = new ObjectMapper();
+        objectMapper.writeValue(cacheFile, data);
+    }
+
     private static <T> File createCacheFile(Supplier<T> source, File cacheFile) {
         LOGGER.info("No CacheFile exists");
         try {
@@ -75,11 +80,6 @@ public class LocalFileCache<T> implements Supplier<List<T>> {
             LOGGER.error("Unable to create cache file", e);
             return null;
         }
-    }
-
-    private static <T> void writeData(File cacheFile, T data) throws IOException {
-        final var objectMapper = new ObjectMapper();
-        objectMapper.writeValue(cacheFile, data);
     }
 
     private static File ensureDirectory(File cacheDir) {

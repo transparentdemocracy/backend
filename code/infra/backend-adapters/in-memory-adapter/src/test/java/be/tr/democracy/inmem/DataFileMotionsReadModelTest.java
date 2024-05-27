@@ -15,7 +15,8 @@ class DataFileMotionsReadModelTest {
         readModel = new DataFileMotionsReadModel(
                 plenaryDTOFileLoader,
                 "test-votes.json",
-                "test-politician.json");
+                "test-politician.json",
+                "target");
     }
 
     @Test
