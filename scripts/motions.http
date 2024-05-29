@@ -1,0 +1,9 @@
+### deployed aws
+
+GET http://load-balancer-trans-demo-1768238618.eu-west-1.elb.amazonaws.com/motions/?page=1&size=1
+
+### Local host
+GET http://localhost:8080/motions/?page=1&size=1
+
+### DFDF
+GET http://localhost:8080/motions/

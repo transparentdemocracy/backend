@@ -1,5 +1,0 @@
-###
-GET http://localhost:8080/motions/4245
-
-###
-GET http://localhost:8080/motions/

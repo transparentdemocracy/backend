@@ -21,9 +21,10 @@ public class PlenaryController {
     }
 
     @GetMapping("/plenaries/")
-    public Mono<PageViewDTO<PlenaryViewDTO>> getPlenaries(@RequestParam(value = "search", required = false) String searchTerm,
-                                                       @RequestParam("page") int page,
-                                                       @RequestParam("size") int size) {
+    public Mono<PageViewDTO<PlenaryViewDTO>> getPlenaries(
+            @RequestParam(value = "search", defaultValue = "") String searchTerm,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "1") int size) {
         logger.info("Getting plenaries for search {}", searchTerm);
         logger.info("Getting plenaries for page {}", page);
         logger.info("Getting plenaries for size {}", size);

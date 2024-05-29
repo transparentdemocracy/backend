@@ -1,0 +1,89 @@
+<mxfile host="Electron" modified="2024-05-29T13:04:20.009Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.8 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="ikWqRO-oDdQIPRC4JZIr" version="24.4.8" type="device">
+  <diagram name="Page-1" id="UEdKXglhTP-OaEu2R145">
+    <mxGraphModel dx="2074" dy="2408" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-19" value="region eu-west-1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#CC6600;strokeWidth=5;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="790" height="490" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-7" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="351.5" y="720" width="72" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-1" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.ecs;fillColor=#F58534;gradientColor=none;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-7">
+          <mxGeometry width="72" height="67.5" as="geometry" />
+        </mxCell>
+        <UserObject label="ECS" link="https://aws.amazon.com/ecs/" id="G2WtEdxQrT5y2wapdz2B-5">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;whiteSpace=wrap;align=center;verticalAlign=middle;fontColor=#0000EE;fontStyle=4;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-7">
+            <mxGeometry x="6" y="80" width="60" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-10" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="353" y="910" width="69" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-8" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.ecr;fillColor=#F58534;gradientColor=none;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-10">
+          <mxGeometry width="69" height="72" as="geometry" />
+        </mxCell>
+        <UserObject label="ECR" link="https://aws.amazon.com/ecr/" id="G2WtEdxQrT5y2wapdz2B-9">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;whiteSpace=wrap;align=center;verticalAlign=middle;fontColor=#0000EE;fontStyle=4;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-10">
+            <mxGeometry x="4.5" y="85" width="60" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="G2WtEdxQrT5y2wapdz2B-11" target="G2WtEdxQrT5y2wapdz2B-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-13" value="Push Image" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="G2WtEdxQrT5y2wapdz2B-12">
+          <mxGeometry x="-0.0476" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-11" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="361" y="1090" width="50" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="G2WtEdxQrT5y2wapdz2B-8" target="G2WtEdxQrT5y2wapdz2B-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-15" value="Deploy" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="G2WtEdxQrT5y2wapdz2B-14">
+          <mxGeometry x="-0.252" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-16" value="VPC" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#d79b00;strokeWidth=5;align=left;verticalAlign=top;fillColor=#ffe6cc;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="760" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-17" value="subnet A" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;strokeWidth=5;align=left;verticalAlign=top;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="50" y="70" width="350" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-18" value="subnet B" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;strokeWidth=5;align=left;verticalAlign=top;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="420" y="70" width="371" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-20" value="" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="-640" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-23" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="346.5" y="-480" width="92" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-21" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.elasticLoadBalancing;fillColor=#ECECEC;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-23">
+          <mxGeometry width="92" height="88.17" as="geometry" />
+        </mxCell>
+        <UserObject label="ELB" link="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html" id="G2WtEdxQrT5y2wapdz2B-22">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;whiteSpace=wrap;align=center;verticalAlign=middle;fontColor=#0000EE;fontStyle=4;" vertex="1" parent="G2WtEdxQrT5y2wapdz2B-23">
+            <mxGeometry x="16" y="100" width="60" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="G2WtEdxQrT5y2wapdz2B-24" target="G2WtEdxQrT5y2wapdz2B-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-24" value="Load Balancer &lt;b&gt;Security Group&lt;/b&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="518.5" y="-485.90999999999997" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="G2WtEdxQrT5y2wapdz2B-26" target="G2WtEdxQrT5y2wapdz2B-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2WtEdxQrT5y2wapdz2B-26" value="target-group" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="-190" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

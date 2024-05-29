@@ -1,7 +1,6 @@
 package be.tr.democracy.rest;
 
 import be.tr.democracy.api.MotionsService;
-import be.tr.democracy.vocabulary.motion.Motion;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
@@ -25,9 +24,10 @@ public class MotionController {
     }
 
     @GetMapping("/motions/")
-    public Mono<PageViewDTO<MotionGroupViewDTO>> getMotions(@RequestParam(value = "search", required = false) String searchTerm,
-                                                       @RequestParam("page") int page,
-                                                       @RequestParam("size") int size) {
+    public Mono<PageViewDTO<MotionGroupViewDTO>> getMotions(
+            @RequestParam(value = "search", defaultValue = "") String searchTerm,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "1") int size) {
         logger.info("Getting motions for search {}", searchTerm);
         logger.info("Getting motions for page {}", page);
         logger.info("Getting motions for size {}", size);

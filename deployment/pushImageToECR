@@ -1,0 +1,8 @@
+#Login
+aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 901390065909.dkr.ecr.eu-west-1.amazonaws.com
+
+#Tag it with the repository name : trans-demo-repo
+docker tag transparent-democracy/voting-backend:latest 901390065909.dkr.ecr.eu-west-1.amazonaws.com/trans-demo-repo:latest
+
+# Push using the tag containing the repoe name
+docker push 901390065909.dkr.ecr.eu-west-1.amazonaws.com/trans-demo-repo:latest

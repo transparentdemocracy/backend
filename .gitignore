@@ -4,4 +4,11 @@
 *.class
 .DS_Store
 *.bkp
-/doc/drawings/.$application-architecture.drawio.dtmp
+/doc/drawings/.**.drawio.dtmp
+
+# Local .terraform directories
+**/.terraform/*
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
