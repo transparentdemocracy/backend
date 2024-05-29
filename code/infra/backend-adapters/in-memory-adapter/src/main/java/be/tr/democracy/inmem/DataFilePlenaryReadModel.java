@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -19,6 +20,12 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
 
     public DataFilePlenaryReadModel(Supplier<List<PlenaryDTO>> supplier) {
         this.allPlenariesReadModel = createCachedSupplier(supplier).get();
+
+        // Pre-sort all plenaries on descending id (="{legislature}_{plenary date}_{plenary number}") now,
+        // such that it does not need to sort on every incoming request:
+        this.allPlenariesReadModel.sort(
+                Comparator.comparing(Plenary::id).reversed());
+
         logger.info("Plenary read models loaded.");
     }
 
