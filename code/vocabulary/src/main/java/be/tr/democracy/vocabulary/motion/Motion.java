@@ -10,6 +10,7 @@ public record Motion(
         String titleNL,
         String titleFR,
         String documentReference,
+        DocumentReference newDocumentReference,
         String descriptionNL,
         String descriptionFR,
         VoteCount voteCount
@@ -38,6 +39,7 @@ public record Motion(
                 builder.titleNL,
                 builder.titleFR,
                 builder.documentReference,
+                builder.newDocumentReference,
                 builder.descriptionNL,
                 builder.descriptionFR,
                 builder.voteCount);
@@ -56,6 +58,7 @@ public record Motion(
         private String titleNL;
         private String titleFR;
         private String documentReference;
+        private DocumentReference newDocumentReference;
         private String descriptionNL;
         private String descriptionFR;
         private VoteCount voteCount;
@@ -103,6 +106,11 @@ public record Motion(
             return this;
         }
 
+        public Builder withNewDocumentReference(DocumentReference val) {
+            this.newDocumentReference = val;
+            return this;
+        }
+
         public Builder withDescriptionFR(String val) {
             descriptionFR = mapText(val);
             return this;
@@ -121,4 +129,5 @@ public record Motion(
             return val == null || val.isEmpty() ? "N/A" : val;
         }
     }
+
 }

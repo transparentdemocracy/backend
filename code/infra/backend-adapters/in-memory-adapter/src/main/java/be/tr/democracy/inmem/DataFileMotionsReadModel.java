@@ -51,7 +51,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
                                                                     String votesFileName,
                                                                     String politiciansFileName) {
         final Supplier<List<MotionGroup>> motionSupplier = () -> MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName);
-        return new LocalFileCache<MotionGroup>(motionSupplier, new File(cacheTargetFolder), MOTION_CACHE_JSON, MotionGroup.class);
+        return new LocalFileCache<>(motionSupplier, new File(cacheTargetFolder), MOTION_CACHE_JSON, MotionGroup.class);
     }
 
     private static Predicate<MotionGroup> createFilter(String searchTerm) {

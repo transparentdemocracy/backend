@@ -20,7 +20,8 @@ enum MotionsReadModelFactory {
         final List<VoteDTO> voteDTOS = dataFileLoader.loadVotes(votesFileName);
 
         logger.info("Data loaded in memory.");
-        final DataModelMapper dataModelMapper = new DataModelMapper(politicianDTOS, voteDTOS, plenaryDTOS);
+        // TODO: load summaries json
+        final DataModelMapper dataModelMapper = new DataModelMapper(politicianDTOS, voteDTOS, plenaryDTOS, new SummariesDTO(List.of()));
         return buildAllMotionsReadModel(dataModelMapper);
     }
 

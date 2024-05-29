@@ -13,13 +13,15 @@ import static org.hamcrest.Matchers.*;
 
 class DataModelMapperTest {
 
+    // TODO: TEST DocumentReference parsing
+
     @Test
     void basicMapping() {
         //GIVEN
         final Map<String, PoliticianDTO> politicianDTO = politicianDTOMap();
         final List<VoteDTO> votes = twoMotionVotes();
         final var plenaries = buildPlenaries();
-        final var dataModelMapper = new DataModelMapper(politicianDTO, votes, plenaries);
+        final var dataModelMapper = new DataModelMapper(politicianDTO, votes, plenaries, new SummariesDTO(List.of()));
 
         //WHEN
         final var motions = dataModelMapper.buildAllMotionGroups();
