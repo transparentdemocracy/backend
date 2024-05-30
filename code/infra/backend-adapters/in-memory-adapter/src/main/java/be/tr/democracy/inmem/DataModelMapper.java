@@ -224,7 +224,7 @@ class DataModelMapper {
     }
 
     private static String subDocumentUrl(Integer documentNr, Integer subDocumentNr) {
-        return "https://www.dekamer.be/FLWB/PDF/55/0297/55K%04d%03d.pdf".formatted(documentNr, subDocumentNr);
+        return "https://www.dekamer.be/FLWB/PDF/55/%04d/55K%04d%03d.pdf".formatted(documentNr, documentNr, subDocumentNr);
     }
 
     private static List<Integer> getSubDocumentNumbers(String subDocumentNrSpec) {
