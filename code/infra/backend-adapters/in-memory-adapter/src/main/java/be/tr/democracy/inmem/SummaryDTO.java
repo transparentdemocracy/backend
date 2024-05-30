@@ -1,7 +1,8 @@
 package be.tr.democracy.inmem;
 
 public record SummaryDTO(
-    String id,
-    String summary
+    String document_id,
+    String summary_nl,
+    String summary_fr
 ) {
 }

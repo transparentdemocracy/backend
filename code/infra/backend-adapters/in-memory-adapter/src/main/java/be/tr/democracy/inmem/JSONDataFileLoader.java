@@ -32,6 +32,10 @@ public class JSONDataFileLoader {
                 .collect(toMap(PoliticianDTO::id, politicianDTO -> politicianDTO));
     }
 
+    public List<SummaryDTO> loadSummaries(String summariesFileName) {
+        return loadResourceAsStream(summariesFileName, SummaryDTO[].class);
+    }
+
     private <T> List<T> loadResourceAsStream(String fileName, Class<T[]> aClass) {
         try {
             final var stream = getClass().getClassLoader().getResourceAsStream(fileName);
@@ -45,6 +49,4 @@ public class JSONDataFileLoader {
             return List.of();
         }
     }
-
-
 }

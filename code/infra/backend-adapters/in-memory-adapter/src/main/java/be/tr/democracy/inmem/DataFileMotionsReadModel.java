@@ -22,8 +22,8 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     public DataFileMotionsReadModel(Supplier<List<PlenaryDTO>> plenariesSupplier,
                                     String votesFileName,
                                     String politiciansFileName,
-                                    String cacheTargetFolder) {
-        this(createCachedSupplier(cacheTargetFolder, plenariesSupplier, votesFileName, politiciansFileName));
+        String summariesFileName, String cacheTargetFolder) {
+        this(createCachedSupplier(cacheTargetFolder, plenariesSupplier, votesFileName, politiciansFileName, summariesFileName));
     }
 
     public DataFileMotionsReadModel(Supplier<List<MotionGroup>> motions) {
@@ -49,8 +49,8 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     private static LocalFileCache<MotionGroup> createCachedSupplier(String cacheTargetFolder,
                                                                     Supplier<List<PlenaryDTO>> plenariesSupplier,
                                                                     String votesFileName,
-                                                                    String politiciansFileName) {
-        final Supplier<List<MotionGroup>> motionSupplier = () -> MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName);
+                                                                    String politiciansFileName, String summariesFileName) {
+        final Supplier<List<MotionGroup>> motionSupplier = () -> MotionsReadModelFactory.INSTANCE.create(plenariesSupplier, votesFileName, politiciansFileName, summariesFileName);
         return new LocalFileCache<>(motionSupplier, new File(cacheTargetFolder), MOTION_CACHE_JSON, MotionGroup.class);
     }
 

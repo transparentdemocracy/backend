@@ -32,19 +32,27 @@ class DataModelMapper {
     private final List<VoteDTO> voteDTOS;
     private final List<PlenaryDTO> plenaryDTOS;
     private final Map<String, String> summariesNL;
+    private final Map<String, String> summariesFR;
 
-    DataModelMapper(Map<String, PoliticianDTO> politicianDTOS, List<VoteDTO> voteDTOS, List<PlenaryDTO> plenaryDTOS, SummariesDTO summariesDTO) {
+    DataModelMapper(Map<String, PoliticianDTO> politicianDTOS, List<VoteDTO> voteDTOS, List<PlenaryDTO> plenaryDTOS, List<SummaryDTO> summaryDTOS) {
         requireNonNull(politicianDTOS);
         requireNonNull(voteDTOS);
         requireNonNull(plenaryDTOS);
-        requireNonNull(summariesDTO);
+        requireNonNull(summaryDTOS);
         this.plenaryDTOS = plenaryDTOS;
         this.voteDTOS = voteDTOS;
         this.voteCountFactory = new VoteCountFactory(politicianDTOS);
-        this.summariesNL = summariesDTO.summaries().stream()
+        this.summariesNL = summaryDTOS.stream()
+            .filter(it -> it.summary_nl() != null)
             .collect(Collectors.toMap(
-                SummaryDTO::id,
-                SummaryDTO::summary
+                SummaryDTO::document_id,
+                SummaryDTO::summary_nl
+            ));
+        this.summariesFR = summaryDTOS.stream()
+            .filter(it -> it.summary_fr() != null)
+            .collect(Collectors.toMap(
+                SummaryDTO::document_id,
+                SummaryDTO::summary_fr
             ));
     }
 
@@ -65,7 +73,7 @@ class DataModelMapper {
     private Optional<MotionGroup> mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
         final var motions = mapMotions(plenaryDTO, motionGroupDTO);
         if (motions.isEmpty()) {
-            //            logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
+            logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
             return Optional.empty();
         }
         return Optional.of(new MotionGroup(motionGroupDTO.id(),
@@ -86,7 +94,7 @@ class DataModelMapper {
     private Optional<Motion> buildMotion(MotionDTO motionDTO, String plenaryId, String plenaryDate) {
         try {
             if (motionDTO.voting_id() == null) {
-                //                logger.error("The motion {} from plenary {} has no votes assigned to it, so we are ignoring it", motionDTO.id(), plenaryId);
+                logger.error("The motion {} from plenary {} has no votes assigned to it, so we are ignoring it", motionDTO.id(), plenaryId);
                 return Optional.empty();
             }
             final Optional<VoteCount> voteCount = buildVoteCount(motionDTO);
@@ -124,7 +132,7 @@ class DataModelMapper {
                     .withTitleFR(titleFR)
                     .withTitleNL(titleNL);
             }, () -> {
-                //                    logger.warn("No proposal was found with proposal id {} from motion {}.", motionDTO.proposal_id(), motionDTO.id());
+                logger.warn("No proposal was found with proposal id {} from motion {}.", motionDTO.proposal_id(), motionDTO.id());
                 builder
                     .withTitleFR(motionDTO.title_fr())
                     .withTitleNL(motionDTO.title_nl());
@@ -156,10 +164,10 @@ class DataModelMapper {
             return Optional.empty();
         }
 
-        return Optional.of(parse(spec, summariesNL));
+        return Optional.of(parse(spec, summariesNL, summariesFR));
     }
 
-    public static DocumentReference parse(String documentReference, Map<String, String> summariesNL) {
+    public static DocumentReference parse(String documentReference, Map<String, String> summariesNL, Map<String, String> summariesFR) {
         Matcher matcher = DOCUMENT_REFERENCE_PATTERN.matcher(documentReference);
         if (!matcher.matches()) {
             Matcher numMatcher = NUMERIC.matcher(documentReference);
@@ -180,8 +188,8 @@ class DataModelMapper {
                     documentNr,
                     it,
                     subDocumentUrl(documentNr, it),
-                    summariesNL.getOrDefault("55/%04d/%03d".formatted(documentNr, it), null),
-                    summariesNL.getOrDefault("55/%04d/%03d".formatted(documentNr, it), null)
+                    summariesNL.getOrDefault("%d/%d".formatted(documentNr, it), null),
+                    summariesFR.getOrDefault("%d/%d".formatted(documentNr, it), null)
                 )
             ).toList());
     }

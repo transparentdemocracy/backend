@@ -12,16 +12,17 @@ enum MotionsReadModelFactory {
     INSTANCE;
     private final Logger logger = LoggerFactory.getLogger(MotionsReadModelFactory.class);
 
-    public List<MotionGroup> create(Supplier<List<PlenaryDTO>> plenariesFileName, String votesFileName, String politiciansFileName) {
+    public List<MotionGroup> create(Supplier<List<PlenaryDTO>> plenariesFileName, String votesFileName, String politiciansFileName, String summariesFileName) {
         logger.info("Loading DataFileMotions from {}", plenariesFileName);
         final var dataFileLoader = new JSONDataFileLoader();
         final List<PlenaryDTO> plenaryDTOS = plenariesFileName.get();
         final Map<String, PoliticianDTO> politicianDTOS = dataFileLoader.loadPolitician(politiciansFileName);
         final List<VoteDTO> voteDTOS = dataFileLoader.loadVotes(votesFileName);
+        final List<SummaryDTO> summaryDTOS = dataFileLoader.loadSummaries(summariesFileName);
 
         logger.info("Data loaded in memory.");
         // TODO: load summaries json
-        final DataModelMapper dataModelMapper = new DataModelMapper(politicianDTOS, voteDTOS, plenaryDTOS, new SummariesDTO(List.of()));
+        final DataModelMapper dataModelMapper = new DataModelMapper(politicianDTOS, voteDTOS, plenaryDTOS, summaryDTOS);
         return buildAllMotionsReadModel(dataModelMapper);
     }
 
