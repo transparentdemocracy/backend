@@ -3,6 +3,7 @@ package be.tr.democracy.inmem;
 import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.vocabulary.page.Page;
 import be.tr.democracy.vocabulary.page.PageRequest;
+import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.plenary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class DataFilePlenaryReadModel implements PlenariesReadModel {
@@ -41,6 +43,13 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
 
 
     private List<Plenary> findPlenaries(String searchTerm) {
+        if (searchTerm != null && !searchTerm.isBlank()) {
+            var plenaries = allPlenariesReadModel
+                    .stream()
+                    .filter(createPlenaryFilter(searchTerm))
+                    .toList();
+            return plenaries;
+        }
         return allPlenariesReadModel;
     }
 
@@ -52,5 +61,20 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         return new LocalFileCache<Plenary>(motionSupplier, new File("target"), PLENARY_CACHE_JSON, Plenary.class);
     }
 
+    private static Predicate<Plenary> createPlenaryFilter(String searchTerm) {
+        return plenary -> containsSearchTerm(plenary.id(), searchTerm) ||
+                          containsSearchTerm(plenary.plenaryDate(), searchTerm) ||
+                          containsSearchTerm(plenary.legislature(), searchTerm) ||
+                          plenary.motions().stream().anyMatch(createMotionLinkFilter(searchTerm));
+    }
 
+    private static boolean containsSearchTerm(String subject, String searchTerm) {
+        return subject.toLowerCase().contains(searchTerm.toLowerCase());
+    }
+
+    private static Predicate<MotionLink> createMotionLinkFilter(String searchTerm) {
+        return motionLink -> containsSearchTerm(motionLink.motionId(), searchTerm) ||
+                             containsSearchTerm(motionLink.titleNL(), searchTerm) ||
+                             containsSearchTerm(motionLink.titleFR(), searchTerm);
+    }
 }
