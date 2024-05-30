@@ -204,7 +204,7 @@ public class DataModelMother {
                         MOTION_TITLE_NL_1,
                         MOTION_TITLE_FR_1,
                         MOTION_DESCRIPTION_1,
-                        "motion_docu_reference_1",
+                        "motion_docu_reference_2",
                         VOTING_ID_MOTION_1, PROPOSAL_ID_1, false
 
                 ));

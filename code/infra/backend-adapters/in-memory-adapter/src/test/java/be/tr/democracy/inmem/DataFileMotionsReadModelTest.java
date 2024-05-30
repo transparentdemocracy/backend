@@ -1,10 +1,10 @@
 package be.tr.democracy.inmem;
 
-import be.tr.democracy.vocabulary.page.PageRequest;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import be.tr.democracy.vocabulary.page.PageRequest;
+import org.junit.jupiter.api.Test;
 
 class DataFileMotionsReadModelTest {
 
@@ -13,10 +13,11 @@ class DataFileMotionsReadModelTest {
     public DataFileMotionsReadModelTest() {
         final var plenaryDTOFileLoader = new PlenaryDTOFileLoader("test-plenaries.json");
         readModel = new DataFileMotionsReadModel(
-                plenaryDTOFileLoader,
-                "test-votes.json",
-                "test-politician.json",
-                "target");
+            plenaryDTOFileLoader,
+            "test-votes.json",
+            "test-politician.json",
+            "test-summaries.json",
+            "target");
     }
 
     @Test

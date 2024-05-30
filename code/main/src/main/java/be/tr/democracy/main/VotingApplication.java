@@ -39,7 +39,7 @@ public class VotingApplication {
 
     @Bean
     DataFileMotionsReadModel dataFileQuery(PlenaryDTOFileLoader p) {
-        return new DataFileMotionsReadModel(p, "data/votes.json", "data/politicians.json","target");
+        return new DataFileMotionsReadModel(p, "data/votes.json", "data/politicians.json", "data/summaries.json", "target");
     }
 
     @Bean

@@ -73,6 +73,10 @@
                                     <directory>${basedir}/../../../voting-data/data/output/plenary/json</directory>
                                 </resource>
                                 <resource>
+                                    <directory>${basedir}/../../../voting-data/data/output/documents</directory>
+                                    <include>summaries.json</include> 
+                                </resource>
+                                <resource>
                                     <directory>${basedir}/../../../voting-data/data/output/politician</directory>
                                 </resource>
                             </resources>

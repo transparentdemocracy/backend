@@ -15,6 +15,8 @@ import static org.hamcrest.Matchers.*;
 
 class DataModelMapperTest {
 
+    // TODO: TEST DocumentReference parsing
+
     @Test
     void basicMapping() {
         //GIVEN
@@ -31,10 +33,14 @@ class DataModelMapperTest {
         final Map<String, PoliticianDTO> politicianDTO = politicianDTOMap();
         final List<VoteDTO> votes = twoMotionVotes();
         final var plenaries = buildPlenaries();
-        final var dataModelMapper = new DataModelMapper(politicianDTO, votes, plenaries);
-        return dataModelMapper;
+        final var summaries = buildSummaries();
+        return new DataModelMapper(politicianDTO, votes, plenaries, summaries);
     }
 
+    private static List<SummaryDTO> buildSummaries() {
+        // TODO: create summaries for testing
+        return List.of();
+    }
 
     private static void validate(List<MotionGroup> motionGroups) {
         assertThat(motionGroups, notNullValue());
