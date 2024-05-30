@@ -28,7 +28,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
 
     public DataFileMotionsReadModel(Supplier<List<MotionGroup>> motions) {
         this.allMotionsReadModel = motions.get();
-        logger.info("Motions read models loaded.");
+        logger.trace("Motions read models loaded.");
     }
 
     public List<MotionGroup> loadAll() {

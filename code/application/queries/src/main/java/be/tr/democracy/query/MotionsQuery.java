@@ -35,7 +35,7 @@ public class MotionsQuery implements MotionsService {
     public Page<MotionGroup> findMotions(String searchTerm, PageRequest pageRequest) {
         final var motionPage = motionsReadModel.find(searchTerm, pageRequest);
         final var sorted = motionPage.sortedPage(motionComparator);
-        logger.info("Loaded page {} motions from database for searchTerm {}", sorted.pageNr(), searchTerm);
+        logger.trace("Loaded page {} motions from database for searchTerm {}", sorted.pageNr(), searchTerm);
         return sorted;
     }
 

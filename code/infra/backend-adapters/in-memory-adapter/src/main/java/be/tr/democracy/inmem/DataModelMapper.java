@@ -6,13 +6,10 @@ import be.tr.democracy.vocabulary.motion.VoteCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 
 class DataModelMapper {
@@ -33,17 +30,25 @@ class DataModelMapper {
 
     public List<MotionGroup> buildAllMotionGroups() {
         return plenaryDTOS.stream()
+                .sorted(PlenaryComparator.INSTANCE)
                 .map(this::buildMotions)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
+    private static MotionGroup mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO, List<Motion> motions) {
+        return new MotionGroup(
+                motionGroupDTO.id(),
+                motionGroupDTO.title_nl(),
+                motionGroupDTO.title_fr(),
+                motions,
+                plenaryDTO.date());
+    }
+
     private List<MotionGroup> buildMotions(PlenaryDTO plenaryDTO) {
         return plenaryDTO.motion_groups()
-                // Pre-sort all motion groups on descending id (="{legislature}_{plenary date}_{plenary number}_{motion group id}") now,
-                // such that it does not need to sort on every incoming request:
                 .stream()
-                .sorted(Comparator.comparing(MotionGroupDTO::id))
+                .sorted(Comparator.comparing(MotionGroupDTO::plenary_agenda_item_number))
                 .map(x -> this.mapMotionGroup(plenaryDTO, x))
                 .flatMap(Optional::stream)
                 .toList();
@@ -54,23 +59,16 @@ class DataModelMapper {
         if (motions.isEmpty()) {
             logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
             return Optional.empty();
+        } else {
+            return Optional.of(mapMotionGroup(plenaryDTO, motionGroupDTO, motions));
         }
-        return Optional.of(new MotionGroup(
-                motionGroupDTO.id(),
-                motionGroupDTO.title_nl(),
-                motionGroupDTO.title_fr(),
-                motions,
-                plenaryDTO.date()));
 
     }
 
     private List<Motion> mapMotions(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
         return motionGroupDTO.motions()
                 .stream()
-                // Pre-sort the motions too, on motion sequence number (which is the only identifier changing across all motion ids
-                // within a same motion group... Motion IDs look like "{legislature}_{plenary date}_{plenary number}_{motion group id}_{motion id}")
-                // and sort in ascending order: displaying motions in the order that they have been voted on.
-                .sorted(Comparator.comparing(MotionDTO::id))
+                .sorted(comparing(MotionDTO::sequence_number))
                 .map(x -> buildMotion(x, plenaryDTO.id(), plenaryDTO.date()))
                 .flatMap(Optional::stream)
                 .toList();
@@ -78,33 +76,41 @@ class DataModelMapper {
 
     private Optional<Motion> buildMotion(MotionDTO motionDTO, String plenaryId, String plenaryDate) {
         try {
-            if (motionDTO.voting_id() == null) {
-                logger.error("The motion {} from plenary {} has no votes assigned to it, so we are ignoring it", motionDTO.id(), plenaryId);
-                return Optional.empty();
-            }
-            final Optional<VoteCount> voteCount = buildVoteCount(motionDTO);
-            if (voteCount.isEmpty()) {
-                logger.error("No VoteCount could be built for the motion {} from plenary {} so we are ignoring it.", motionDTO.id(), plenaryId);
-                return Optional.empty();
-            }
-
-            final var builder = Motion.newBuilder().withDate(plenaryDate);
-            voteCount.ifPresent(builder::withVoteCount);
-            builder.withPlenaryId(plenaryId)
-                    .withMotionId(motionDTO.id())
-                    .withDocumentReference(motionDTO.documents_reference())
-                    //TODO there is no FR/NL discussion
-                    .withDescriptionFR(motionDTO.description())
-                    .withDescriptionNL(motionDTO.description())
-                    .withNumberInPlenary(motionDTO.sequence_number());
-
-            fillTitle(motionDTO, builder);
-            return Optional.of(builder.build());
+            return buildMotionExpectingExceptions(motionDTO, plenaryId, plenaryDate);
 
         } catch (Throwable exception) {
             logger.error("Error occurred when building motion {}", motionDTO.id(), exception);
             return Optional.empty();
         }
+    }
+
+    private Optional<Motion> buildMotionExpectingExceptions(MotionDTO motionDTO, String plenaryId, String plenaryDate) {
+        if (motionDTO.voting_id() == null) {
+            logger.error("The motion {} from plenary {} has no votes assigned to it, so we are ignoring it", motionDTO.id(), plenaryId);
+            return Optional.empty();
+        }
+        final Optional<VoteCount> voteCount = buildVoteCount(motionDTO);
+        if (voteCount.isEmpty()) {
+            logger.error("No VoteCount could be built for the motion {} from plenary {} so we are ignoring it.", motionDTO.id(), plenaryId);
+            return Optional.empty();
+        } else {
+            return buildMotion(motionDTO, plenaryId, plenaryDate, voteCount);
+        }
+    }
+
+    private Optional<Motion> buildMotion(MotionDTO motionDTO, String plenaryId, String plenaryDate, Optional<VoteCount> voteCount) {
+        final var builder = Motion.newBuilder().withDate(plenaryDate);
+        voteCount.ifPresent(builder::withVoteCount);
+        builder.withPlenaryId(plenaryId)
+                .withMotionId(motionDTO.id())
+                .withDocumentReference(motionDTO.documents_reference())
+                //TODO there is no FR/NL discussion
+                .withDescriptionFR(motionDTO.description())
+                .withDescriptionNL(motionDTO.description())
+                .withNumberInPlenary(motionDTO.sequence_number());
+
+        fillTitle(motionDTO, builder);
+        return Optional.of(builder.build());
     }
 
     private void fillTitle(MotionDTO motionDTO, Motion.Builder builder) {
@@ -118,12 +124,19 @@ class DataModelMapper {
                             .withTitleNL(titleNL);
 
                 }, () -> {
-                    logger.warn("No proposal was found with proposal id {} from motion {}.", motionDTO.proposal_id(), motionDTO.id());
+                    logMissingProposal(motionDTO);
                     builder
                             .withTitleFR(motionDTO.title_fr())
                             .withTitleNL(motionDTO.title_nl());
                 }
         );
+    }
+
+    private void logMissingProposal(MotionDTO motionDTO) {
+        if (motionDTO.proposal_id() == null)
+            logger.warn("The motion did not reference a proposal {}", motionDTO.id());
+        else
+            logger.warn("No proposal was found with proposal id {} from motion {}.", motionDTO.proposal_id(), motionDTO.id());
     }
 
     private Optional<ProposalDTO> findProposal(String proposalId) {

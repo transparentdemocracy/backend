@@ -28,9 +28,7 @@ public class MotionController {
             @RequestParam(value = "search", defaultValue = "") String searchTerm,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "1") int size) {
-        logger.info("Getting motions for search {}", searchTerm);
-        logger.info("Getting motions for page {}", page);
-        logger.info("Getting motions for size {}", size);
+        logger.trace("Getting motions for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
         final var motionPage = this.motionsService.findMotions(searchTerm, new PageRequest(page, size));
         return Mono.just(MotionMapper.mapViewPage(motionPage));
     }
@@ -38,7 +36,7 @@ public class MotionController {
 
     @GetMapping("/motions/{id}")
     public Mono<MotionGroupViewDTO> getMotion(@PathVariable String id) {
-        logger.info("Getting motion for id {}", id);
+        logger.trace("Getting motion for id {}", id);
         final var motion = this.motionsService.getMotionGroup(id);
         logMotions(id, motion);
         return motion
@@ -48,8 +46,8 @@ public class MotionController {
     }
 
     private void logMotions(String id, Optional<MotionGroup> motion) {
-        motion.ifPresentOrElse(motionViewDTO -> logger.info("Found motion in motiongroup {}", motionViewDTO),
-                () -> logger.info("No motion found for id {}", id)
+        motion.ifPresentOrElse(motionViewDTO -> logger.trace("Found motion in motiongroup {}", motionViewDTO),
+                () -> logger.trace("No motion found for id {}", id)
         );
     }
 }

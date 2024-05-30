@@ -70,8 +70,13 @@ To run the application, execute the script
 ```  
 This will build and run the application. In order to have a frontend, you will need the companion project voting-website which will connect to this server. The configuration is currently limited to both application running on the same machine.
 
-If you run the application directly from your IDEA, make sure to have run the mvn build once before. Otherwise the data files from the other project will not be copied and thus not present. 
+If you run the application directly from your IDEA, make sure to have run the mvn build once before. Otherwise, the data files from the other project will not be copied and thus not present. 
 
+#### The application is a spring boot application with actuator enabled
+
++ http://localhost:8080/actuator/mappings will show the mappings
++ http://localhost:8080/actuator/info will show some information
++ http://localhost:8080/actuator/health will show its health status
 
 ### Deploy
 

@@ -25,9 +25,7 @@ public class PlenaryController {
             @RequestParam(value = "search", defaultValue = "") String searchTerm,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "1") int size) {
-        logger.info("Getting plenaries for search {}", searchTerm);
-        logger.info("Getting plenaries for page {}", page);
-        logger.info("Getting plenaries for size {}", size);
+        logger.trace("Getting plenaries for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
         final var motionPage = this.plenaryService.findPlenaries(searchTerm, new PageRequest(page, size));
         final var data = PlenaryMapper.mapViewPage(motionPage);
         return Mono.just(data);
@@ -36,7 +34,7 @@ public class PlenaryController {
 
     @GetMapping("/plenaries/{id}")
     public Mono<PlenaryViewDTO> getPlenary(@PathVariable String id) {
-        logger.info("Getting plenaries for id {}", id);
+        logger.trace("Getting plenaries for id {}", id);
         final var motion = this.plenaryService.getPlenary(id);
         return motion
                 .map(PlenaryMapper::map)

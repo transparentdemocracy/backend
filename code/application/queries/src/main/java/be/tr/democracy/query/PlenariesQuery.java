@@ -35,7 +35,7 @@ public class PlenariesQuery implements PlenaryService {
     public Page<Plenary> findPlenaries(String searchTerm, PageRequest pageRequest) {
         final var plenaryPage = plenariesReadModel.find(searchTerm, pageRequest);
         final var sorted = plenaryPage.sortedPage(plenaryComparator);
-        logger.info("Loaded page {} plenaries from database for searchTerm {}", sorted.pageNr(), searchTerm);
+        logger.trace("Loaded page {} plenaries from database for searchTerm {}", sorted.pageNr(), searchTerm);
         return sorted;
     }
 

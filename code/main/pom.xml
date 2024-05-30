@@ -47,6 +47,13 @@
                 <configuration>
                     <mainClass>be.tr.democracy.main.VotingApplication</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Copy the data files from another location into the classpath -->
             <plugin>

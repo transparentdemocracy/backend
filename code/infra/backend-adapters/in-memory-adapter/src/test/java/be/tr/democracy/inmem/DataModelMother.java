@@ -19,12 +19,14 @@ public class DataModelMother {
     public static final String PROPOSAL_ID_4 = "proposal_4";
     public static final String VOTING_ID_MOTION_1 = "voting_id_motion_1";
     public static final String VOTING_ID_MOTION_2 = "voting_id_motion_2";
-    public static final String MOTION_ID_1 = "motion_id_1";
-    public static final String MOTION_ID_2 = "motion_id_2";
-    public static final String MOTION_ID_3 = "motion_id_3";
-    public static final String MOTION_ID_4 = "motion_id_4";
-    public static final String PLENARY_DATE_A = "22-05-2024";
-    public static final String PLENARY_DATE_B = "30-05-2024";
+    public static final String MOTION_ID_1 = "first_motion_id";
+    public static final String MOTION_ID_2 = "second_motion_id";
+    public static final String MOTION_ID_3 = "third_motion_id";
+    public static final String MOTION_ID_4 = "fourth_motion_id";
+    //Expected date format to be YYYY-MM-DD : "2021-09-23"
+    public static final String PLENARY_DATE_A_20_MAY = "2024-05-20";
+    public static final String PLENARY_DATE_B_30_MAY = "2024-05-30";
+    public static final String PLENARY_DATE_CORONA = "2020-03-13";
     public static final String MOTION_DESCRIPTION_1 = "motion_description_1";
     public static final String MOTION_DESCRIPTION_2 = "motion_description_2";
     public static final String MOTION_DESCRIPTION_3 = "motion_description_3";
@@ -102,7 +104,7 @@ public class DataModelMother {
         final var proposalDiscussions = buildProposalDiscussions();
         final List<MotionGroupDTO> motionGroups = buildMotionGroupsA();
         return new PlenaryDTO("Plenary_1",
-                1, 55, PLENARY_DATE_A,
+                1, 55, PLENARY_DATE_A_20_MAY,
                 "pdf_url", "html_url", proposalDiscussions, motionGroups
 
 
@@ -119,12 +121,16 @@ public class DataModelMother {
         final var proposalDiscussions = buildProposalDiscussions();
         return
                 List.of(
-                        new PlenaryDTO("Plenary_1",
-                                1, 55, PLENARY_DATE_A,
-                                "pdf_url", "html_url", proposalDiscussions, buildMotionGroupsA()),
+                        new PlenaryDTO("Plenary_Coronoa",
+                                1, 50, PLENARY_DATE_CORONA,
+                                "pdf_url", "html_url", List.of(), buildMotionGroupsCorona()),
                         new PlenaryDTO("Plenary_2",
-                                1, 55, PLENARY_DATE_B,
-                                "pdf_url", "html_url", List.of(), buildMotionGroupsB()));
+                                1, 55, PLENARY_DATE_B_30_MAY,
+                                "pdf_url", "html_url", List.of(), buildMotionGroupsB()),
+                        new PlenaryDTO("Plenary_1",
+                                1, 55, PLENARY_DATE_A_20_MAY,
+                                "pdf_url", "html_url", proposalDiscussions, buildMotionGroupsA())
+                );
     }
 
     private static List<VoteDTO> exampleVotes(String votingIdMotion1) {
@@ -139,25 +145,61 @@ public class DataModelMother {
     }
 
     private static List<MotionGroupDTO> buildMotionGroupsA() {
-        return List.of(new MotionGroupDTO("motion_group_disc_1", 1,
-                "motion_group_title_nl_1",
-                "motion_group_title_fr_1",
-                "motion_group_docu_ref_1",
-                PROPOSAL_DISCUSSION_1,
-                buildFirstMotionDTOs()));
+        return List.of(new MotionGroupDTO("motion_group_disc_A_2", 2,
+                        "motion_group_title_nl_A_2",
+                        "motion_group_title_fr_A_2",
+                        "motion_group_docu_ref_A_2",
+                        PROPOSAL_DISCUSSION_1,
+                        buildFirstMotionDTOs()),
+                new MotionGroupDTO("motion_group_disc_A_1", 1,
+                        "motion_group_title_nl_A_1",
+                        "motion_group_title_fr_A_1",
+                        "motion_group_docu_ref_A_1",
+                        PROPOSAL_DISCUSSION_1,
+                        buildFirstMotionDTOs())
+        );
     }
 
     private static List<MotionGroupDTO> buildMotionGroupsB() {
-        return List.of(new MotionGroupDTO("motion_group_disc_B", 1,
-                "motion_group_title_nl_B",
-                "motion_group_title_fr_B",
-                "motion_group_docu_ref_B",
-                PROPOSAL_DISCUSSION_2,
-                buildSecondMotionDTOs()));
+        return List.of(new MotionGroupDTO("motion_group_disc_B_2", 2,
+                        "motion_group_title_nl_B_2",
+                        "motion_group_title_fr_B_2",
+                        "motion_group_docu_ref_B_2",
+                        PROPOSAL_DISCUSSION_2,
+                        buildSecondMotionDTOs()),
+                new MotionGroupDTO("motion_group_disc_B_1", 1,
+                        "motion_group_title_nl_B_1",
+                        "motion_group_title_fr_B_1",
+                        "motion_group_docu_ref_B_1",
+                        PROPOSAL_DISCUSSION_1,
+                        buildFirstMotionDTOs()));
+    }
+
+    private static List<MotionGroupDTO> buildMotionGroupsCorona() {
+        return List.of(new MotionGroupDTO("motion_group_disc_C_2", 2,
+                        "motion_group_title_nl_C_2",
+                        "motion_group_title_fr_C_2",
+                        "motion_group_docu_ref_C_2",
+                        PROPOSAL_DISCUSSION_2,
+                        buildSecondMotionDTOs()),
+                new MotionGroupDTO("motion_group_disc_C_1", 1,
+                        "motion_group_title_nl_C_1",
+                        "motion_group_title_fr_C_1",
+                        "motion_group_docu_ref_C_1",
+                        PROPOSAL_DISCUSSION_2,
+                        buildFirstMotionDTOs()));
     }
 
     private static List<MotionDTO> buildFirstMotionDTOs() {
         return List.of(
+                new MotionDTO(MOTION_ID_2, 2,
+                        MOTION_TITLE_NL_2,
+                        MOTION_TITLE_FR_2,
+                        MOTION_DESCRIPTION_2,
+                        "motion_docu_reference_2",
+                        VOTING_ID_MOTION_2, PROPOSAL_ID_2, false
+
+                ),
                 new MotionDTO(MOTION_ID_1, 1,
                         MOTION_TITLE_NL_1,
                         MOTION_TITLE_FR_1,
@@ -165,35 +207,25 @@ public class DataModelMother {
                         "motion_docu_reference_1",
                         VOTING_ID_MOTION_1, PROPOSAL_ID_1, false
 
-                ),
-
-                new MotionDTO(MOTION_ID_2, 1,
-                        MOTION_TITLE_NL_2,
-                        MOTION_TITLE_FR_2,
-                        MOTION_DESCRIPTION_2,
-                        "motion_docu_reference_2",
-                        VOTING_ID_MOTION_2, PROPOSAL_ID_2, false
-
                 ));
     }
 
     private static List<MotionDTO> buildSecondMotionDTOs() {
         return List.of(
+                new MotionDTO(MOTION_ID_4, 2,
+                        MOTION_TITLE_NL_4,
+                        MOTION_TITLE_FR_4,
+                        MOTION_DESCRIPTION_4,
+                        "motion_docu_reference_4",
+                        VOTING_ID_MOTION_2, PROPOSAL_ID_4, false
+
+                ),
                 new MotionDTO(MOTION_ID_3, 1,
                         MOTION_TITLE_NL_3,
                         MOTION_TITLE_FR_3,
                         MOTION_DESCRIPTION_3,
                         "motion_docu_reference_3",
                         VOTING_ID_MOTION_1, PROPOSAL_ID_3, false
-
-                ),
-
-                new MotionDTO(MOTION_ID_4, 1,
-                        MOTION_TITLE_NL_4,
-                        MOTION_TITLE_FR_4,
-                        MOTION_DESCRIPTION_4,
-                        "motion_docu_reference_4",
-                        VOTING_ID_MOTION_2, PROPOSAL_ID_4, false
 
                 ));
     }

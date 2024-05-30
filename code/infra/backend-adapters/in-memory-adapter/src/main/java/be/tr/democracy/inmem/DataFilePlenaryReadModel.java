@@ -27,7 +27,7 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         // such that it does not need to sort on every incoming request:
         this.allPlenariesReadModel.sort(Comparator.comparing(Plenary::id).reversed());
 
-        logger.info("Plenary read models loaded.");
+        logger.trace("Plenary read models loaded.");
     }
 
     @Override
@@ -44,11 +44,10 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
 
     private List<Plenary> findPlenaries(String searchTerm) {
         if (searchTerm != null && !searchTerm.isBlank()) {
-            var plenaries = allPlenariesReadModel
+            return allPlenariesReadModel
                     .stream()
                     .filter(createPlenaryFilter(searchTerm))
                     .toList();
-            return plenaries;
         }
         return allPlenariesReadModel;
     }
