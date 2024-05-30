@@ -65,16 +65,16 @@ class DataModelMapperTest {
         assertThat(third.votingDate(), is(PLENARY_DATE_B_30_MAY));
         assertThat(third.descriptionNL(), is(MOTION_DESCRIPTION_3));
         assertThat(third.descriptionFR(), is(MOTION_DESCRIPTION_3));
-        assertThat(third.titleNL(), is(PROPOSAL_TITLE_NL_3));
-        assertThat(third.titleFR(), is(PROPOSAL_TITLE_FR_3));
+        assertThat(third.titleNL(), is(MOTION_TITLE_NL_3));
+        assertThat(third.titleFR(), is(MOTION_TITLE_FR_3));
 
         final var fourth = motionsSecondGroup.get(1);
         assertThat(fourth.motionId(), is(MOTION_ID_4));
         assertThat(fourth.votingDate(), is(PLENARY_DATE_B_30_MAY));
         assertThat(fourth.descriptionNL(), is(MOTION_DESCRIPTION_4));
         assertThat(fourth.descriptionFR(), is(MOTION_DESCRIPTION_4));
-        assertThat(fourth.titleNL(), is(PROPOSAL_TITLE_NL_4));
-        assertThat(fourth.titleFR(), is(PROPOSAL_TITLE_FR_4));
+        assertThat(fourth.titleNL(), is(MOTION_TITLE_NL_4));
+        assertThat(fourth.titleFR(), is(MOTION_TITLE_FR_4));
     }
 
     private static void validateFirstMotionGroupB(MotionGroup firstMotionGroupB) {
@@ -84,16 +84,16 @@ class DataModelMapperTest {
         assertThat(firstB.votingDate(), is(PLENARY_DATE_B_30_MAY));
         assertThat(firstB.descriptionNL(), is(MOTION_DESCRIPTION_1));
         assertThat(firstB.descriptionFR(), is(MOTION_DESCRIPTION_1));
-        assertThat(firstB.titleNL(), is(PROPOSAL_TITLE_NL_1));
-        assertThat(firstB.titleFR(), is(PROPOSAL_TITLE_FR_1));
+        assertThat(firstB.titleNL(), is(MOTION_TITLE_NL_1));
+        assertThat(firstB.titleFR(), is(MOTION_TITLE_FR_1));
 
         final var secondB = motionsFirstMotionGroupB.get(1);
         assertThat(secondB.motionId(), is(MOTION_ID_2));
         assertThat(secondB.votingDate(), is(PLENARY_DATE_B_30_MAY));
         assertThat(secondB.descriptionNL(), is(MOTION_DESCRIPTION_2));
         assertThat(secondB.descriptionFR(), is(MOTION_DESCRIPTION_2));
-        assertThat(secondB.titleNL(), is(PROPOSAL_TITLE_NL_2));
-        assertThat(secondB.titleFR(), is(PROPOSAL_TITLE_FR_2));
+        assertThat(secondB.titleNL(), is(MOTION_TITLE_NL_2));
+        assertThat(secondB.titleFR(), is(MOTION_TITLE_FR_2));
     }
 
     private static void validateFirstMotionGroupA(MotionGroup firstMotionGroupA) {
@@ -103,8 +103,8 @@ class DataModelMapperTest {
         assertThat(firstMotion.votingDate(), is(PLENARY_DATE_A_20_MAY));
         assertThat(firstMotion.descriptionNL(), is(MOTION_DESCRIPTION_1));
         assertThat(firstMotion.descriptionFR(), is(MOTION_DESCRIPTION_1));
-        assertThat(firstMotion.titleNL(), is(PROPOSAL_TITLE_NL_1));
-        assertThat(firstMotion.titleFR(), is(PROPOSAL_TITLE_FR_1));
+        assertThat(firstMotion.titleNL(), is(MOTION_TITLE_NL_1));
+        assertThat(firstMotion.titleFR(), is(MOTION_TITLE_FR_1));
 
 
         final var secondMotion = motionsFirstGroup.get(1);
@@ -112,8 +112,8 @@ class DataModelMapperTest {
         assertThat(secondMotion.votingDate(), is(PLENARY_DATE_A_20_MAY));
         assertThat(secondMotion.descriptionNL(), is(MOTION_DESCRIPTION_2));
         assertThat(secondMotion.descriptionFR(), is(MOTION_DESCRIPTION_2));
-        assertThat(secondMotion.titleNL(), is(PROPOSAL_TITLE_NL_2));
-        assertThat(secondMotion.titleFR(), is(PROPOSAL_TITLE_FR_2));
+        assertThat(secondMotion.titleNL(), is(MOTION_TITLE_NL_2));
+        assertThat(secondMotion.titleFR(), is(MOTION_TITLE_FR_2));
     }
 
     /**

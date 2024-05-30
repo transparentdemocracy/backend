@@ -56,10 +56,10 @@ class DataModelMapper {
 
     public List<MotionGroup> buildAllMotionGroups() {
         return plenaryDTOS.stream()
-            .sorted(PlenaryComparator.INSTANCE)
-                .map(this::buildMotions)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+                .sorted(PlenaryComparator.INSTANCE)
+                .map(this::buildMotionGroups)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     private static MotionGroup mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO, List<Motion> motions) {
@@ -71,7 +71,7 @@ class DataModelMapper {
                 plenaryDTO.date());
     }
 
-    private List<MotionGroup> buildMotions(PlenaryDTO plenaryDTO) {
+    private List<MotionGroup> buildMotionGroups(PlenaryDTO plenaryDTO) {
         return plenaryDTO.motion_groups()
                 .stream()
                 .sorted(Comparator.comparing(MotionGroupDTO::plenary_agenda_item_number))
@@ -139,40 +139,11 @@ class DataModelMapper {
     }
 
     private void fillTitle(MotionDTO motionDTO, Motion.Builder builder) {
-        final Optional<ProposalDTO> proposalDTO = findProposal(motionDTO.proposal_id());
-        proposalDTO.ifPresentOrElse(
-                proposal -> {
-                    final var titleFR = (proposal.title_fr().isBlank()) ? motionDTO.title_fr() : proposal.title_fr();
-                    final var titleNL = (proposal.title_nl().isBlank()) ? motionDTO.title_nl() : proposal.title_nl();
-                    builder
-                            .withTitleFR(titleFR)
-                            .withTitleNL(titleNL);
-
-                }, () -> {
-                    logMissingProposal(motionDTO);
-                    builder
-                            .withTitleFR(motionDTO.title_fr())
-                            .withTitleNL(motionDTO.title_nl());
-                }
-        );
+        builder
+                .withTitleFR(motionDTO.title_fr())
+                .withTitleNL(motionDTO.title_nl());
     }
 
-    private void logMissingProposal(MotionDTO motionDTO) {
-        if (motionDTO.proposal_id() == null)
-            logger.warn("The motion did not reference a proposal {}", motionDTO.id());
-        else
-            logger.warn("No proposal was found with proposal id {} from motion {}.", motionDTO.proposal_id(), motionDTO.id());
-    }
-
-    private Optional<ProposalDTO> findProposal(String proposalId) {
-        return this.plenaryDTOS.stream()
-            .map(PlenaryDTO::proposal_discussions)
-            .flatMap(Collection::stream)
-            .map(ProposalDiscussionDTO::proposals)
-            .flatMap(Collection::stream)
-            .filter(x -> x.id().equals(proposalId))
-            .findFirst();
-    }
 
     private Optional<VoteCount> buildVoteCount(MotionDTO motionDTO) {
         final var motionVotes = getMotionVotes(motionDTO);
