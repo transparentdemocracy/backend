@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +39,11 @@ class DataModelMapper {
     }
 
     private List<MotionGroup> buildMotions(PlenaryDTO plenaryDTO) {
-        return plenaryDTO.motion_groups().stream()
+        return plenaryDTO.motion_groups()
+                // Pre-sort all motion groups on descending id (="{legislature}_{plenary date}_{plenary number}_{motion group id}") now,
+                // such that it does not need to sort on every incoming request:
+                .stream()
+                .sorted(Comparator.comparing(MotionGroupDTO::id))
                 .map(x -> this.mapMotionGroup(plenaryDTO, x))
                 .flatMap(Optional::stream)
                 .toList();
@@ -50,7 +55,8 @@ class DataModelMapper {
             logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
             return Optional.empty();
         }
-        return Optional.of(new MotionGroup(motionGroupDTO.id(),
+        return Optional.of(new MotionGroup(
+                motionGroupDTO.id(),
                 motionGroupDTO.title_nl(),
                 motionGroupDTO.title_fr(),
                 motions,
@@ -61,6 +67,10 @@ class DataModelMapper {
     private List<Motion> mapMotions(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
         return motionGroupDTO.motions()
                 .stream()
+                // Pre-sort the motions too, on motion sequence number (which is the only identifier changing across all motion ids
+                // within a same motion group... Motion IDs look like "{legislature}_{plenary date}_{plenary number}_{motion group id}_{motion id}")
+                // and sort in ascending order: displaying motions in the order that they have been voted on.
+                .sorted(Comparator.comparing(MotionDTO::id))
                 .map(x -> buildMotion(x, plenaryDTO.id(), plenaryDTO.date()))
                 .flatMap(Optional::stream)
                 .toList();

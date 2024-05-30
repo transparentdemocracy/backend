@@ -23,8 +23,7 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
 
         // Pre-sort all plenaries on descending id (="{legislature}_{plenary date}_{plenary number}") now,
         // such that it does not need to sort on every incoming request:
-        this.allPlenariesReadModel.sort(
-                Comparator.comparing(Plenary::id).reversed());
+        this.allPlenariesReadModel.sort(Comparator.comparing(Plenary::id).reversed());
 
         logger.info("Plenary read models loaded.");
     }

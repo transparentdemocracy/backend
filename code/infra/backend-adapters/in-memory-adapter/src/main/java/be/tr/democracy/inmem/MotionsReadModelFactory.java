@@ -4,6 +4,7 @@ import be.tr.democracy.vocabulary.motion.MotionGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -16,6 +17,11 @@ enum MotionsReadModelFactory {
         logger.info("Loading DataFileMotions from {}", plenariesFileName);
         final var dataFileLoader = new JSONDataFileLoader();
         final List<PlenaryDTO> plenaryDTOS = plenariesFileName.get();
+
+        // Pre-sort all plenaries on descending id (="{legislature}_{plenary date}_{plenary number}") now,
+        // such that it does not need to sort on every incoming request:
+        plenaryDTOS.sort(Comparator.comparing(PlenaryDTO::id).reversed());
+
         final Map<String, PoliticianDTO> politicianDTOS = dataFileLoader.loadPolitician(politiciansFileName);
         final List<VoteDTO> voteDTOS = dataFileLoader.loadVotes(votesFileName);
 
