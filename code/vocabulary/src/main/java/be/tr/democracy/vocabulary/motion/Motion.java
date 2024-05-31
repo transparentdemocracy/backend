@@ -9,8 +9,6 @@ public record Motion(
         int sequenceNumberInPlenary,
         String titleNL,
         String titleFR,
-        //TODO this field is depracated
-        String documentReference,
         DocumentReference newDocumentReference,
         String descriptionNL,
         String descriptionFR,
@@ -21,7 +19,6 @@ public record Motion(
         requireNonNull(plenaryId, "plenaryId must not be null");
         requireNonNull(titleNL, "titleNL must not be null");
         requireNonNull(titleFR, "titleFR must not be null");
-        requireNonNull(documentReference, "documentReference must not be null");
         requireNonNull(newDocumentReference, "newDocumentReference must not be null");
         requireNonNull(descriptionNL, "descriptionNL must not be null");
         requireNonNull(descriptionFR, "descriptionFR must not be null");
@@ -40,7 +37,6 @@ public record Motion(
                 builder.numberInPlenary,
                 builder.titleNL,
                 builder.titleFR,
-                builder.documentReference,
                 builder.newDocumentReference,
                 builder.descriptionNL,
                 builder.descriptionFR,

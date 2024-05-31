@@ -22,7 +22,6 @@ enum MotionsReadModelFactory {
         final List<SummaryDTO> summaryDTOS = dataFileLoader.loadSummaries(summariesFileName);
 
         logger.trace("Data loaded in memory.");
-        // TODO: load summaries json
         final DataModelMapper dataModelMapper = new DataModelMapper(politicianDTOS, voteDTOS, plenaryDTOS, summaryDTOS);
         return buildAllMotionsReadModel(dataModelMapper);
     }

@@ -11,7 +11,7 @@ enum DocumentReferenceMapper {
         }
 
         return new DocumentReferenceViewDTO(
-                documentReference.spec(),
+                documentReference.documentReference(),
                 documentReference.documentMainUrl(),
                 documentReference.subDocuments().stream().map(it ->
                         new SubDocumentViewDTO(it.documentNr(), it.documentSubNr(), it.documentPdfUrl(), it.summaryNL(), it.summaryFR())

@@ -81,7 +81,7 @@ class DocumentReferenceParser {
         if (numMatcher.matches()) {
             return new DocumentReference(documentReference, mainDocumentUrl(Integer.parseInt(numMatcher.group(0))), List.of());
         } else {
-            return new DocumentReference(documentReference, null, List.of());
+            return new DocumentReference(documentReference, "", List.of());
         }
     }
 

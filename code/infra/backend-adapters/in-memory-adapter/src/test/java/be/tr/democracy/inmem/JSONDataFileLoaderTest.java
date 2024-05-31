@@ -57,5 +57,22 @@ class JSONDataFileLoaderTest {
         assertEquals("Vooruit", first.party());
     }
 
+    @Test
+    public void parseTestSummaries() {
+
+        final var fileName = "test-summaries.json";
+        final var jsonPlenariesLoader = new JSONDataFileLoader();
+
+        final var summaryDTOS = jsonPlenariesLoader.loadSummaries(fileName);
+        assertNotNull(summaryDTOS);
+        assertEquals(4, summaryDTOS.size());
+
+        final var summaryDTO = summaryDTOS.get(3);
+        assertEquals("1338/1", summaryDTO.document_id());
+        assertEquals("blabla over elektrische snelle fietsen", summaryDTO.summary_nl());
+        assertEquals("speed pedelecs", summaryDTO.summary_fr());
+
+    }
+
 
 }

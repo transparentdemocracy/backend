@@ -38,13 +38,13 @@ public class MotionsMother {
         new PartyVotes(CRONOS_PARTY, 1));
     static final Votes ABS_VOTES = Votes.absVotes(1, ONE_CRONOS_PARTY_VOTES);
     static final Motion FIRST_MOTION =
-        new Motion("first", "plenaryA", "2024-01-01", 1, "NL Title 1", "FR Title 1", "2459/1-1", new DocumentReference("2459/1-1", null, List.of()),
+        new Motion("first", "plenaryA", "2024-01-01", 1, "NL Title 1", "FR Title 1",  new DocumentReference("2459/1-1", null, List.of()),
             "De eerste", "Le premier", createVoteCount());
     static final Motion SECOND_MOTION =
-        new Motion("second", "plenaryA", "2024-01-01", 1, "NL Title 2", "FR Title 2", "2459/1-2", new DocumentReference("2459/1-2", null, List.of()),
+        new Motion("second", "plenaryA", "2024-01-01", 1, "NL Title 2", "FR Title 2",  new DocumentReference("2459/1-2", null, List.of()),
             "De tweede", "Le deuxieme", createNoNOsVoteCount());
     static final Motion FOURTH_MOTION =
-        new Motion("fourth", "plenaryB", "2024-01-03", 1, "NL Title 4", "FR Title 4", "2459/1-4", new DocumentReference("2459/1-4", null, List.of()),
+        new Motion("fourth", "plenaryB", "2024-01-03", 1, "NL Title 4", "FR Title 4",  new DocumentReference("2459/1-4", null, List.of()),
             "De vierde", "Le quatrieme", createVoteCount());
     static final List<PartyVotes> SEVEN_PARTY_VOTES = List.of(
         new PartyVotes(GUIDO_PARTY, 3),
@@ -52,7 +52,7 @@ public class MotionsMother {
         new PartyVotes(SOCRATES_PARTY, 1),
         new PartyVotes(CRONOS_PARTY, 1));
     static final Motion THIRD_MOTION =
-        new Motion("third", "plenaryB", "2024-01-02", 1, "NL Title 3", "FR Title 3", "2459/1-3", new DocumentReference("2459/1-3", null, List.of()), "De derde", "Le troisieme", createSevenVoteCount());
+        new Motion("third", "plenaryB", "2024-01-02", 1, "NL Title 3", "FR Title 3",  new DocumentReference("2459/1-3", null, List.of()), "De derde", "Le troisieme", createSevenVoteCount());
 
     static final List<Motion> DUMMY_MOTIONS = List.of(
         FIRST_MOTION,

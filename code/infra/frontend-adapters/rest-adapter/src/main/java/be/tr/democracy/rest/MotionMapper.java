@@ -28,7 +28,6 @@ public class MotionMapper {
                 mapVotes(voteCount.yesVotes()),
                 mapVotes(voteCount.noVotes()),
                 mapVotes(voteCount.abstention()),
-                motion.documentReference(),
                 documentReference,
                 motion.votingDate(),
                 motion.descriptionNL(),

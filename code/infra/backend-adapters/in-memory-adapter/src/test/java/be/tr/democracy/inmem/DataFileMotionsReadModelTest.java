@@ -1,10 +1,10 @@
 package be.tr.democracy.inmem;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DataFileMotionsReadModelTest {
 
@@ -13,11 +13,11 @@ class DataFileMotionsReadModelTest {
     public DataFileMotionsReadModelTest() {
         final var plenaryDTOFileLoader = new PlenaryDTOFileLoader("test-plenaries.json");
         readModel = new DataFileMotionsReadModel(
-            plenaryDTOFileLoader,
-            "test-votes.json",
-            "test-politician.json",
-            "test-summaries.json",
-            "target");
+                plenaryDTOFileLoader,
+                "test-votes.json",
+                "test-politician.json",
+                "test-summaries.json"
+        );
     }
 
     @Test
@@ -37,7 +37,7 @@ class DataFileMotionsReadModelTest {
         assertNotNull(motion.descriptionFR());
         assertNotNull(motion.titleFR());
         assertNotNull(motion.titleNL());
-        assertNotNull(motion.documentReference());
+        assertNotNull(motion.newDocumentReference());
         assertNotNull(motion.voteCount());
         assertEquals(1, motion.voteCount().noVotes().nrOfVotes());
         assertEquals(1, motion.voteCount().yesVotes().nrOfVotes());
@@ -47,6 +47,15 @@ class DataFileMotionsReadModelTest {
     @Test
     void findMotions() {
         final var motionPage = readModel.find("interpellatie", new PageRequest(1, 10));
+        assertNotNull(motionPage);
+        assertEquals(10, motionPage.pageSize());
+        assertEquals(1, motionPage.pageNr());
+        assertEquals(2, motionPage.values().size());
+    }
+
+    @Test
+    void findMotionsThroughSummary() {
+        final var motionPage = readModel.find("elektrische", new PageRequest(1, 10));
         assertNotNull(motionPage);
         assertEquals(10, motionPage.pageSize());
         assertEquals(1, motionPage.pageNr());
