@@ -158,7 +158,7 @@ resource "aws_lb_target_group" "target_group" {
   health_check {
     path                                    = "/actuator/health"
     port                                    = 8080
-    protocol                                = "http"
+    protocol                                = "HTTP"
     healthy_threshold                       = 3
     unhealthy_threshold                     = 3
     matcher                                 = "200-399"
