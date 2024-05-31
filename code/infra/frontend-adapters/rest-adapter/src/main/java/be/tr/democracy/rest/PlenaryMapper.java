@@ -1,7 +1,7 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.page.Page;
+import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.plenary.Plenary;
 
 import java.util.List;
@@ -28,6 +28,6 @@ public class PlenaryMapper {
     }
 
     private static MotionLinkViewDTO map(MotionLink x) {
-        return new MotionLinkViewDTO(x.motionId(), x.titleNL(), x.titleFR());
+        return new MotionLinkViewDTO(x.motionId(), "" + x.agendaSeqNr(), "" + x.voteSeqNr(), x.titleNL(), x.titleFR());
     }
 }

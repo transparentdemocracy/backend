@@ -15,8 +15,6 @@ import static org.hamcrest.Matchers.*;
 
 class DataModelMapperTest {
 
-    // TODO: TEST DocumentReference parsing
-
     @Test
     void basicMapping() {
         //GIVEN

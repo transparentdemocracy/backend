@@ -1,6 +1,5 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.vocabulary.motion.DocumentReference;
 import be.tr.democracy.vocabulary.motion.Motion;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.motion.PartyVotes;
@@ -21,41 +20,29 @@ public class MotionMapper {
 
     public static MotionViewDTO map(Motion motion) {
         final var voteCount = motion.voteCount();
+        final var documentReference = DocumentReferenceMapper.INSTANCE.mapDocumentReference(motion.newDocumentReference());
         return new MotionViewDTO(
-            motion.motionId(),
-            motion.titleNL(),
-            motion.titleFR(),
-            mapVotes(voteCount.yesVotes()),
-            mapVotes(voteCount.noVotes()),
-            mapVotes(voteCount.abstention()),
-            motion.documentReference(),
-            mapDocumentReference(motion.newDocumentReference()),
-            motion.votingDate(),
-            motion.descriptionNL(),
-            motion.descriptionFR(),
-            voteCount.votePassed());
+                motion.motionId(),
+                motion.titleNL(),
+                motion.titleFR(),
+                mapVotes(voteCount.yesVotes()),
+                mapVotes(voteCount.noVotes()),
+                mapVotes(voteCount.abstention()),
+                motion.documentReference(),
+                documentReference,
+                motion.votingDate(),
+                motion.descriptionNL(),
+                motion.descriptionFR(),
+                voteCount.votePassed());
     }
 
-    private static DocumentReferenceDTO mapDocumentReference(DocumentReference documentReference) {
-        if (documentReference == null) {
-            return null;
-        }
-
-        return new DocumentReferenceDTO(
-            documentReference.spec(),
-            documentReference.documentMainUrl(),
-            documentReference.subDocuments().stream().map(it ->
-                new SubDocumentDTO(it.documentNr(), it.documentSubNr(), it.documentPdfUrl(), it.summaryNL(), it.summaryFR())
-            ).toList()
-        );
-    }
 
     public static PageViewDTO<MotionGroupViewDTO> mapViewPage(Page<MotionGroup> motionPage) {
         final var motionViewDTOS = motionPage.values().stream().map(MotionMapper::map).toList();
         return new PageViewDTO<MotionGroupViewDTO>(motionPage.pageNr(),
-            motionPage.pageSize(),
-            motionPage.totalPages(),
-            motionViewDTOS);
+                motionPage.pageSize(),
+                motionPage.totalPages(),
+                motionViewDTOS);
     }
 
     private static MotionGroupViewDTO toMotionGroup(MotionViewDTO motionViewDTO) {
@@ -69,9 +56,9 @@ public class MotionMapper {
     private static List<PartyVotesViewDTO> mapVoteCount(Votes votes) {
         final int total = votes.nrOfVotes();
         return votes.partyVotes()
-            .stream()
-            .map(x -> buildPartyVotes(x, total))
-            .toList();
+                .stream()
+                .map(x -> buildPartyVotes(x, total))
+                .toList();
     }
 
     private static PartyVotesViewDTO buildPartyVotes(PartyVotes x, int total) {

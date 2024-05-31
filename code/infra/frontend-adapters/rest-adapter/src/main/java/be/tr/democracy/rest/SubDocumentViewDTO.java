@@ -1,6 +1,6 @@
 package be.tr.democracy.rest;
 
-public record SubDocumentDTO(
+public record SubDocumentViewDTO(
     Integer documentNr,
     Integer documentSubNr,
     String documentPdfUrl,

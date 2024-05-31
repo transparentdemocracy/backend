@@ -2,9 +2,9 @@ package be.tr.democracy.rest;
 
 import java.util.List;
 
-public record DocumentReferenceDTO(
+public record DocumentReferenceViewDTO(
     String spec,
     String documentMainUrl,
-    List<SubDocumentDTO> subDocuments
+    List<SubDocumentViewDTO> subDocuments
 ) {
 }

@@ -54,10 +54,10 @@ public class LocalFileCache<T> implements Supplier<List<T>> {
             return null;
         }
         final var cacheFile = new File(actualCacheDir, cacheFileName);
-//        if (cacheFile.exists()) {
-//            LOGGER.info("reusing existing cacheFile {}", cacheFile.getAbsolutePath());
-//            return cacheFile;
-//        }
+        if (cacheFile.exists()) {
+            LOGGER.info("reusing existing cacheFile {}", cacheFile.getAbsolutePath());
+            return cacheFile;
+        }
         return createCacheFile(source, cacheFile);
 
 

@@ -13,6 +13,6 @@ public class PlenaryMother {
     }
 
     private static List<MotionLink> buildMotionLinks() {
-        return MotionsMother.DUMMY_MOTIONS.stream().map(x -> new MotionLink(x.motionId(), x.titleNL(), x.titleFR())).toList();
+        return MotionsMother.DUMMY_MOTIONS.stream().map(x -> new MotionLink(x.motionId(),1,2, x.titleNL(), x.titleFR())).toList();
     }
 }

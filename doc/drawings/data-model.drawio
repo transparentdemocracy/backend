@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-05-22T15:14:51.041Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="0aiLQ_9u6pBZhVRvdF6U" version="24.4.0" type="device">
+<mxfile host="Electron" modified="2024-05-31T07:32:58.786Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.8 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="PoFqfX7qDvCPdU3bEtDl" version="24.4.8" type="device">
   <diagram id="AAR1mRfeiqQyKMKh30_z" name="Page-1">
-    <mxGraphModel dx="1595" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="1239" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,7 +29,7 @@
         <mxCell id="J9bktaArhZ66ByUuH0eX-4" value="+ legislature: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="J9bktaArhZ66ByUuH0eX-1" vertex="1">
           <mxGeometry y="78" width="310" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="tHdkYAUki8lSc-bP6wRB-1" value="+ date: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="J9bktaArhZ66ByUuH0eX-1">
+        <mxCell id="tHdkYAUki8lSc-bP6wRB-1" value="+ date: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="J9bktaArhZ66ByUuH0eX-1" vertex="1">
           <mxGeometry y="110" width="310" height="32" as="geometry" />
         </mxCell>
         <mxCell id="J9bktaArhZ66ByUuH0eX-92" value="+ pdfReport: url" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="J9bktaArhZ66ByUuH0eX-1" vertex="1">
@@ -161,9 +161,6 @@
         <mxCell id="J9bktaArhZ66ByUuH0eX-130" value="Not all proposals become motions. But all motions are a proposal." style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="480" y="60" width="190" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="J9bktaArhZ66ByUuH0eX-131" value="A cancelled motion is a motion that was cancelled before people voted on it. So if cancelled is false, the motion can still pass of not." style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;position2=0;" parent="1" vertex="1">
-          <mxGeometry x="790" y="750" width="190" height="130" as="geometry" />
-        </mxCell>
         <mxCell id="J9bktaArhZ66ByUuH0eX-133" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="J9bktaArhZ66ByUuH0eX-132" target="J9bktaArhZ66ByUuH0eX-122" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -243,10 +240,7 @@
         <mxCell id="gQ0caooAG5JBceF9FNhk-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="J9bktaArhZ66ByUuH0eX-127" target="gQ0caooAG5JBceF9FNhk-24" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gQ0caooAG5JBceF9FNhk-26" value="voting_id is the concatenation of plenary_id and the voting number. This id makes it more explicit when a motion doesn&#39;t have any votings, because voting_id is nullable on Motion" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;position2=1;" parent="1" vertex="1">
-          <mxGeometry x="220" y="880" width="320" height="129" as="geometry" />
-        </mxCell>
-        <mxCell id="tHdkYAUki8lSc-bP6wRB-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="J9bktaArhZ66ByUuH0eX-99" target="J9bktaArhZ66ByUuH0eX-2">
+        <mxCell id="tHdkYAUki8lSc-bP6wRB-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="J9bktaArhZ66ByUuH0eX-99" target="J9bktaArhZ66ByUuH0eX-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="40" y="428" />
@@ -256,8 +250,22 @@
             <mxPoint x="10" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="tHdkYAUki8lSc-bP6wRB-5" value="The proposal id in which the proposal is discussed. Could be in another plenary" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#fff2cc;strokeColor=#d6b656;position2=0.32;" vertex="1" parent="1">
-          <mxGeometry x="360" y="640" width="190" height="80" as="geometry" />
+        <mxCell id="DIphP0yZr8vmzsNr7wD2-1" value="Summary" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="311.96000000000004" y="600" width="230" height="104" as="geometry">
+            <mxRectangle x="170" y="90" width="80" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DIphP0yZr8vmzsNr7wD2-2" value="+ document_id: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DIphP0yZr8vmzsNr7wD2-1">
+          <mxGeometry y="26" width="230" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DIphP0yZr8vmzsNr7wD2-4" value="+ summaryNL: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DIphP0yZr8vmzsNr7wD2-1">
+          <mxGeometry y="52" width="230" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DIphP0yZr8vmzsNr7wD2-5" value="+ summaryFR: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DIphP0yZr8vmzsNr7wD2-1">
+          <mxGeometry y="78" width="230" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DIphP0yZr8vmzsNr7wD2-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gQ0caooAG5JBceF9FNhk-22" target="DIphP0yZr8vmzsNr7wD2-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

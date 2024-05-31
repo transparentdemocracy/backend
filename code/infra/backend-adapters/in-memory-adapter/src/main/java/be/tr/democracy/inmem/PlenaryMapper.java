@@ -2,12 +2,15 @@ package be.tr.democracy.inmem;
 
 import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.plenary.Plenary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
 
 enum PlenaryMapper {
     INSTANCE;
+    private final Logger logger = LoggerFactory.getLogger(DataModelMapper.class);
 
     List<Plenary> mapThem(List<PlenaryDTO> plenaryDTOS) {
         return plenaryDTOS.stream().map(x -> new Plenary(
@@ -29,7 +32,17 @@ enum PlenaryMapper {
     }
 
     private MotionLink mapQ(MotionDTO motionDTO) {
-        return new MotionLink(motionDTO.id(), motionDTO.title_nl(), motionDTO.title_fr());
+        final var id = motionDTO.id();
+        try {
+            final var split = id.split("_");
+            final var last = split.length - 1;
+            final var voteSeqNr = Integer.parseInt(split[last].substring(1)) + 1;
+            final var agendaSeqNr = Integer.parseInt(split[last - 1]);
+            return new MotionLink(id, agendaSeqNr, voteSeqNr, motionDTO.title_nl(), motionDTO.title_fr());
+        } catch (Throwable e) {
+            logger.error("Error parsing the motion link, extracting the agendaSeqNr and voteSegNr", e);
+            return new MotionLink(id, 0, 0, motionDTO.title_nl(), motionDTO.title_fr());
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class JSONDataFileLoaderTest {
+    //TODO add test for summaries loading
 
     @Test
     public void parseTestPlenaries() {
@@ -35,7 +36,7 @@ class JSONDataFileLoaderTest {
         assertEquals(10, voteDTOS.size());
 
         final var first = voteDTOS.getFirst();
-        assertEquals( "7220",first.politician_id());
+        assertEquals("7220", first.politician_id());
         assertEquals("55_160_v1", first.voting_id());
         assertEquals("YES", first.vote_type());
     }
