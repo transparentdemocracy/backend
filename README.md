@@ -80,14 +80,41 @@ If you run the application directly from your IDEA, make sure to have run the mv
 
 ### Deploy
 
-To build the docker image
+1. Install Docker Desktop 
 
-```bash  
-./scripts/buildImage
-```
+   Also install Docker Desktop [on Mac](https://docs.docker.com/desktop/install/mac-install/), not `brew install docker`! 
+   See https://github.com/replicate/cog/issues/1382#issuecomment-1869183604.)
 
-To execute the docker image
+2. Build the Docker image:
 
-```bash
-./scripts/runImage
-```  
+   ```bash  
+   ./deployment/buildImage.sh
+   ```
+
+3. Execute the docker image locally to test if it works:
+
+   ```bash
+   ./deployment/runImage.sh
+   ```
+
+   Note that the docker image was built for a linux/amd64 platform (with the intention to run it on AWS), it will not match if you run another
+   platform (Mac/Windows). You'll get `WARNING: The requested image's platform (linux/amd64) does not match the detected host platform
+   (linux/arm64/v8) and no specific platform was requested` and potentially errors that don't occur when running this application locally.
+
+4. Follow this heavenly tutorial: https://earthly.dev/blog/deploy-dockcontainers-to-awsecs-using-terraform/ 
+   (Or skip it if you understand what all declarations in `deployment/terraform/application.tf` do.)
+   In any case, in `deployment/terraform/application.tf`, your AWS access key ID and secret access key must be filled.
+   You can start the creation of the infrastructure, command by command from the following file, or you can just run it all at once with this command:
+   
+   ```bash
+   ./runTerraform.sh
+   ```
+   
+   The created app_url is currently wddp-load-balancer-761216200.eu-west-3.elb.amazonaws.com. You can check in your `terraform.tfstate`.
+   
+5. Push the docker image to the Elastic Container Registry you've just created:
+   ```bash
+   ./deployment/pushImageToECR.sh
+   ```
+
+6. After a few seconds, max minutes, test the availability of this backend on the app_url, mentioned above.

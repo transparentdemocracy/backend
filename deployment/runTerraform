@@ -1,6 +1,0 @@
-cd terraform
-terraform validate
-terraform apply
-
-
-# app_url = "load-balancer-dev-1738297324.eu-west-1.elb.amazonaws.com"

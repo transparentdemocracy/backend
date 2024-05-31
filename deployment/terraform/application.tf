@@ -11,7 +11,10 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  region = "eu-west-3"
+  # DO NOT PUSH THESE KEYS TO GIT!!!!!!!
+  access_key = ""
+  secret_key = ""
 }
 
 /**
@@ -19,23 +22,23 @@ provider "aws" {
  */
 
 ## The ECR repo where we will store our docker image
-resource "aws_ecr_repository" "trans-demo_ecr_repo" {
-  name = "trans-demo-repo"
+resource "aws_ecr_repository" "wddp_ecr_repo" {
+  name = "wddp-ecr-repo"
 }
 
 ## The ECS cluster that will run the Docker container
-resource "aws_ecs_cluster" "trans-demo_cluster" {
-  name = "trans-demo-cluster"
+resource "aws_ecs_cluster" "wddp_cluster" {
+  name = "wddp-cluster"
 }
 
 ## The ECS Task definition on how to run our container
-resource "aws_ecs_task_definition" "trans-demo_task-def" {
-  family                = "trans-demo-task"
+resource "aws_ecs_task_definition" "wddp_backend_task_def" {
+  family                = "wddp-task-run-backend-docker-container"
   container_definitions = <<DEFINITION
   [
     {
-      "name": "trans-demo-task",
-      "image": "${aws_ecr_repository.trans-demo_ecr_repo.repository_url}",
+      "name": "wddp-task-run-backend-docker-container",
+      "image": "${aws_ecr_repository.wddp_ecr_repo.repository_url}",
       "essential": true,
       "portMappings": [
         {
@@ -49,8 +52,8 @@ resource "aws_ecs_task_definition" "trans-demo_task-def" {
       "logConfiguration" : {
         "logDriver" : "awslogs",
         "options" : {
-          "awslogs-region"        : "eu-west-1",
-          "awslogs-group"         : "trans-demo-log-group",
+          "awslogs-region"        : "eu-west-3",
+          "awslogs-group"         : "wddp-log-group",
           "awslogs-stream-prefix" : "voting-backend"
       }
     },
@@ -64,7 +67,6 @@ resource "aws_ecs_task_definition" "trans-demo_task-def" {
   memory = 1024         # Specify the memory the container requires
   cpu = 512         # Specify the CPU the container requires
   execution_role_arn    = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-
 }
 
 /**
@@ -74,6 +76,12 @@ resource "aws_ecs_task_definition" "trans-demo_task-def" {
  * Creating a task definition requires ecsTaskExecutionRole to be added to our IAM.
  * We allow the account to assume this role
  */
+
+## Declare a IAM Role for TaskExecution with the assume role policy
+resource "aws_iam_role" "ecsTaskExecutionRole" {
+  name               = "ecsTaskExecutionRole"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
 
 ## Declare a new temp IAM policy to be able to assign a Role in ecs-tasks
 data "aws_iam_policy_document" "assume_role_policy" {
@@ -85,12 +93,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = ["ecs-tasks.amazonaws.com"]
     }
   }
-}
-
-## Declare a IAM Role for TaskExecution with the assume role policy
-resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "ecsTaskExecutionRole"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
 ## Attach the required AmazonECSTaskExecutionRolePolicy to the declared role, which they now can because we have the Assume Role
@@ -109,18 +111,18 @@ resource "aws_default_vpc" "default_vpc" {
 
 # Provide references to our two default subnets
 resource "aws_default_subnet" "default_subnet_a" {
-  # Use your own region here but reference to subnet 1a
-  availability_zone = "eu-west-1a"
+  # Use your own region here but reference to subnet a
+  availability_zone = "eu-west-3a"
 }
 
 resource "aws_default_subnet" "default_subnet_b" {
-  # Use your own region here but reference to subnet 1b
-  availability_zone = "eu-west-1b"
+  # Use your own region here but reference to subnet b
+  availability_zone = "eu-west-3b"
 }
 
 # Declare our load balancer, balancing load over the application, in two subnets
-resource "aws_alb" "trans-demo_load_balancer" {
-  name = "load-balancer-trans-demo" #load balancer name
+resource "aws_alb" "wddp_load_balancer" {
+  name = "wddp-load-balancer" #load balancer name
   load_balancer_type = "application"
   subnets = [
     # Referencing the default subnets
@@ -162,13 +164,12 @@ resource "aws_lb_target_group" "target_group" {
     healthy_threshold                       = 3
     unhealthy_threshold                     = 3
     matcher                                 = "200-399"
-
   }
 }
 
-# Declare a listener on the load balance that will forward port 80 to the target group
+# Declare a listener on the load balancer that will forward port 80 to the target group
 resource "aws_lb_listener" "listener" {
-  load_balancer_arn = "${aws_alb.trans-demo_load_balancer.arn}" #  load balancer
+  load_balancer_arn = "${aws_alb.wddp_load_balancer.arn}" #  load balancer
   port     = "80"
   protocol = "HTTP"
   default_action {
@@ -177,16 +178,17 @@ resource "aws_lb_listener" "listener" {
   }
 }
 
-resource "aws_ecs_service" "trans-demo_service" {
-  name = "voting-backend-service"     # Name the service
-  cluster = "${aws_ecs_cluster.trans-demo_cluster.id}"   # Reference the created Cluster
-  task_definition = "${aws_ecs_task_definition.trans-demo_task-def.arn}" # Reference the task that the service will spin up
+## Create an ECS Service and its details to maintain task definition in an Amazon ECS cluster.
+resource "aws_ecs_service" "wddp_ecs_service" {
+  name = "wddp-ecs-service"     # Name the service
+  cluster = "${aws_ecs_cluster.wddp_cluster.id}"   # Reference the created Cluster
+  task_definition = "${aws_ecs_task_definition.wddp_backend_task_def.arn}" # Reference the task that the service will spin up
   launch_type   = "FARGATE"
   desired_count = 3 # Set up the number of containers to 3
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
-    container_name = "${aws_ecs_task_definition.trans-demo_task-def.family}"
+    container_name = "${aws_ecs_task_definition.wddp_backend_task_def.family}"
     container_port = 8080 # Specify the container port
   }
 
@@ -208,6 +210,8 @@ resource "aws_ecs_service" "trans-demo_service" {
   }
 }
 
+## To access the ECS service over HTTP while ensuring the VPC is more secure,
+## create security groups that will only allow the traffic from the created load balancer.
 resource "aws_security_group" "service_security_group" {
   ingress {
     from_port       = 0
@@ -226,14 +230,14 @@ resource "aws_security_group" "service_security_group" {
 }
 
 
-## add logs to ecs
+## Add logs to ECS
 resource "aws_cloudwatch_log_group" "ecs_trans_demo" {
-  name              = "trans-demo-log-group"
+  name              = "wddp-log-group"
   retention_in_days = 7
 }
 
 
-#Log the load balancer app URL
+## Log the load balancer app URL
 output "app_url" {
-  value = aws_alb.trans-demo_load_balancer.dns_name
+  value = aws_alb.wddp_load_balancer.dns_name
 }
