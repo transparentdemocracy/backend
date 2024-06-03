@@ -28,7 +28,7 @@ public class MotionController {
             @RequestParam(value = "search", defaultValue = "") String searchTerm,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "1") int size) {
-        logger.trace("Getting motions for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
+        logger.trace("Getting motionsGroups for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
         final var motionPage = this.motionsService.findMotions(searchTerm, new PageRequest(page, size));
         return Mono.just(MotionMapper.mapViewPage(motionPage));
     }

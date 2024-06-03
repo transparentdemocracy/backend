@@ -1,5 +1,7 @@
 package be.tr.democracy.rest;
 
+import be.tr.democracy.vocabulary.motion.Motion;
+import be.tr.democracy.vocabulary.plenary.MotionGroupLink;
 import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.plenary.Plenary;
 
@@ -12,7 +14,15 @@ public class PlenaryMother {
     private PlenaryMother() {
     }
 
-    private static List<MotionLink> buildMotionLinks() {
-        return MotionsMother.DUMMY_MOTIONS.stream().map(x -> new MotionLink(x.motionId(),1,2, x.titleNL(), x.titleFR())).toList();
+    private static List<MotionGroupLink> buildMotionLinks() {
+        return MotionsMother.DUMMY_MOTION_GROUPS.stream().map(y -> new MotionGroupLink(y.id(),y.titleNL(),y.titleFR(),mapMotionLinks(y.motions()))).toList();
+    }
+
+    private static List<MotionLink> mapMotionLinks(List<Motion> dummyMotions) {
+        return dummyMotions.stream().map(x -> mapMotionLink(x)).toList();
+    }
+
+    private static MotionLink mapMotionLink(Motion x) {
+        return new MotionLink(x.motionId(), 1, 2, x.titleNL(), x.titleFR());
     }
 }

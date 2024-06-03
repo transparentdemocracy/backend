@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PlenariesReadModel {
 
-    Page<Plenary> find(String date, PageRequest pageRequest);
+    Page<Plenary> find(String searchTerm, PageRequest pageRequest);
 
     Optional<Plenary> getPlenary(String plenary);
 }

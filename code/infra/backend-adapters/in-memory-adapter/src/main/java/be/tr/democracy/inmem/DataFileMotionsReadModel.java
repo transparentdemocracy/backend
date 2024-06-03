@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class DataFileMotionsReadModel implements MotionsReadModel {
     private static final String MOTION_CACHE_JSON = "motionCache.json";
@@ -23,7 +25,8 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     public DataFileMotionsReadModel(Supplier<List<PlenaryDTO>> plenariesSupplier,
                                     String votesFileName,
                                     String politiciansFileName,
-                                    String summariesFileName, String cacheTargetFolder) {
+                                    String summariesFileName,
+                                    String cacheTargetFolder) {
         this(createCachedSupplier(cacheTargetFolder, plenariesSupplier, votesFileName, politiciansFileName, summariesFileName));
     }
 
@@ -86,17 +89,26 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     }
 
     private static boolean containsSearchTerm(String subject, String searchTerm) {
-        System.out.println("[" +subject + "] contains " + searchTerm +" is " + subject.toLowerCase().contains(searchTerm.toLowerCase()));
         return subject.toLowerCase().contains(searchTerm.toLowerCase());
     }
 
     private List<MotionGroup> findMotions(String searchTerm) {
         if (searchTerm != null && !searchTerm.isBlank()) {
-            return allMotionsReadModel
-                    .stream()
-                    .filter(createSearchFilter(searchTerm)).toList();
+            final var motionGroupStream = allMotionsReadModel
+                    .parallelStream();
+            final List<String> allSearchTerms = Arrays.stream(searchTerm.split("\\s")).toList();
+            final var result = filterSingleSearchTerm(motionGroupStream, allSearchTerms);
+            return result.toList();
         } else
             return allMotionsReadModel;
+    }
+
+    private Stream<MotionGroup> filterSingleSearchTerm(Stream<MotionGroup> source, List<String> searchTerms) {
+        if (searchTerms.isEmpty()) {
+            return source;
+        }
+        final var newStream = source.filter(createSearchFilter(searchTerms.getFirst()));
+        return filterSingleSearchTerm(newStream, searchTerms.subList(1, searchTerms.size()));
     }
 
 

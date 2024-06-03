@@ -64,7 +64,7 @@ class DataModelMapper {
     private Optional<MotionGroup> mapMotionGroup(PlenaryDTO plenaryDTO, MotionGroupDTO motionGroupDTO) {
         final var motions = mapMotions(plenaryDTO, motionGroupDTO);
         if (motions.isEmpty()) {
-            logger.warn("No motions found for motion group {}, ignoring the motion group", motionGroupDTO.id());
+            logger.warn("No motionsGroups found for motion group {}, ignoring the motion group", motionGroupDTO.id());
             return Optional.empty();
         } else {
             return Optional.of(mapMotionGroup(plenaryDTO, motionGroupDTO, motions));

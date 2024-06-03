@@ -7,5 +7,5 @@ public record Plenary(String id,
                       String plenaryDate,
                       String pdfReportUrl,
                       String htmlReportUrl,
-                      List<MotionLink> motions) {
+                      List<MotionGroupLink> motionsGroups) {
 }

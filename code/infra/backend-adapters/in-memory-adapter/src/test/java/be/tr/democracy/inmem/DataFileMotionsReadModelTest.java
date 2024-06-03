@@ -3,8 +3,7 @@ package be.tr.democracy.inmem;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DataFileMotionsReadModelTest {
 
@@ -51,6 +50,35 @@ class DataFileMotionsReadModelTest {
         assertEquals(10, motionPage.pageSize());
         assertEquals(1, motionPage.pageNr());
         assertEquals(2, motionPage.values().size());
+    }
+
+    @Test
+    void findMotionsWithUniCode() {
+        final var motionPage = readModel.find("réunion", new PageRequest(1, 10));
+        assertNotNull(motionPage);
+        assertEquals(10, motionPage.pageSize());
+        assertEquals(1, motionPage.pageNr());
+        assertEquals(2, motionPage.values().size());
+    }
+
+    @Test
+    void findMotionsWitMultipleSearchTerms() {
+        final var motionPage = readModel.find("réunion Relations Ponthier", new PageRequest(1, 10));
+        assertNotNull(motionPage);
+        assertEquals(10, motionPage.pageSize());
+        assertEquals(1, motionPage.pageNr());
+        assertEquals(1, motionPage.values().size());
+        assertEquals("55_160_mg_20",motionPage.values().getFirst().id());
+    }
+
+    @Test
+    void findMotionsWithUkraïne() {
+        final var motionPage = readModel.find("Oekraïne", new PageRequest(1, 10));
+        assertNotNull(motionPage);
+        assertEquals(10, motionPage.pageSize());
+        assertEquals(1, motionPage.pageNr());
+        assertEquals(1, motionPage.values().size());
+        assertTrue(motionPage.values().getFirst().titleNL().contains("Oekraïne"));
     }
 
     @Test

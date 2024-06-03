@@ -113,7 +113,7 @@ public class DataModelMother {
 
     /**
      * Build two plenaries, the first having four proposals, the second none.
-     * But the motions form the second refer to the proposals from the first
+     * But the motionsGroups form the second refer to the proposals from the first
      *
      * @return
      */

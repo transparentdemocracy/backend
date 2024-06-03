@@ -27,7 +27,7 @@ public class PlenaryController {
             @RequestParam(value = "size", defaultValue = "1") int size) {
         logger.trace("Getting plenaries for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
         final var motionPage = this.plenaryService.findPlenaries(searchTerm, new PageRequest(page, size));
-        final var data = PlenaryMapper.mapViewPage(motionPage);
+        final var data = PlenaryViewMapper.mapViewPage(motionPage);
         return Mono.just(data);
     }
 
@@ -37,7 +37,7 @@ public class PlenaryController {
         logger.trace("Getting plenaries for id {}", id);
         final var motion = this.plenaryService.getPlenary(id);
         return motion
-                .map(PlenaryMapper::map)
+                .map(PlenaryViewMapper::map)
                 .map(Mono::just)
                 .orElseGet(Mono::empty);
     }

@@ -118,7 +118,7 @@ class DataModelMapperTest {
      * Sorting is not really the responsibility from the data mapper.
      * But since for now everything is done in mem, this is good enough.
      * <p>
-     * We want to have motions groups in the following order
+     * We want to have motionsGroups groups in the following order
      * latest plenary date first
      * for the same plenary, the motion groups in the sequence number where they were voted on
      *
@@ -138,7 +138,7 @@ class DataModelMapperTest {
     }
 
     /**
-     * We want to have motions in the order that they were voted on, for this we use the motion sequence number in ascending order.
+     * We want to have motionsGroups in the order that they were voted on, for this we use the motion sequence number in ascending order.
      * <p>
      * Do NOT use the motionId for sorting.
      * <p>

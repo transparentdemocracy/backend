@@ -18,6 +18,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "be.tr.democracy")
 public class VotingApplication {
 
+    private static final String DOMAIN_MODEL_CACHE_FOLDER = "target";
+
     public static void main(String[] args) {
         SpringApplication.run(VotingApplication.class, args);
     }
@@ -39,12 +41,12 @@ public class VotingApplication {
 
     @Bean
     DataFileMotionsReadModel dataFileQuery(PlenaryDTOFileLoader p) {
-        return new DataFileMotionsReadModel(p, "data/votes.json", "data/politicians.json", "data/summaries.json", "target");
+        return new DataFileMotionsReadModel(p, "data/votes.json", "data/politicians.json", "data/summaries.json", DOMAIN_MODEL_CACHE_FOLDER);
     }
 
     @Bean
     DataFilePlenaryReadModel plenaryDataFileQuery(PlenaryDTOFileLoader p) {
-        return new DataFilePlenaryReadModel(p);
+        return new DataFilePlenaryReadModel(p, DOMAIN_MODEL_CACHE_FOLDER);
     }
 
 }
