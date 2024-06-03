@@ -7,5 +7,5 @@ public record PlenaryViewDTO(String id,
                              String date,
                              String pdfReportUrl,
                              String htmlReportUrl,
-                             List<MotionLinkViewDTO> motions) {
+                             List<MotionGroupLinkViewDTO> motionGroups) {
 }

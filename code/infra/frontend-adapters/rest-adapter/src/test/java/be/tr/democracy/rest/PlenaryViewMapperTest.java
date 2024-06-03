@@ -15,7 +15,8 @@ class PlenaryViewMapperTest {
         assertThat(plenaryViewDTO.id(), equalTo(original.id()));
         assertThat(plenaryViewDTO.htmlReportUrl(), equalTo(original.htmlReportUrl()));
         assertThat(plenaryViewDTO.pdfReportUrl(), equalTo(original.pdfReportUrl()));
-        assertThat(plenaryViewDTO.motions().size(), equalTo(4));
+        assertThat(plenaryViewDTO.motionGroups().size(), equalTo(2));
+        assertThat(plenaryViewDTO.motionGroups().getFirst().motionLinks().size(), equalTo(2));
 
     }
 }

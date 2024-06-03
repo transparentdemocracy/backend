@@ -5,7 +5,6 @@ import be.tr.democracy.vocabulary.plenary.MotionGroupLink;
 import be.tr.democracy.vocabulary.plenary.MotionLink;
 import be.tr.democracy.vocabulary.plenary.Plenary;
 
-import java.util.Collection;
 import java.util.List;
 
 public class PlenaryViewMapper {
@@ -25,12 +24,17 @@ public class PlenaryViewMapper {
                 mapMotions(plenary.motionsGroups()));
     }
 
-    private static List<MotionLinkViewDTO> mapMotions(List<MotionGroupLink> motionGroupLinks) {
-        //TODO For now motion group are not displayed yet in the plenaries. But they should be.
+    private static List<MotionGroupLinkViewDTO> mapMotions(List<MotionGroupLink> motionGroupLinks) {
         return motionGroupLinks.stream()
-                .map(MotionGroupLink::motions)
-                .flatMap(Collection::stream)
-                .map(PlenaryViewMapper::mapMotionLink).toList();
+                .map(PlenaryViewMapper::mapMotionGroupLink).toList();
+    }
+
+    private static MotionGroupLinkViewDTO mapMotionGroupLink(MotionGroupLink motionGroupLink) {
+        return new MotionGroupLinkViewDTO(motionGroupLink.motionGroupId(), motionGroupLink.titleNL(), motionGroupLink.titleFR(), mapMotionLinks(motionGroupLink.motions()));
+    }
+
+    private static List<MotionLinkViewDTO> mapMotionLinks(List<MotionLink> motions) {
+        return motions.stream().map(PlenaryViewMapper::mapMotionLink).toList();
     }
 
     private static MotionLinkViewDTO mapMotionLink(MotionLink x) {
