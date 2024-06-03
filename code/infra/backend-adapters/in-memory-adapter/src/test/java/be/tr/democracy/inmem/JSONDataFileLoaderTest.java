@@ -22,7 +22,7 @@ class JSONDataFileLoaderTest {
         assertEquals(3, first.proposal_discussions().size());
         assertEquals(6, first.motion_groups().size());
         assertEquals(2, first.proposal_discussions().getFirst().proposals().size());
-        assertEquals(1, first.motion_groups().getFirst().motions().size());
+        assertEquals(2, first.motion_groups().getFirst().motions().size());
     }
 
     @Test

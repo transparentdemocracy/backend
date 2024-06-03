@@ -13,18 +13,51 @@ enum PlenaryMapper {
     private final Logger logger = LoggerFactory.getLogger(DataModelMapper.class);
 
     List<Plenary> mapThem(List<PlenaryDTO> plenaryDTOS) {
-        return plenaryDTOS.stream().map(x -> new Plenary(
-                x.id(),
-                Integer.toString(x.legislature()),
-                x.date(),
-                x.pdf_report_url(),
-                x.html_report_url(),
-                mapMotionGroups(x.motion_groups())
-        )).toList();
+        return plenaryDTOS.stream().map(x -> {
+            final var legislature = Integer.toString(x.legislature());
+            return new Plenary(
+                    x.id(),
+                    x.number() + " (L" + legislature + ")",
+                    legislature,
+                    x.date(),
+                    x.pdf_report_url(),
+                    x.html_report_url(),
+                    mapMotionGroups(x.motion_groups())
+            );
+        }).toList();
     }
 
     private List<MotionGroupLink> mapMotionGroups(List<MotionGroupDTO> motionGroupDTOS) {
-        return motionGroupDTOS.stream().map(x -> new MotionGroupLink(x.id(), x.title_nl(), x.title_fr(), mapMotionLinks(x.motions()))).toList();
+        return motionGroupDTOS.stream().map(x -> {
+            final var motions = mapMotionLinks(x.motions());
+            final var titleNL = nonEmptyTitleNL(x, motions);
+            final var titleFR = nonEmptyTitleFRL(x, motions);
+            return new MotionGroupLink(x.id(), titleNL, titleFR, motions);
+        }).toList();
+    }
+
+    private String nonEmptyTitleNL(MotionGroupDTO motionGroupDTO, List<MotionLink> motions) {
+        final var title = motionGroupDTO.title_nl();
+        if (title == null || title.isBlank()) {
+            if (motions == null || motions.isEmpty()) {
+                return "NONE";
+            } else {
+                return motions.getFirst().titleNL();
+            }
+        }
+        return title;
+    }
+
+    private String nonEmptyTitleFRL(MotionGroupDTO motionGroupDTO, List<MotionLink> motions) {
+        final var title = motionGroupDTO.title_fr();
+        if (title == null || title.isBlank()) {
+            if (motions == null || motions.isEmpty()) {
+                return "NONE";
+            } else {
+                return motions.getFirst().titleFR();
+            }
+        }
+        return title;
     }
 
     private List<MotionLink> mapMotionLinks(List<MotionDTO> motionGroupDTOS) {

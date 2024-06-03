@@ -48,7 +48,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
 
     @Override
     public Page<MotionGroup> find(String searchTerm, PageRequest pageRequest) {
-        final var motions = findMotions(searchTerm);
+        final var motions = findMotions(searchTerm.trim());
         return Page.slicePageFromList(pageRequest, motions);
     }
 
@@ -82,10 +82,12 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     }
 
     private static boolean documentSummaryContains(DocumentReference documentReference, String searchTerm) {
-        return !documentReference.subDocuments().stream()
+        final var b = !documentReference.subDocuments().stream()
                 .filter(x -> containsSearchTerm(x.summaryFR(), searchTerm) || containsSearchTerm(x.summaryNL(), searchTerm))
                 .toList()
                 .isEmpty();
+
+        return b;
     }
 
     private static boolean containsSearchTerm(String subject, String searchTerm) {
@@ -94,8 +96,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
 
     private List<MotionGroup> findMotions(String searchTerm) {
         if (searchTerm != null && !searchTerm.isBlank()) {
-            final var motionGroupStream = allMotionsReadModel
-                    .parallelStream();
+            final var motionGroupStream = allMotionsReadModel.parallelStream();
             final List<String> allSearchTerms = Arrays.stream(searchTerm.split("\\s")).toList();
             final var result = filterSingleSearchTerm(motionGroupStream, allSearchTerms);
             return result.toList();

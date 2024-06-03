@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PlenaryMother {
 
-    static final Plenary FIRST_PLENARY = new Plenary("first_plenary_id", "50", "2024-01-02", "pdf", "html", buildMotionLinks());
+    static final Plenary FIRST_PLENARY = new Plenary("50-1","first_plenary_id", "50", "2024-01-02", "pdf", "html", buildMotionLinks());
 
     private PlenaryMother() {
     }

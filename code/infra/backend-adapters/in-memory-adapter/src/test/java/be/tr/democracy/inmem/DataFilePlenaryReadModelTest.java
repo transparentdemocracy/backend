@@ -29,14 +29,7 @@ class DataFilePlenaryReadModelTest {
         final var plenaryPage = readModel.getPlenary("55_160");
 
         assertNotNull(plenaryPage);
-        plenaryPage.ifPresentOrElse(new Consumer<Plenary>() {
-            @Override
-            public void accept(Plenary plenary) {
-                assertThat(plenary.id(), is("55_160"));
-                assertThat(plenary.legislature(), is("55"));
-                assertThat(plenary.plenaryDate(), is("2022-02-03"));
-            }
-        }, Assertions::fail);
+        plenaryPage.ifPresentOrElse(DataFilePlenaryReadModelTest::validateFullPlenary55_160, Assertions::fail);
 
     }
 
@@ -46,14 +39,7 @@ class DataFilePlenaryReadModelTest {
         final var plenaryPage = readModel.getPlenary(" 55_160 ");
 
         assertNotNull(plenaryPage);
-        plenaryPage.ifPresentOrElse(new Consumer<Plenary>() {
-            @Override
-            public void accept(Plenary plenary) {
-                assertThat(plenary.id(), is("55_160"));
-                assertThat(plenary.legislature(), is("55"));
-                assertThat(plenary.plenaryDate(), is("2022-02-03"));
-            }
-        }, Assertions::fail);
+        plenaryPage.ifPresentOrElse(DataFilePlenaryReadModelTest::validateFullPlenary55_160, Assertions::fail);
 
     }
 
@@ -68,9 +54,7 @@ class DataFilePlenaryReadModelTest {
         assertEquals(1, plenaryPage.values().size());
 
         final var plenary = plenaryPage.values().getFirst();
-        assertThat(plenary.id(), is("55_160"));
-        assertThat(plenary.legislature(), is("55"));
-        assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        validateFullPlenary55_160(plenary);
 
     }
 
@@ -85,9 +69,7 @@ class DataFilePlenaryReadModelTest {
         assertEquals(1, plenaryPage.values().size());
 
         final var plenary = plenaryPage.values().getFirst();
-        assertThat(plenary.id(), is("55_160"));
-        assertThat(plenary.legislature(), is("55"));
-        assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        validateFullPlenary55_160(plenary);
     }
 
     @Test
@@ -104,6 +86,44 @@ class DataFilePlenaryReadModelTest {
         assertThat(plenary.id(), is("55_160"));
         assertThat(plenary.legislature(), is("55"));
         assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        assertThat(plenary.motionsGroups().size(), is(1));
+    }
+
+    @Test
+    void findByMotionGroupTitleFiltersOutOtherMotionGroups() {
+
+        final var plenaryPage = readModel.find("Annick", PAGE_REQUEST);
+
+        assertNotNull(plenaryPage);
+        assertEquals(10, plenaryPage.pageSize());
+        assertEquals(1, plenaryPage.pageNr());
+        assertEquals(1, plenaryPage.values().size());
+
+        final var plenary = plenaryPage.values().getFirst();
+        assertThat(plenary.id(), is("55_160"));
+        assertThat(plenary.legislature(), is("55"));
+        assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        assertThat(plenary.motionsGroups().size(), is(1));
+        assertThat(plenary.motionsGroups().getFirst().motions().size(), is(2));
+    }
+
+    @Test
+    void findByMotionTitleFiltersOutOtherMotionGroups() {
+
+        final var plenaryPage = readModel.find("Buitenlandse Betrekkingen van 26 januari 2022", PAGE_REQUEST);
+
+        assertNotNull(plenaryPage);
+        assertEquals(10, plenaryPage.pageSize());
+        assertEquals(1, plenaryPage.pageNr());
+        assertEquals(1, plenaryPage.values().size());
+
+        final var plenary = plenaryPage.values().getFirst();
+        assertThat(plenary.id(), is("55_160"));
+        assertThat(plenary.legislature(), is("55"));
+        assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        assertThat(plenary.motionsGroups().size(), is(2));
+        assertThat(plenary.motionsGroups().getFirst().motions().size(), is(2));
+        assertThat(plenary.motionsGroups().getLast().motions().size(), is(2));
     }
 
     @Test
@@ -136,6 +156,15 @@ class DataFilePlenaryReadModelTest {
         assertThat(plenary.id(), is("55_160"));
         assertThat(plenary.legislature(), is("55"));
         assertThat(plenary.plenaryDate(), is("2022-02-03"));
+    }
+
+    private static void validateFullPlenary55_160(Plenary plenary) {
+        assertThat(plenary.id(), is("55_160"));
+        assertThat(plenary.legislature(), is("55"));
+        assertThat(plenary.plenaryDate(), is("2022-02-03"));
+        assertThat(plenary.motionsGroups().size(), is(6));
+        assertThat(plenary.motionsGroups().getFirst().motions().size(), is(2));
+        assertThat(plenary.motionsGroups().getLast().motions().size(), is(2));
     }
 
 }

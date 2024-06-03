@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -50,18 +47,11 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         return new DataFilePlenaryReadModel(createMappingSupplier(dtoSupplier));
     }
 
-    private static Predicate<Plenary> createPlenaryFilter(String searchTerm) {
-        return plenary -> containsSearchTerm(plenary.id(), searchTerm) ||
-                          containsSearchTerm(plenary.plenaryDate(), searchTerm) ||
-                          containsSearchTerm(plenary.legislature(), searchTerm) ||
-                          containsSearchTermInMotionGroups(plenary.motionsGroups(), searchTerm);
-    }
 
-    private static boolean containsSearchTermInMotionGroups(List<MotionGroupLink> motionGroupLinks, String searchTerm) {
-        return motionGroupLinks.stream().anyMatch(
-                motionGroupLink -> containsSearchTerm(motionGroupLink.titleFR(), searchTerm) ||
-                                   containsSearchTerm(motionGroupLink.titleNL(), searchTerm) ||
-                                   containsSearchTermInMotions(motionGroupLink.motions(), searchTerm));
+    private static Predicate<MotionGroupLink> containsSearchTermInMotionGroup(String searchTerm) {
+        return motionGroupLink -> containsSearchTerm(motionGroupLink.titleFR(), searchTerm) ||
+                                  containsSearchTerm(motionGroupLink.titleNL(), searchTerm) ||
+                                  containsSearchTermInMotions(motionGroupLink.motions(), searchTerm);
     }
 
     private static boolean containsSearchTerm(String subject, String searchTerm) {
@@ -92,11 +82,38 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
 
     private List<Plenary> findPlenaries(String searchTerm) {
         if (searchTerm != null && !searchTerm.isBlank()) {
-            return allPlenariesReadModel
+            final var list = allPlenariesReadModel
                     .stream()
-                    .filter(createPlenaryFilter(searchTerm))
+                    .filter(plenary -> containsSearchTerm(plenary.id(), searchTerm) ||
+                                       containsSearchTerm(plenary.plenaryDate(), searchTerm) ||
+                                       containsSearchTerm(plenary.legislature(), searchTerm))
                     .toList();
+            if (list.isEmpty()) {
+                return findPlenariesWithMotionsFiltered(searchTerm);
+            } else
+                return list;
+            // containsSearchTermInMotionGroups(plenary.motionsGroups(), searchTerm))
         }
         return allPlenariesReadModel;
+    }
+
+    private List<Plenary> findPlenariesWithMotionsFiltered(String searchTerm) {
+        return allPlenariesReadModel.stream().map((Plenary plenary) -> createMotionFilteredPlenary(plenary, searchTerm)).filter(Objects::nonNull).flatMap(Optional::stream).toList();
+    }
+
+    private Optional<Plenary> createMotionFilteredPlenary(Plenary plenary, String searchTerm) {
+        final var filteredMotionGroupLinks = plenary.motionsGroups().stream().filter(containsSearchTermInMotionGroup(searchTerm)).toList();
+        if (filteredMotionGroupLinks.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(
+                    new Plenary(plenary.id(),
+                            plenary.title(),
+                            plenary.legislature(),
+                            plenary.plenaryDate(),
+                            plenary.pdfReportUrl(),
+                            plenary.htmlReportUrl(),
+                            filteredMotionGroupLinks));
+        }
     }
 }

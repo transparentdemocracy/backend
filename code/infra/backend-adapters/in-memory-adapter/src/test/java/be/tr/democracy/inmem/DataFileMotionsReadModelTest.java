@@ -25,7 +25,7 @@ class DataFileMotionsReadModelTest {
         final var motionGroups = readModel.loadAll();
 
         assertNotNull(motionGroups);
-        assertEquals(2, motionGroups.size());
+        assertEquals(6, motionGroups.size());
 
         final var motionGroup = motionGroups.getFirst();
         final var motion = motionGroup.motions().getFirst();
@@ -82,12 +82,12 @@ class DataFileMotionsReadModelTest {
     }
 
     @Test
-    void findMotionsThroughSummary() {
+    void findMotionsThroughDocumentSummary() {
         final var motionPage = readModel.find("elektrische", new PageRequest(1, 10));
         assertNotNull(motionPage);
         assertEquals(10, motionPage.pageSize());
         assertEquals(1, motionPage.pageNr());
-        assertEquals(2, motionPage.values().size());
+        assertEquals(6, motionPage.values().size());
     }
 
     @Test
@@ -96,6 +96,6 @@ class DataFileMotionsReadModelTest {
         assertNotNull(motionPage);
         assertEquals(10, motionPage.pageSize());
         assertEquals(1, motionPage.pageNr());
-        assertEquals(2, motionPage.values().size());
+        assertEquals(6, motionPage.values().size());
     }
 }

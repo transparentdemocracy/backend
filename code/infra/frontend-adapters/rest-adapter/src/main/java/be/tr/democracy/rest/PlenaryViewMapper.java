@@ -20,7 +20,7 @@ public class PlenaryViewMapper {
     }
 
     public static PlenaryViewDTO map(Plenary plenary) {
-        return new PlenaryViewDTO(plenary.id(), plenary.legislature(), plenary.plenaryDate(), plenary.pdfReportUrl(), plenary.htmlReportUrl(),
+        return new PlenaryViewDTO(plenary.id(), plenary.title(), plenary.legislature(), plenary.plenaryDate(), plenary.pdfReportUrl(), plenary.htmlReportUrl(),
                 mapMotions(plenary.motionsGroups()));
     }
 

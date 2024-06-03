@@ -19,10 +19,10 @@ public class DataModelMother {
     public static final String PROPOSAL_ID_4 = "proposal_4";
     public static final String VOTING_ID_MOTION_1 = "voting_id_motion_1";
     public static final String VOTING_ID_MOTION_2 = "voting_id_motion_2";
-    public static final String MOTION_ID_1 = "first_motion_id";
-    public static final String MOTION_ID_2 = "second_motion_id";
-    public static final String MOTION_ID_3 = "third_motion_id";
-    public static final String MOTION_ID_4 = "fourth_motion_id";
+    public static final String MOTION_ID_1 = "first_motion_id_1_m1";
+    public static final String MOTION_ID_2 = "second_motion_id_2_m2";
+    public static final String MOTION_ID_3 = "third_motion_id_3_m3";
+    public static final String MOTION_ID_4 = "fourth_motion_id_4_m4";
     //Expected date format to be YYYY-MM-DD : "2021-09-23"
     public static final String PLENARY_DATE_A_20_MAY = "2024-05-20";
     public static final String PLENARY_DATE_B_30_MAY = "2024-05-30";
@@ -103,7 +103,7 @@ public class DataModelMother {
     static PlenaryDTO buildPlenary() {
         final var proposalDiscussions = buildProposalDiscussions();
         final List<MotionGroupDTO> motionGroups = buildMotionGroupsA();
-        return new PlenaryDTO("Plenary_1",
+        return new PlenaryDTO("55_1",
                 1, 55, PLENARY_DATE_A_20_MAY,
                 "pdf_url", "html_url", proposalDiscussions, motionGroups
 
