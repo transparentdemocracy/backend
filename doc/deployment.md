@@ -68,7 +68,8 @@ And/or if the website (front-end) is already deployed, you can test there in a m
    Elastic Container Registry (ECR):
 
    ```bash
-   ./deployment/pushImageToECR.sh
+   cd deployment
+   ./runTerraform.sh
    ```
     Or manually force a new deployment in the AWS console of the ecs service.
 
