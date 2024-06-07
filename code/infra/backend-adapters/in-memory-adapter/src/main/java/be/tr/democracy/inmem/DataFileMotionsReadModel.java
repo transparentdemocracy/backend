@@ -42,10 +42,6 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
         logger.trace("Motions read models loaded.");
     }
 
-    public List<MotionGroup> loadAll() {
-        return allMotionsReadModel;
-    }
-
     @Override
     public Page<MotionGroup> find(String searchTerm, PageRequest pageRequest) {
         final var motions = findMotions(searchTerm.trim());
@@ -55,6 +51,10 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
     @Override
     public Optional<MotionGroup> getMotion(String motionId) {
         return allMotionsReadModel.stream().filter(x -> x.containsMotion(motionId)).findFirst();
+    }
+
+    public List<MotionGroup> loadAll() {
+        return allMotionsReadModel;
     }
 
     private static LocalFileCache<MotionGroup> createCachedSupplier(String cacheTargetFolder,

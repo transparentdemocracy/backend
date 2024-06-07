@@ -35,20 +35,17 @@ And/or if the website (front-end) is already deployed, you can test there in a m
    Also install Docker Desktop [on Mac](https://docs.docker.com/desktop/install/mac-install/), not `brew install docker`!
    See https://github.com/replicate/cog/issues/1382#issuecomment-1869183604.)
 
-2. Build the application and the domainmodel projections
-   ```bash
-   ./runApplication
-   ```
-   This will do a complete rebuild of the application which will also remove any old cached, projections of the domain model. The application will then start, and on startup it will rebuild the caches of the domain model. You can see these under target/motionCache.json and target/plenaryCache.json. These files will be included in the docker image later on.
- 
+  
 3. Build the Docker image:
 
    ```bash
    ./deployment/buildImage.sh
    ```
-    This simple executes the docker build using the ./Dockerfile. This will copy the build jar with the code as well as the domain model cache.
+   + This will do a complete rebuild of the application which will also remove any old cached, projections of the domain model.
+   + It will then trigger a regeneration of the domain model caches. You can see these under target/motionCache.json and target/plenaryCache.json. These files will be included in the docker image later on.
+   + Then the docker build using the ./Dockerfile will be triggered. This scrpt copy the build jar with the code as well as the domain model cache generated in the previous step.
 
-5. Execute the docker image locally to test if it works:
+4. Execute the docker image locally to test if it works:
 
    ```bash
    ./deployment/runImage.sh

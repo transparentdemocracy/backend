@@ -1,2 +1,2 @@
-./mvnw clean install
+./mvnw install
 java -jar code/main/target/main-1.0.0-SNAPSHOT.jar

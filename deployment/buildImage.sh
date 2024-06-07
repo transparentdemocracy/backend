@@ -1,4 +1,5 @@
 ## TODO use springboot plugin to build the image
-## Todo the caches will only be generated when the application started up before, The mvn clean removes them intentionally
-./mvnw -q install
+
+./mvnw install
+./mvnw -pl code/main exec:java -Dexec.mainClass="be.tr.democracy.main.GenerateDomainModelApplication"
 docker buildx build --platform linux/amd64 -t transparent-democracy/voting-backend .

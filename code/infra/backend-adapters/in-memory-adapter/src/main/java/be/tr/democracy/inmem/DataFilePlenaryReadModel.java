@@ -47,6 +47,9 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         return new DataFilePlenaryReadModel(createMappingSupplier(dtoSupplier));
     }
 
+    public Collection<Plenary> loadAll() {
+        return allPlenariesReadModel;
+    }
 
     private static Predicate<MotionGroupLink> containsSearchTermInMotionGroup(String searchTerm) {
         return motionGroupLink -> containsSearchTerm(motionGroupLink.titleFR(), searchTerm) ||
