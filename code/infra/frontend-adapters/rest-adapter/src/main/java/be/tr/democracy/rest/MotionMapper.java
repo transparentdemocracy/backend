@@ -25,16 +25,15 @@ public class MotionMapper {
                 motion.motionId(),
                 motion.titleNL(),
                 motion.titleFR(),
-                mapVotes(voteCount.yesVotes()),
-                mapVotes(voteCount.noVotes()),
-                mapVotes(voteCount.abstention()),
+                mapVotes(voteCount.yesVotes(), voteCount.totalVotes()),
+                mapVotes(voteCount.noVotes(), voteCount.totalVotes()),
+                mapVotes(voteCount.abstention(), voteCount.totalVotes()),
                 documentReference,
                 motion.votingDate(),
                 motion.descriptionNL(),
                 motion.descriptionFR(),
                 voteCount.votePassed());
     }
-
 
     public static PageViewDTO<MotionGroupViewDTO> mapViewPage(Page<MotionGroup> motionPage) {
         final var motionViewDTOS = motionPage.values().stream().map(MotionMapper::map).toList();
@@ -48,12 +47,11 @@ public class MotionMapper {
         return new MotionGroupViewDTO(motionViewDTO.id(), motionViewDTO.titleNL(), motionViewDTO.titleFR(), List.of(motionViewDTO), motionViewDTO.votingDate());
     }
 
-    private static VotesViewDTO mapVotes(Votes yesVotes) {
-        return new VotesViewDTO(yesVotes.nrOfVotes(), mapVoteCount(yesVotes));
+    private static VotesViewDTO mapVotes(Votes votes, int total) {
+        return new VotesViewDTO(votes.nrOfVotes(), mapVoteCount(votes, total));
     }
 
-    private static List<PartyVotesViewDTO> mapVoteCount(Votes votes) {
-        final int total = votes.nrOfVotes();
+    private static List<PartyVotesViewDTO> mapVoteCount(Votes votes, int total) {
         return votes.partyVotes()
                 .stream()
                 .map(x -> buildPartyVotes(x, total))
