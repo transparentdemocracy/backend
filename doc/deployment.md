@@ -61,14 +61,19 @@ And/or if the website (front-end) is already deployed, you can test there in a m
    ./deployment/pushImageToECR.sh
    ```
 
-6. Run terraform again, such that the infrastructure will run a docker container with the new docker image that was just uploaded to the
-   Elastic Container Registry (ECR):
+6. Spin up Docker containers with the new Docker image that was just pushed.
+   - Either in AWS, on ECS, in Services, after selecting our wddp-ecs-service, click "Update service" and on the appearing page, check the 
+     checkbox "Force new deployment", then click "Update" at the bottom.
+   - Or: Run terraform again, such that the infrastructure will run a docker container with the new docker image that was just uploaded to the
+     Elastic Container Registry (ECR):
 
-   ```bash
-   cd deployment
-   ./runTerraform.sh
-   ```
-    Or manually force a new deployment in the AWS console of the ecs service.
+     ```bash
+     cd deployment
+     ./runTerraform.sh
+     ```
+   
+   After one of the above actions, wait for the new docker containers to be started by ECS. Once they have been started, 
+   the old docker containers will be stopped.
 
 7. Test the availability of the backend on the app_url Terraform has created.
    That's currently on http://wddp-load-balancer-761216200.eu-west-3.elb.amazonaws.com/plenaries/?page=1&size=10.
