@@ -40,11 +40,11 @@ class MotionMapperTest {
         validateNoVotes(mappedDTO.noVotes().partyVotes());
 
         assertEquals(14.28, sumPercentagesAcrossPartiesWithinVoteType(mappedDTO.noVotes().partyVotes()));
-        assertEquals(14.28, mappedDTO.noVotes().percentage());
+        assertEquals(14.28, mappedDTO.noVotes().votePercentage());
         assertEquals(71.42, sumPercentagesAcrossPartiesWithinVoteType(mappedDTO.yesVotes().partyVotes()));
-        assertEquals(71.42, mappedDTO.yesVotes().percentage());
+        assertEquals(71.42, mappedDTO.yesVotes().votePercentage());
         assertEquals(14.28, sumPercentagesAcrossPartiesWithinVoteType(mappedDTO.absVotes().partyVotes()));
-        assertEquals(14.28, mappedDTO.absVotes().percentage());
+        assertEquals(14.28, mappedDTO.absVotes().votePercentage());
     }
 
     @Test
