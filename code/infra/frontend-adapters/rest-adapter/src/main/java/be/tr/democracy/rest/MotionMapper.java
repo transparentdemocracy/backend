@@ -30,8 +30,6 @@ public class MotionMapper {
                 mapVotes(voteCount.abstention(), voteCount.totalVotes()),
                 documentReference,
                 motion.votingDate(),
-                motion.descriptionNL(),
-                motion.descriptionFR(),
                 voteCount.votePassed());
     }
 
@@ -43,12 +41,19 @@ public class MotionMapper {
                 motionViewDTOS);
     }
 
+    static double limitToTwoDecimals(double percentage) {
+        return Math.floor(percentage * 100) / 100;
+    }
+
     private static MotionGroupViewDTO toMotionGroup(MotionViewDTO motionViewDTO) {
         return new MotionGroupViewDTO(motionViewDTO.id(), motionViewDTO.titleNL(), motionViewDTO.titleFR(), List.of(motionViewDTO), motionViewDTO.votingDate());
     }
 
     private static VotesViewDTO mapVotes(Votes votes, int total) {
-        return new VotesViewDTO(votes.nrOfVotes(), mapVoteCount(votes, total));
+        final var nrOfVotes = votes.nrOfVotes();
+        final var percentage = calculatePercentage(total, nrOfVotes);
+        final var partyVotes = mapVoteCount(votes, total);
+        return new VotesViewDTO(nrOfVotes, percentage, partyVotes);
     }
 
     private static List<PartyVotesViewDTO> mapVoteCount(Votes votes, int total) {
@@ -60,18 +65,16 @@ public class MotionMapper {
 
     private static PartyVotesViewDTO buildPartyVotes(PartyVotes x, int total) {
         final int numberOfVotes = x.numberOfVotes();
-        final int i = calculatePercentage(total, (double) numberOfVotes);
+        final double i = calculatePercentage(total, (double) numberOfVotes);
         return new PartyVotesViewDTO(x.partyName(), i, numberOfVotes);
     }
 
-    private static int calculatePercentage(int total, double numberOfVotes) {
+    private static double calculatePercentage(int total, double numberOfVotes) {
         if (total == 0) {
             return 0;
         } else {
             final double percentage = (numberOfVotes / total) * 100;
-
-            final var round = Math.round(percentage);
-            return Long.valueOf(round).intValue();
+            return limitToTwoDecimals(percentage);
         }
     }
 }

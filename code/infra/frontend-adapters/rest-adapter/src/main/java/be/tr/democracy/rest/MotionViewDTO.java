@@ -8,7 +8,5 @@ public record MotionViewDTO(String id,
                             VotesViewDTO absVotes,
                             DocumentReferenceViewDTO newDocumentReference,
                             String votingDate,
-                            String descriptionNL,
-                            String descriptionFR,
                             Boolean votingResult) {
 }

@@ -82,7 +82,7 @@ public class VoteCountFactory {
         final var noVotes = countVotes(motionVotes, NO_TOKEN);
         final var abstentionVotes = countVotes(motionVotes, ABSTENTION_TOKEN);
         if ((yesVotes.nrOfVotes() + noVotes.nrOfVotes() + abstentionVotes.nrOfVotes()) != motionVotes.size()) {
-            logger.error("The votes do not match. Total nr of votes {} yes: {} no: {} absent: {}", motionVotes.size(), yesVotes, noVotes, abstentionVotes);
+            logger.error("The votes do not match. Total nr of votes {} yes: {} no: {} abstention: {}", motionVotes.size(), yesVotes, noVotes, abstentionVotes);
         }
         return Optional.of(new VoteCount(motionVotes.getFirst().voting_id(), yesVotes, noVotes, abstentionVotes));
     }
