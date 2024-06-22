@@ -1,17 +1,27 @@
 package be.tr.democracy.main;
 
+import static be.tr.democracy.main.DataLocations.DATA_PLENARIES_JSON;
+import static be.tr.democracy.main.DataLocations.DATA_POLITICIANS_JSON;
+import static be.tr.democracy.main.DataLocations.DATA_SUMMARIES_JSON;
+import static be.tr.democracy.main.DataLocations.DATA_VOTES_JSON;
+import static be.tr.democracy.main.DataLocations.DOMAIN_MODEL_CACHE_FOLDER;
+
 import be.tr.democracy.api.MotionsService;
 import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.inmem.DataFileMotionsReadModel;
 import be.tr.democracy.inmem.DataFilePlenaryReadModel;
+import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.inmem.PlenaryDTOFileLoader;
 import be.tr.democracy.query.MotionsQuery;
 import be.tr.democracy.query.MotionsReadModel;
 import be.tr.democracy.query.PlenariesQuery;
 import be.tr.democracy.query.PlenariesReadModel;
+import be.tr.democracy.query.PlenaryWriteModel;
+import be.tr.democracy.query.UpsertPlenaryCommand;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
-
-import static be.tr.democracy.main.DataLocations.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
@@ -40,4 +50,14 @@ public class Configuration {
         return new DataFilePlenaryReadModel(p, DOMAIN_MODEL_CACHE_FOLDER);
     }
 
+    @Bean
+    UpsertPlenaryCommand upsertPlenaryCommand(PlenaryWriteModel plenaryWriteModel) {
+        return new UpsertPlenaryCommand(plenaryWriteModel);
+    }
+    @Bean
+    PlenaryWriteModel plenariesWriteModel(
+        ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate
+    ) {
+        return new PlenaryRepository(objectMapper, jdbcTemplate);
+    }
 }

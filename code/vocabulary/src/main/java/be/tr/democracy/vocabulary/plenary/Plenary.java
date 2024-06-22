@@ -9,4 +9,7 @@ public record Plenary(String id,
                       String pdfReportUrl,
                       String htmlReportUrl,
                       List<MotionGroupLink> motionsGroups) {
+
+    public Plenary {
+    }
 }

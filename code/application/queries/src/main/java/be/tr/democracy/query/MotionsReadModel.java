@@ -1,6 +1,5 @@
 package be.tr.democracy.query;
 
-import be.tr.democracy.vocabulary.motion.Motion;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.Page;
 import be.tr.democracy.vocabulary.page.PageRequest;

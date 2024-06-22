@@ -112,7 +112,8 @@ public class LocalFileCache<T> implements Supplier<List<T>> {
 
     private List<T> loadFromCacheFile() {
         try {
-            return objectMapper.readValue(cacheFile, javaType);
+//            return objectMapper.readValue(cacheFile, javaType);
+            return List.of();
         } catch (Throwable e) {
             LOGGER.error("Unable to load {} from [{}]", javaType.getTypeName(), cacheFile.getAbsolutePath(), e);
             return List.of();

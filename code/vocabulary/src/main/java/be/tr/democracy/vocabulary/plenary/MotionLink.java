@@ -6,4 +6,7 @@ public record MotionLink(String motionId,
                          String titleNL,
                          String titleFR
 ) {
+
+    public MotionLink {
+    }
 }

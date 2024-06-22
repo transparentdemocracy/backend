@@ -1,5 +1,8 @@
 package be.tr.democracy.inmem;
 
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+
 import be.tr.democracy.vocabulary.motion.DocumentReference;
 import be.tr.democracy.vocabulary.motion.Motion;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
@@ -7,11 +10,12 @@ import be.tr.democracy.vocabulary.motion.VoteCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.comparing;
-import static java.util.Objects.requireNonNull;
 
 class DataModelMapper {
     private final Logger logger = LoggerFactory.getLogger(DataModelMapper.class);
