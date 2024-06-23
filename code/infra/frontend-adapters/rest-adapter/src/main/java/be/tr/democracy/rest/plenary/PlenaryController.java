@@ -4,12 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.api.UpsertPlenary;
-import be.tr.democracy.rest.MotionGroupLinkViewDTO;
-import be.tr.democracy.rest.MotionLinkViewDTO;
 import be.tr.democracy.rest.PageViewDTO;
 import be.tr.democracy.rest.PlenaryViewDTO;
 import be.tr.democracy.rest.PlenaryViewMapper;
-import be.tr.democracy.vocabulary.motion.Motion;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import be.tr.democracy.vocabulary.plenary.MotionGroupLink;
 import be.tr.democracy.vocabulary.plenary.MotionLink;
@@ -24,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.stream.IntStream;
 
 @CrossOrigin
 @RestController
@@ -98,27 +92,5 @@ public class PlenaryController {
             logger.error("Error parsing the motion link, extracting the agendaSeqNr and voteSegNr", e);
             return new MotionLink(id, 0, 0, request.getTitle_nl(), request.getTitle_fr());
         }
-    }
-
-    private List<Motion> toMotions(PlenaryViewDTO plenaryViewDTO, MotionGroupLinkViewDTO motionGroupLinkViewDTO) {
-        List<MotionLinkViewDTO> motions = motionGroupLinkViewDTO.motionLinks();
-
-        return IntStream.range(0, motions.size())
-            .mapToObj((int idx) -> {
-                MotionLinkViewDTO it = motions.get(idx);
-                return new Motion(
-                    it.motionId(),
-                    plenaryViewDTO.id(),
-                    plenaryViewDTO.date(),
-                    idx,
-                    it.titleNL(),
-                    it.titleFR(),
-                    null,
-                    // TODO descriptions and vote counts
-                    "descriptionNL",
-                    "descriptionFR",
-                    null);
-            })
-            .toList();
     }
 }
