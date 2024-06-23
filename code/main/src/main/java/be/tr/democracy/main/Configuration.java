@@ -10,17 +10,15 @@ import be.tr.democracy.api.MotionsService;
 import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.inmem.DataFileMotionsReadModel;
 import be.tr.democracy.inmem.DataFilePlenaryReadModel;
-import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.inmem.PlenaryDTOFileLoader;
+import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.query.MotionsQuery;
 import be.tr.democracy.query.MotionsReadModel;
 import be.tr.democracy.query.PlenariesQuery;
 import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.query.PlenaryWriteModel;
 import be.tr.democracy.query.UpsertPlenaryCommand;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @org.springframework.context.annotation.Configuration
@@ -46,18 +44,12 @@ public class Configuration {
     }
 
     @Bean
-    DataFilePlenaryReadModel plenaryDataFileQuery(PlenaryDTOFileLoader p) {
-        return new DataFilePlenaryReadModel(p, DOMAIN_MODEL_CACHE_FOLDER);
-    }
-
-    @Bean
     UpsertPlenaryCommand upsertPlenaryCommand(PlenaryWriteModel plenaryWriteModel) {
         return new UpsertPlenaryCommand(plenaryWriteModel);
     }
+
     @Bean
-    PlenaryWriteModel plenariesWriteModel(
-        ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate
-    ) {
-        return new PlenaryRepository(objectMapper, jdbcTemplate);
+    PlenaryRepository plenaryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new PlenaryRepository(jdbcTemplate);
     }
 }

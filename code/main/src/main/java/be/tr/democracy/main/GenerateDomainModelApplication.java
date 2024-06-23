@@ -14,10 +14,8 @@ public class GenerateDomainModelApplication {
         final var configuration = new Configuration();
         final var plenaryDTOFileLoader = configuration.plenaryFileLoader();
         final var motions = configuration.dataFileQuery(plenaryDTOFileLoader);
-        final var plenaries = configuration.plenaryDataFileQuery(plenaryDTOFileLoader);
         logger.info("Generating domain models done");
         logger.info("Generated {} motions ", motions.loadAll().size());
-        logger.info("Generated {} plenaries ", plenaries.loadAll().size());
     }
 
 
