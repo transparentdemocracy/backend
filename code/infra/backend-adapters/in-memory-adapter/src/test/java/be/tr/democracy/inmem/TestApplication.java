@@ -26,4 +26,9 @@ class TestApplication {
         return new VoteRepository(jdbcTemplate);
     }
 
+    @Bean
+    SubDocumentRepository subDocumentRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new SubDocumentRepository(jdbcTemplate);
+    }
+
 }

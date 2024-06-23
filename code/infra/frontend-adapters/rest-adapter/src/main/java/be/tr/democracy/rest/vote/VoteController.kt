@@ -40,17 +40,9 @@ class VoteController(private val upsertVote: UpsertVote) {
     }
 
     @PostMapping("/votes/bulk", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun bulkUpsert(@RequestBody votes: List<UpsertVoteDTO>) {
-        votes.forEach {
-            executorService.submit {
-                upsertVote.upsert(
-                    Vote(
-                        it.voting_id,
-                        it.politician_id,
-                        it.vote_type
-                    )
-                )
-            }
+    fun bulkUpsert(@RequestBody request: List<UpsertVoteDTO>) {
+        request.forEach {
+            executorService.submit { upsert(it) }
         }
     }
 

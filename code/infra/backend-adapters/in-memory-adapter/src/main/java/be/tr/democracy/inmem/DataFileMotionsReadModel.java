@@ -83,7 +83,7 @@ public class DataFileMotionsReadModel implements MotionsReadModel {
 
     private static boolean documentSummaryContains(DocumentReference documentReference, String searchTerm) {
         final var b = !documentReference.subDocuments().stream()
-                .filter(x -> containsSearchTerm(x.summaryFR(), searchTerm) || containsSearchTerm(x.summaryNL(), searchTerm))
+                .filter(x -> containsSearchTerm(x.getSummaryFR(), searchTerm) || containsSearchTerm(x.getSummaryNL(), searchTerm))
                 .toList()
                 .isEmpty();
 

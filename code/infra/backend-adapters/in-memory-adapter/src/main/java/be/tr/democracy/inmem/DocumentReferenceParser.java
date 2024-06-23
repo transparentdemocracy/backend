@@ -44,10 +44,6 @@ class DocumentReferenceParser {
         return Optional.of(parse(documentReference));
     }
 
-    private static String subDocumentUrl(Integer documentNr, Integer subDocumentNr) {
-        return "https://www.dekamer.be/FLWB/PDF/55/%04d/55K%04d%03d.pdf".formatted(documentNr, documentNr, subDocumentNr);
-    }
-
     private static List<Integer> getSubDocumentNumbers(String subDocumentNrSpec) {
         final Matcher subMatcher = NUMERIC.matcher(subDocumentNrSpec);
         if (subMatcher.matches()) {
@@ -89,11 +85,10 @@ class DocumentReferenceParser {
         return subDocumentNrs.stream().map(it -> mapSubDocument(documentNr, it)).toList();
     }
 
-    private SubDocument mapSubDocument(Integer documentNr, Integer it) {
-        final var summaryNL = summariesNL.getOrDefault("%d/%d".formatted(documentNr, it), "");
-        final var summaryFR = summariesFR.getOrDefault("%d/%d".formatted(documentNr, it), "");
-        final var documentPdfUrl = subDocumentUrl(documentNr, it);
-        return new SubDocument(documentNr, it, documentPdfUrl, summaryNL, summaryFR);
+    private SubDocument mapSubDocument(Integer documentNr, Integer subDocumentNr) {
+        final var summaryNL = summariesNL.getOrDefault("%d/%d".formatted(documentNr, subDocumentNr), "");
+        final var summaryFR = summariesFR.getOrDefault("%d/%d".formatted(documentNr, subDocumentNr), "");
+        return new SubDocument(documentNr, subDocumentNr, summaryNL, summaryFR);
     }
 
     private DocumentReference parseDocumentReferencePattern(String documentReference, Matcher matcher) {

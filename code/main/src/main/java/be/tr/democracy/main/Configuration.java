@@ -8,10 +8,12 @@ import static be.tr.democracy.main.DataLocations.DOMAIN_MODEL_CACHE_FOLDER;
 
 import be.tr.democracy.api.MotionsService;
 import be.tr.democracy.api.PlenaryService;
+import be.tr.democracy.api.UpsertDocumentSummary;
 import be.tr.democracy.inmem.DataFileMotionsReadModel;
 import be.tr.democracy.inmem.PlenaryDTOFileLoader;
 import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.inmem.PoliticianRepository;
+import be.tr.democracy.inmem.SubDocumentRepository;
 import be.tr.democracy.inmem.VoteRepository;
 import be.tr.democracy.query.MotionsQuery;
 import be.tr.democracy.query.MotionsReadModel;
@@ -19,6 +21,8 @@ import be.tr.democracy.query.PlenariesQuery;
 import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.query.PlenaryWriteModel;
 import be.tr.democracy.query.PoliticianWriteModel;
+import be.tr.democracy.query.SubDocumentWriteModel;
+import be.tr.democracy.query.UpsertDocumentSummaryCommand;
 import be.tr.democracy.query.UpsertPlenaryCommand;
 import be.tr.democracy.query.UpsertPoliticianCommand;
 import be.tr.democracy.query.UpsertVoteCommand;
@@ -42,6 +46,11 @@ public class Configuration {
     @Bean
     UpsertVoteCommand upsertVoteCommand(VoteWriteModel voteWriteModel) {
         return new UpsertVoteCommand(voteWriteModel);
+    }
+
+    @Bean
+    UpsertDocumentSummary upsertSubDocumentCommand(SubDocumentWriteModel subDocumentWriteModel) {
+        return new UpsertDocumentSummaryCommand(subDocumentWriteModel);
     }
 
     @Bean
@@ -78,5 +87,10 @@ public class Configuration {
     @Bean
     VoteRepository voteRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new VoteRepository(jdbcTemplate);
+    }
+
+    @Bean
+    SubDocumentRepository subDocumentRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new SubDocumentRepository(jdbcTemplate);
     }
 }

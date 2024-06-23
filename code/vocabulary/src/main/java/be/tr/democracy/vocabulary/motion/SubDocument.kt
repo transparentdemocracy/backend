@@ -1,19 +1,11 @@
-package be.tr.democracy.vocabulary.motion;
+package be.tr.democracy.vocabulary.motion
 
-import java.util.Objects;
-
-public record SubDocument(
-        Integer documentNr,
-        Integer documentSubNr,
-        String documentPdfUrl,
-        String summaryNL,
-        String summaryFR
+data class SubDocument(
+    val documentNr: Int,
+    val documentSubNr: Int,
+    val summaryNL: String,
+    val summaryFR: String,
 ) {
-    public SubDocument {
-        Objects.requireNonNull(documentNr);
-        Objects.requireNonNull(documentSubNr);
-        Objects.requireNonNull(documentPdfUrl);
-        Objects.requireNonNull(summaryFR);
-        Objects.requireNonNull(summaryNL);
-    }
+    val documentPdfURL: String
+        get() = "https://www.dekamer.be/FLWB/PDF/55/%04d/55K%04d%03d.pdf".format(documentNr, documentNr, documentSubNr)
 }
