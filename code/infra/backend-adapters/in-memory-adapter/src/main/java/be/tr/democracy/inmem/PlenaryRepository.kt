@@ -53,7 +53,7 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
     }
 
     override fun find(searchTerm: String, pageRequest: PageRequest): Page<Plenary> {
-        // TODO CATALYST create index and verify it's being used
+        // TODO create index and verify it's being used
         val plenaries = jdbcTemplate.query(
             FIND_PLENARY,
             MapSqlParameterSource()

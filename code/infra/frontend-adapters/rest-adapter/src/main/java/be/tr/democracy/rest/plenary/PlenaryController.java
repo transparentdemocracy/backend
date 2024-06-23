@@ -114,7 +114,7 @@ public class PlenaryController {
                     it.titleNL(),
                     it.titleFR(),
                     null,
-                    // TODO CATALYST descriptions and vote counts
+                    // TODO descriptions and vote counts
                     "descriptionNL",
                     "descriptionFR",
                     null);

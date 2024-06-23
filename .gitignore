@@ -5,10 +5,12 @@
 .DS_Store
 *.bkp
 /doc/drawings/.**.drawio.dtmp
+*.swp
 
 # Local .terraform directories
 **/.terraform/*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
 
