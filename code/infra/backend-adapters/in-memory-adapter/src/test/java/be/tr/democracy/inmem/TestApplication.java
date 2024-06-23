@@ -21,4 +21,9 @@ class TestApplication {
         return new PoliticianRepository(jdbcTemplate);
     }
 
+    @Bean
+    VoteRepository voteRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new VoteRepository(jdbcTemplate);
+    }
+
 }

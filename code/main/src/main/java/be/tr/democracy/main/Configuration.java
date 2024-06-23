@@ -12,6 +12,7 @@ import be.tr.democracy.inmem.DataFileMotionsReadModel;
 import be.tr.democracy.inmem.PlenaryDTOFileLoader;
 import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.inmem.PoliticianRepository;
+import be.tr.democracy.inmem.VoteRepository;
 import be.tr.democracy.query.MotionsQuery;
 import be.tr.democracy.query.MotionsReadModel;
 import be.tr.democracy.query.PlenariesQuery;
@@ -20,6 +21,8 @@ import be.tr.democracy.query.PlenaryWriteModel;
 import be.tr.democracy.query.PoliticianWriteModel;
 import be.tr.democracy.query.UpsertPlenaryCommand;
 import be.tr.democracy.query.UpsertPoliticianCommand;
+import be.tr.democracy.query.UpsertVoteCommand;
+import be.tr.democracy.query.VoteWriteModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -34,6 +37,11 @@ public class Configuration {
     @Bean
     UpsertPoliticianCommand upsertPoliticianCommand(PoliticianWriteModel politicianWriteModel) {
         return new UpsertPoliticianCommand(politicianWriteModel);
+    }
+
+    @Bean
+    UpsertVoteCommand upsertVoteCommand(VoteWriteModel voteWriteModel) {
+        return new UpsertVoteCommand(voteWriteModel);
     }
 
     @Bean
@@ -65,5 +73,10 @@ public class Configuration {
     @Bean
     PoliticianRepository politicianRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new PoliticianRepository(jdbcTemplate);
+    }
+
+    @Bean
+    VoteRepository voteRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new VoteRepository(jdbcTemplate);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class PoliticianController(private val upsertPolitician: UpsertPolitician) {
 
     @PostMapping("/politicians", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    // TODO secure this endpoint
     fun upsert(@RequestBody politician: UpsertPoliticianDTO) {
         upsertPolitician.upsert(
             Politician(
