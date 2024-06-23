@@ -11,10 +11,14 @@ import org.testcontainers.utility.DockerImageName;
 @SpringBootApplication
 class TestApplication {
 
-
     @Bean
     PlenaryRepository plenaryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new PlenaryRepository(jdbcTemplate);
+    }
+
+    @Bean
+    PoliticianRepository politicianRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new PoliticianRepository(jdbcTemplate);
     }
 
 }

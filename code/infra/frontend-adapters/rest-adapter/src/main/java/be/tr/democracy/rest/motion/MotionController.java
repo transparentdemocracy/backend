@@ -1,16 +1,23 @@
-package be.tr.democracy.rest;
+package be.tr.democracy.rest.motion;
+
+import static java.util.Objects.requireNonNull;
 
 import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.rest.MotionGroupViewDTO;
+import be.tr.democracy.rest.MotionMapper;
+import be.tr.democracy.rest.PageViewDTO;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-
-import static java.util.Objects.requireNonNull;
 
 @CrossOrigin
 @RestController
@@ -32,7 +39,6 @@ public class MotionController {
         final var motionPage = this.motionsService.findMotions(searchTerm, new PageRequest(page, size));
         return Mono.just(MotionMapper.mapViewPage(motionPage));
     }
-
 
     @GetMapping("/motions/{id}")
     public Mono<MotionGroupViewDTO> getMotion(@PathVariable String id) {

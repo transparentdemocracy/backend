@@ -1,5 +1,6 @@
 package be.tr.democracy.rest;
 
+import be.tr.democracy.rest.motion.MotionController;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
