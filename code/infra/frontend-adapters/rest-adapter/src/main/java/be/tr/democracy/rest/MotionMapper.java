@@ -15,21 +15,22 @@ public class MotionMapper {
 
     public static MotionGroupViewDTO map(MotionGroup group) {
         final var motionViewDTOS = group.motions().stream().map(MotionMapper::map).toList();
-        return new MotionGroupViewDTO(group.id(), group.titleNL(), group.titleFR(), motionViewDTOS, group.votingDate());
+        // TODO pass voting data
+        return new MotionGroupViewDTO(group.id(), group.titleNL(), group.titleFR(), motionViewDTOS, null);
     }
 
     public static MotionViewDTO map(Motion motion) {
-        final var voteCount = motion.voteCount();
-        final var documentReference = DocumentReferenceMapper.INSTANCE.mapDocumentReference(motion.newDocumentReference());
+        final var voteCount = motion.getVoteCount();
+        final var documentReference = DocumentReferenceMapper.INSTANCE.mapDocumentReference(motion.getNewDocumentReference());
         return new MotionViewDTO(
-                motion.motionId(),
-                motion.titleNL(),
-                motion.titleFR(),
+            motion.getMotionId(),
+            motion.getTitleNL(),
+            motion.getTitleFR(),
                 mapVotes(voteCount.yesVotes(), voteCount.totalVotes()),
                 mapVotes(voteCount.noVotes(), voteCount.totalVotes()),
                 mapVotes(voteCount.abstention(), voteCount.totalVotes()),
                 documentReference,
-                motion.votingDate(),
+                motion.getVoteDate(),
                 voteCount.votePassed());
     }
 

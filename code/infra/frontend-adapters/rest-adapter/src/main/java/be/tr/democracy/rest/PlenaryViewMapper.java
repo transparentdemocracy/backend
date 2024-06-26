@@ -20,8 +20,14 @@ public class PlenaryViewMapper {
     }
 
     public static PlenaryViewDTO map(Plenary plenary) {
-        return new PlenaryViewDTO(plenary.id(), plenary.title(), plenary.legislature(), plenary.plenaryDate(), plenary.pdfReportUrl(), plenary.htmlReportUrl(),
-                mapMotions(plenary.motionsGroups()));
+        return new PlenaryViewDTO(
+            plenary.id(),
+            plenary.title(),
+            plenary.legislature(),
+            plenary.plenaryDate(),
+            "https://www.dekamer.be/doc/PCRI/pdf/%d/ip%3d.pdf".format(plenary.legislature(), plenary.number()),
+            "https://www.dekamer.be/doc/PCRI/html/%d/ip%3dx.html".format(plenary.legislature(), plenary.number()),
+            mapMotions(plenary.motionsGroups()));
     }
 
     private static List<MotionGroupLinkViewDTO> mapMotions(List<MotionGroupLink> motionGroupLinks) {
@@ -30,7 +36,7 @@ public class PlenaryViewMapper {
     }
 
     private static MotionGroupLinkViewDTO mapMotionGroupLink(MotionGroupLink motionGroupLink) {
-        return new MotionGroupLinkViewDTO(motionGroupLink.motionGroupId(), motionGroupLink.titleNL(), motionGroupLink.titleFR(), mapMotionLinks(motionGroupLink.motions()));
+        return new MotionGroupLinkViewDTO(motionGroupLink.id(), motionGroupLink.titleNL(), motionGroupLink.titleFR(), mapMotionLinks(motionGroupLink.motions()));
     }
 
     private static List<MotionLinkViewDTO> mapMotionLinks(List<MotionLink> motions) {

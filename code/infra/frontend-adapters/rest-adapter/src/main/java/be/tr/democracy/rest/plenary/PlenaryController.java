@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @CrossOrigin
 @RestController
 public class PlenaryController {
@@ -56,11 +58,10 @@ public class PlenaryController {
         String plenaryId = "%d_%d".formatted(request.getLegislature(), request.getNumber());
         return new Plenary(
             plenaryId,
+            request.getNumber(),
             "%s (L%d)".formatted(request.getNumber(), request.getLegislature()),
             Integer.toString(request.getLegislature()),
             request.getDate().toString(),
-            request.getPdf_report_url(),
-            request.getHtml_report_url(),
             request.getMotion_groups().stream()
                 .map(this::toMotionGroup)
                 .toList()
@@ -70,8 +71,12 @@ public class PlenaryController {
     private MotionGroupLink toMotionGroup(UpsertPlenaryJsonRequest.MotionGroup request) {
         return new MotionGroupLink(
             request.getId(),
+            Optional.ofNullable(request.getPlenary_agenda_item_number())
+                .map(Object::toString)
+                .orElse(null),
             request.getTitle_nl(),
             request.getTitle_fr(),
+            request.getDocuments_reference(),
             request.getMotions().stream()
                 .map(this::toMotion)
                 .toList()
@@ -84,13 +89,24 @@ public class PlenaryController {
         try {
             final var split = id.split("_");
             final var last = split.length - 1;
+            // TODO make these available as separate fields on motion if useful
             final var voteSeqNr = Integer.parseInt(split[last].substring(1)) + 1;
             final var agendaSeqNr = Integer.parseInt(split[last - 1]);
-            return new MotionLink(id, agendaSeqNr, voteSeqNr, request.getTitle_nl(), request.getTitle_fr());
+            final var documentsReference = request.getDocuments_reference();
+            final var cancelled = request.getCancelled();
+            return new MotionLink(id, agendaSeqNr, voteSeqNr, request.getTitle_nl(), request.getTitle_fr(), documentsReference, null, cancelled);
         } catch (Throwable e) {
             // TODO when does this happen? let it blow up here and fix!
             logger.error("Error parsing the motion link, extracting the agendaSeqNr and voteSegNr", e);
-            return new MotionLink(id, 0, 0, request.getTitle_nl(), request.getTitle_fr());
+            return new MotionLink(
+                id,
+                0,
+                0,
+                request.getTitle_nl(),
+                request.getTitle_fr(),
+                null,
+                null,
+                true);
         }
     }
 }

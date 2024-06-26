@@ -2,14 +2,12 @@ package be.tr.democracy.vocabulary.plenary;
 
 import java.util.List;
 
+// TODO CATALYST change order of argments to make more sense.
 public record Plenary(String id,
+                      Integer number,
                       String title,
                       String legislature,
                       String plenaryDate,
-                      String pdfReportUrl,
-                      String htmlReportUrl,
                       List<MotionGroupLink> motionsGroups) {
 
-    public Plenary {
-    }
 }

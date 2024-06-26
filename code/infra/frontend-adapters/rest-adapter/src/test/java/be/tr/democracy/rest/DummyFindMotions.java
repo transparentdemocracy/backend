@@ -1,13 +1,14 @@
 package be.tr.democracy.rest;
 
-import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.api.FindMotions;
+import be.tr.democracy.api.GetMotionGroup;
 import be.tr.democracy.vocabulary.motion.MotionGroup;
 import be.tr.democracy.vocabulary.page.Page;
 import be.tr.democracy.vocabulary.page.PageRequest;
 
 import java.util.Optional;
 
-public enum DummyMotionsService implements MotionsService {
+public enum DummyFindMotions implements FindMotions, GetMotionGroup {
     INSTANCE;
 
     @Override

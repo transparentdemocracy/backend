@@ -2,15 +2,17 @@ package be.tr.democracy.vocabulary.motion;
 
 import java.util.List;
 
-//TODO validate the date format, use actual date
 public record MotionGroup(String id,
+                          String plenaryId,
+                          String plenaryAgendaItemNumber,
                           String titleNL,
                           String titleFR,
+                          String documentsReference,
                           List<Motion> motions,
-                          String votingDate
+                          String voteDate
 ) {
 
     public boolean containsMotion(String motionId) {
-        return this.motions.stream().map(Motion::motionId).toList().contains(motionId);
+        return this.motions.stream().map(Motion::getMotionId).toList().contains(motionId);
     }
 }

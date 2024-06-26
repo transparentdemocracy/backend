@@ -14,7 +14,5 @@ public class UpsertPlenaryCommand implements UpsertPlenary {
     @Override
     public void upsert(Plenary plenary) {
         plenaryWriteModel.upsert(plenary);
-        // TODO upsert motions in same transaction
-        // TODO verify transactionality
     }
 }

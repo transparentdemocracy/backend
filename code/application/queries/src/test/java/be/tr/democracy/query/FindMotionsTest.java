@@ -3,17 +3,17 @@ package be.tr.democracy.query;
 import be.tr.democracy.vocabulary.page.PageRequest;
 import org.junit.jupiter.api.Test;
 
-import static be.tr.democracy.query.DummyMotionsReadModel.DUMMY_GROUP_1;
-import static be.tr.democracy.query.DummyMotionsReadModel.DUMMY_GROUP_2;
+import static be.tr.democracy.query.DummyMotionGroupReadModel.DUMMY_GROUP_1;
+import static be.tr.democracy.query.DummyMotionGroupReadModel.DUMMY_GROUP_2;
 import static be.tr.democracy.query.ObjectMother.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MotionsQueryTest {
+class FindMotionsTest {
 
 
     @Test
     void loadMotions() {
-        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
+        final var motionsQuery = new FindMotionsQuery(DummyMotionGroupReadModel.INSTANCE);
 
         final var page = motionsQuery.findMotions("", new PageRequest(1, 1));
 
@@ -24,7 +24,7 @@ class MotionsQueryTest {
 
     @Test
     void loadAllMotions() {
-        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
+        final var motionsQuery = new FindMotionsQuery(DummyMotionGroupReadModel.INSTANCE);
 
         final var page = motionsQuery.findMotions("", new PageRequest(1, 4));
         final var motionGroups = page.values();
@@ -43,7 +43,7 @@ class MotionsQueryTest {
 
     @Test
     void loadExactMotions() {
-        final var motionsQuery = new MotionsQuery(DummyMotionsReadModel.INSTANCE);
+        final var motionsQuery = new FindMotionsQuery(DummyMotionGroupReadModel.INSTANCE);
 
         final var page = motionsQuery.findMotions("", new PageRequest(2, 2));
         final var motions = page.values();

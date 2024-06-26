@@ -33,6 +33,13 @@ private const val FIND_PLENARY = """
     LIMIT :limit
     OFFSET :offset"""
 
+private const val UPSERT_MOTION_GROUP: String = """
+    INSERT INTO motion_group_link (plenary_id, legislature, data, content)
+    VALUES (:id, :legislature, :data, :content)
+    ON CONFLICT (plenary_id)
+    DO UPDATE SET data = :data, content = :content;"""
+
+// TODO Not sure if we need to store MotionGroupLink separately
 class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : PlenaryWriteModel, PlenariesReadModel {
     private val objectMapper: ObjectMapper = ObjectMapper()
         .registerModule(JavaTimeModule())
@@ -40,7 +47,6 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
         .registerKotlinModule()
 
     override fun upsert(plenary: Plenary) {
-
         val content = toContent(plenary)
 
         jdbcTemplate.update(
@@ -49,6 +55,32 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
                 .addValue("legislature", plenary.legislature)
                 .addValue("data", toJson(plenary))
                 .addValue("content", content)
+        )
+
+        deleteMotionGroups(plenary)
+        updateMotionGroups(plenary)
+    }
+
+    private fun updateMotionGroups(plenary: Plenary) {
+        jdbcTemplate.batchUpdate(
+            UPSERT_MOTION_GROUP,
+            plenary.motionsGroups.map {
+                MapSqlParameterSource(
+                    mapOf(
+                        "motion_group_id" to it.id,
+                        "plenary_id" to plenary.id,
+                        "data" to it.toMotionGroupStorage(plenary.id, plenary.plenaryDate),
+                        "content" to it.toContent(),
+                    )
+                )
+            }.toTypedArray()
+        )
+    }
+
+    private fun deleteMotionGroups(plenary: Plenary) {
+        jdbcTemplate.update(
+            """delete from motion_groups where plenary_id=:plenary_id""",
+            MapSqlParameterSource(mapOf("plenary_id" to plenary.id))
         )
     }
 
@@ -82,7 +114,7 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
         try {
             return PGobject().apply {
                 type = "json"
-                value = objectMapper.writeValueAsString(plenary.toPersistence())
+                value = objectMapper.writeValueAsString(plenary.toPlenaryStorage())
             }
         } catch (e: JsonProcessingException) {
             throw RuntimeException("Can't serialize plenary", e)
@@ -95,67 +127,152 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
                 Stream.concat(
                     Stream.of(it.titleNL, it.titleFR),
                     it.motions.stream()
-                        .flatMap { it2: MotionLink -> Stream.of(it2.titleNL, it2.titleFR) })
+                        .flatMap { motionLink: MotionLink -> Stream.of(motionLink.titleNL, motionLink.titleFR) })
             }
             .collect(Collectors.joining(" "))
     }
 
 }
 
-fun Plenary.toPersistence(): PlenaryStorage {
+fun Plenary.toPlenaryStorage(): PlenaryStorage {
     return PlenaryStorage(
         id,
-        title,
         legislature,
+        number,
+        title,
         plenaryDate,
-        pdfReportUrl,
-        htmlReportUrl,
-        motionsGroups.map { it.toPersistence() }
+        motionsGroups.map { it.toPlenaryStorage() }
     )
 }
 
-fun MotionGroupLink.toPersistence(): PlenaryStorage.MotionGroup {
-    return PlenaryStorage.MotionGroup(
-        motionGroupId,
+fun MotionGroupLink.toPlenaryStorage(): PlenaryStorage.MotionGroupLink {
+    return PlenaryStorage.MotionGroupLink(
+        id,
+        plenaryAgendaItemNumber,
+        documentReference,
         titleNL,
         titleFR,
+        motions.map {
+            it.toPersistence()
+        }
+    )
+}
+
+fun MotionGroupLink.toContent(): String {
+    return "TODO" // TODO concatenate all text fields in motiongrouplink for text search
+}
+
+fun MotionGroupLink.toMotionGroupStorage(plenaryId: String, plenaryDate: String): MotionGroupLinkStorage {
+    return MotionGroupLinkStorage(
+        id = id,
+        plenary_id = plenaryId,
+        plenaryAgendaItemNumber = plenaryAgendaItemNumber,
+        titleNL = titleNL,
+        titleFR = titleFR,
+        voteDate = plenaryDate,
+        documentsReference = documentReference,
+        motions = motions.map { it.toPersistence() },
+    )
+}
+
+fun MotionLink.toPersistence(): PlenaryStorage.Motion {
+    return PlenaryStorage.Motion(
+        id = motionId,
+        agendaSeqNr = agendaSeqNr,
+        voteSeqNr = voteSeqNr,
+        title_nl = titleNL,
+        title_fr = titleFR,
+        documents_reference = documentsReference,
+        voting_id = votingId,
+        proposal_id = null,
+        cancelled = cancelled,
     )
 }
 
 fun PlenaryStorage.toDomain(): Plenary {
     return Plenary(
         id,
+        number,
         title,
         legislature,
         plenaryDate,
-        pdfReportUrl,
-        htmlReportUrl,
-        motionsGroups?.map { it.toDomain() } ?: listOf()
+        motionsGroups.map { it.toDomain() }
     )
 }
 
-fun PlenaryStorage.MotionGroup.toDomain(): MotionGroupLink {
+fun MotionGroupLinkStorage.toDomain(): MotionGroupLink {
     return MotionGroupLink(
-        motionGroupId,
+        id,
+        plenaryAgendaItemNumber,
         titleNL,
         titleFR,
-        listOf() // TODO: map motions
+        documentsReference,
+        motions.map { it.toDomain() },
     )
 }
+
+fun PlenaryStorage.MotionGroupLink.toDomain(): MotionGroupLink {
+    return MotionGroupLink(
+        motionGroupId,
+        plenaryAgendaItemNumber,
+        titleNL,
+        titleFR,
+        documentReference,
+        motions.map {
+            it.toDomain()
+        }
+    )
+}
+
+fun PlenaryStorage.Motion.toDomain() = MotionLink(
+    id,
+    agendaSeqNr,
+    voteSeqNr,
+    title_nl,
+    title_fr,
+    documents_reference,
+    voting_id,
+    cancelled
+)
 
 data class PlenaryStorage(
     val id: String,
-    val title: String?,
     val legislature: String?,
+    val number: Int?,
+    val title: String?,
     val plenaryDate: String?,
-    val pdfReportUrl: String?,
-    val htmlReportUrl: String?,
-    val motionsGroups: List<MotionGroup>?,
+    val motionsGroups: List<MotionGroupLink>,
 ) {
-    data class MotionGroup(
+    data class MotionGroupLink(
         val motionGroupId: String?,
+        val plenaryAgendaItemNumber: String?,
+        val documentReference: String?,
         val titleNL: String?,
         val titleFR: String?,
-        // TODO map motions
+        val motions: List<Motion>,
     )
+
+    data class Motion(
+        val id: String,
+        val agendaSeqNr: Int,
+        val voteSeqNr: Int,
+        val title_nl: String,
+        val title_fr: String,
+        val documents_reference: String,
+        val voting_id: String,
+        val proposal_id: String?,
+        val cancelled: Boolean,
+    )
+}
+
+class MotionGroupLinkStorage(
+    val id: String,
+    val plenary_id: String,
+    val plenaryAgendaItemNumber: String,
+    val documentsReference: String,
+    val titleNL: String?,
+    val titleFR: String?,
+    val voteDate: String?,
+    val motions: List<PlenaryStorage.Motion>,
+) {
 }

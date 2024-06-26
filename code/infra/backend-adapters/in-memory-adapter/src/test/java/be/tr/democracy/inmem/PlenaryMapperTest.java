@@ -19,7 +19,7 @@ class PlenaryMapperTest {
         assertThat(plenary.id(), is(plenaryDTO.id()));
         assertThat(plenary.title(), is(plenaryDTO.number() + " (L" + plenaryDTO.legislature() + ")"));
         assertThat(plenary.motionsGroups().size(), is(plenaryDTO.motion_groups().size()));
-        assertThat(plenary.motionsGroups().getFirst().motionGroupId(), is(plenaryDTO.motion_groups().getFirst().id()));
+        assertThat(plenary.motionsGroups().getFirst().id(), is(plenaryDTO.motion_groups().getFirst().id()));
         assertThat(plenary.motionsGroups().getFirst().motions().getFirst().agendaSeqNr(), is(plenaryDTO.motion_groups().getFirst().motions().getFirst().sequence_number()));
     }
 }

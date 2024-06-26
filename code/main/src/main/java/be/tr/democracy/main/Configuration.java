@@ -1,22 +1,15 @@
 package be.tr.democracy.main;
 
-import static be.tr.democracy.main.DataLocations.DATA_PLENARIES_JSON;
-import static be.tr.democracy.main.DataLocations.DATA_POLITICIANS_JSON;
-import static be.tr.democracy.main.DataLocations.DATA_SUMMARIES_JSON;
-import static be.tr.democracy.main.DataLocations.DATA_VOTES_JSON;
-import static be.tr.democracy.main.DataLocations.DOMAIN_MODEL_CACHE_FOLDER;
-
-import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.api.FindMotions;
 import be.tr.democracy.api.PlenaryService;
 import be.tr.democracy.api.UpsertDocumentSummary;
-import be.tr.democracy.inmem.DataFileMotionsReadModel;
-import be.tr.democracy.inmem.PlenaryDTOFileLoader;
+import be.tr.democracy.inmem.MotionGroupRepository;
 import be.tr.democracy.inmem.PlenaryRepository;
 import be.tr.democracy.inmem.PoliticianRepository;
 import be.tr.democracy.inmem.SubDocumentRepository;
 import be.tr.democracy.inmem.VoteRepository;
-import be.tr.democracy.query.MotionsQuery;
-import be.tr.democracy.query.MotionsReadModel;
+import be.tr.democracy.query.FindMotionsQuery;
+import be.tr.democracy.query.MotionGroupReadModel;
 import be.tr.democracy.query.PlenariesQuery;
 import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.query.PlenaryWriteModel;
@@ -54,24 +47,13 @@ public class Configuration {
     }
 
     @Bean
-    MotionsService motionsQuery(MotionsReadModel motionsReadModel) {
-        return new MotionsQuery(motionsReadModel);
+    FindMotions motionsQuery(MotionGroupReadModel motionGroupReadModel) {
+        return new FindMotionsQuery(motionGroupReadModel);
     }
 
     @Bean
     PlenaryService plenaryQuery(PlenariesReadModel plenariesReadModel) {
         return new PlenariesQuery(plenariesReadModel);
-    }
-
-    // Data ports
-    @Bean
-    PlenaryDTOFileLoader plenaryFileLoader() {
-        return new PlenaryDTOFileLoader(DATA_PLENARIES_JSON);
-    }
-
-    @Bean
-    DataFileMotionsReadModel dataFileQuery(PlenaryDTOFileLoader p) {
-        return new DataFileMotionsReadModel(p, DATA_VOTES_JSON, DATA_POLITICIANS_JSON, DATA_SUMMARIES_JSON, DOMAIN_MODEL_CACHE_FOLDER);
     }
 
     @Bean
@@ -92,5 +74,10 @@ public class Configuration {
     @Bean
     SubDocumentRepository subDocumentRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new SubDocumentRepository(jdbcTemplate);
+    }
+
+    @Bean
+    MotionGroupRepository motionRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new MotionGroupRepository(jdbcTemplate);
     }
 }

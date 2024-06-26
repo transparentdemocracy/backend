@@ -10,18 +10,17 @@ import java.util.List;
 
 enum PlenaryMapper {
     INSTANCE;
-    private final Logger logger = LoggerFactory.getLogger(DataModelMapper.class);
+    private final Logger logger = LoggerFactory.getLogger(PlenaryMapper.class);
 
     List<Plenary> mapThem(List<PlenaryDTO> plenaryDTOS) {
         return plenaryDTOS.stream().map(x -> {
             final var legislature = Integer.toString(x.legislature());
             return new Plenary(
                     x.id(),
+                    x.number(),
                     x.number() + " (L" + legislature + ")",
                     legislature,
                     x.date(),
-                    x.pdf_report_url(),
-                    x.html_report_url(),
                     mapMotionGroups(x.motion_groups())
             );
         }).toList();
@@ -32,7 +31,7 @@ enum PlenaryMapper {
             final var motions = mapMotionLinks(x.motions());
             final var titleNL = nonEmptyTitleNL(x, motions);
             final var titleFR = nonEmptyTitleFRL(x, motions);
-            return new MotionGroupLink(x.id(), titleNL, titleFR, motions);
+            return new MotionGroupLink(x.id(), x.plenary_agenda_item_number(), titleNL, titleFR, x.documents_reference(), motions);
         }).toList();
     }
 
@@ -72,10 +71,27 @@ enum PlenaryMapper {
             final var last = split.length - 1;
             final var voteSeqNr = Integer.parseInt(split[last].substring(1)) + 1;
             final var agendaSeqNr = Integer.parseInt(split[last - 1]);
-            return new MotionLink(id, agendaSeqNr, voteSeqNr, motionDTO.title_nl(), motionDTO.title_fr());
+            return new MotionLink(
+                id,
+                agendaSeqNr,
+                voteSeqNr,
+                motionDTO.title_nl(),
+                motionDTO.title_fr(),
+                motionDTO.documents_reference(),
+                motionDTO.voting_id(),
+                motionDTO.cancelled());
         } catch (Throwable e) {
             logger.error("Error parsing the motion link, extracting the agendaSeqNr and voteSegNr", e);
-            return new MotionLink(id, 0, 0, motionDTO.title_nl(), motionDTO.title_fr());
+            // TODO just throw and/or fix underlying problem?
+            return new MotionLink(
+                id,
+                0,
+                0,
+                motionDTO.title_nl(),
+                motionDTO.title_fr(),
+                motionDTO.documents_reference(),
+                motionDTO.voting_id(),
+                motionDTO.cancelled());
         }
     }
 

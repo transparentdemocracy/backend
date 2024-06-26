@@ -24,12 +24,12 @@ class PlenaryRepositoryTest extends AbstractRepositoryTest {
 
     @Test
     void upsert() {
-        repository.upsert(new Plenary("55_123",
+        repository.upsert(new Plenary(
+            "55_123",
+            123,
             "123 (L55)",
             "55",
             "2024-06-21",
-            "https://www.dekamer.be/doc/PCRI/pdf/55/ip123.pdf",
-            "https://www.dekamer.be/doc/PCRI/html/55/ip123x.html",
             List.of()));
     }
 
@@ -41,15 +41,16 @@ class PlenaryRepositoryTest extends AbstractRepositoryTest {
     @Test
     void find_returnsPlenary() {
         Plenary plenary = new Plenary("55_123",
+            123,
             "123 (L55)",
             "55",
             "2024-06-21",
-            "https://www.dekamer.be/doc/PCRI/pdf/55/ip123.pdf",
-            "https://www.dekamer.be/doc/PCRI/html/55/ip123x.html",
             List.of(new MotionGroupLink(
                 "55_123_xyz",
+                "1",
                 "Wetsvoorstel over het klimaat",
                 "Projet de loi climat",
+                null,
                 List.of()
             )));
         repository.upsert(plenary);

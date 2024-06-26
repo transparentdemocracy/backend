@@ -4,12 +4,10 @@ import java.time.LocalDate
 
 data class UpsertPlenaryJsonRequest(
     val number: Int?,
-    val legislature: Int?,
-    val date: LocalDate?,
-    val pdf_report_url: String?,
-    val html_report_url: String?,
+    val legislature: Int,
+    val date: LocalDate,
     val proposal_discussions: List<ProposalDiscussion>?,
-    val motion_groups: List<MotionGroup>?,
+    val motion_groups: List<MotionGroup>,
 ) {
 
     data class ProposalDiscussion(

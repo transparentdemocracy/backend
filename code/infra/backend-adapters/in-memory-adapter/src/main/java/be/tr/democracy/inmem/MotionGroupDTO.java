@@ -4,7 +4,7 @@ import java.util.List;
 
 public record MotionGroupDTO(
         String id,
-        int plenary_agenda_item_number,
+        String plenary_agenda_item_number,
         String title_nl,
         String title_fr,
         String documents_reference,

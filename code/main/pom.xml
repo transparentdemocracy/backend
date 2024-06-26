@@ -55,35 +55,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Copy the data files from another location into the classpath -->
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/classes/data</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/../../../voting-data/data/output/plenary/json</directory>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/../../../voting-data/data/output/documents</directory>
-                                    <include>summaries.json</include> 
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/../../../voting-data/data/output/politician</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 </project>

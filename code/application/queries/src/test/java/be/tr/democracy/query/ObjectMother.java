@@ -17,48 +17,52 @@ public class ObjectMother {
     static final Motion FIRST_MOTION =
         new Motion(
             "first",
-            "plenaryA",
-            "2024-01-01",
-            1,
             "NL Title 1",
             "FR Title 1",
             new DocumentReference("2459/1-1", null, List.of()),
             "De eerste",
-            "Le premier",
-            createVoteCount());
+            "2024-01-01",
+            createVoteCount(),
+            "vote-101",
+            false,
+            "plenaryId",
+            1);
     static final Motion SECOND_MOTION =
         new Motion("second",
-            "plenaryA",
-            "2024-01-01",
-            1,
             "NL Title 2",
             "FR Title 2",
             new DocumentReference("2459/1-2", null, List.of()),
             "De tweede",
-            "Le deuxieme",
-            createVoteCount());
+            "2024-01-01",
+            createVoteCount(),
+            "vote-102",
+            false,
+            "plenaryId",
+            1);
     static final Motion THIRD_MOTION =
         new Motion("third",
-            "plenaryB",
-            "2024-01-02",
-            1,
             "NL Title 3",
             "FR Title 3",
             new DocumentReference("2459/1-3", null, List.of()),
             "De derde",
-            "Le troisieme",
-            createVoteCount());
+            "2024-01-03",
+            createVoteCount(),
+            "vote-101",
+            false,
+            "plenaryId",
+            1);
     static final Motion FOURTH_MOTION =
         new Motion("fourth",
-            "plenaryB",
-            "2024-01-03",
-            1,
             "NL Title 4",
             "FR Title 4",
             new DocumentReference("2459/1-4", null, List.of()),
             "De vierde",
-            "Le quatrieme",
-            createVoteCount());
+            "2024-01-03",
+            createVoteCount(),
+            "vote-104",
+            false,
+            "plenaryId",
+            1);
 
     private ObjectMother() {
     }

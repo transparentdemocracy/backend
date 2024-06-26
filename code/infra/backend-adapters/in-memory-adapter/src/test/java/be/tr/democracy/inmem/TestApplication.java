@@ -31,4 +31,8 @@ class TestApplication {
         return new SubDocumentRepository(jdbcTemplate);
     }
 
+    @Bean
+    MotionGroupRepository motionGroupRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new MotionGroupRepository(jdbcTemplate);
+    }
 }

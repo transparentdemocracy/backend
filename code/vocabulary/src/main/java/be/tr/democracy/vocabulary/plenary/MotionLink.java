@@ -1,12 +1,13 @@
 package be.tr.democracy.vocabulary.plenary;
 
 public record MotionLink(String motionId,
-                         int agendaSeqNr,
-                         int voteSeqNr,
+                         Integer agendaSeqNr,
+                         Integer voteSeqNr,
                          String titleNL,
-                         String titleFR
+                         String titleFR,
+                         String documentsReference,
+                         String votingId,
+                         Boolean cancelled
 ) {
 
-    public MotionLink {
-    }
 }

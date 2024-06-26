@@ -14,21 +14,7 @@ Makes the [public information](https://www.dekamer.be/kvvcr/index.cfm) of the go
 
 ## Technical Choices
 
-For now, we have opted not using a database. The data that is served is loaded from prepared json files that are included in the jar and loaded into memory when the application starts up. The data files are not part of this project. It is expected that the companion project voting-data is located next to this project. Upon building the application, maven will copy those resources into the jar.
-
-If you run the application directly from your IDEA, make sure to have run the mvn build once before. Otherwise, the data files from the other project will not be copied and thus not present.
-
-
-```log
-...
-INFO 27436 --- [           main] be.tr.democracy.main.VotingApplication   : No active profile set, falling back to 1 default profile: "default"
-INFO 27436 --- [           main] b.t.d.inmem.DataFileMotionsReadModel     : Loading DataFileMotions from data/plenaries.json
-INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 300 PlenaryDTO in 123 milisec from data/plenaries.json
-INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 192 PoliticianDTO in 4 milisec from data/politicians.json
-INFO 27436 --- [           main] b.tr.democracy.inmem.JSONDataFileLoader  : Loading 381567 VoteDTO in 212 milisec from data/votes.json
-INFO 27436 --- [           main] b.t.d.inmem.DataFileMotionsReadModel     : Data loaded in memory.
-...
-```
+The data is stored in a database. Adding the data is done by calling the POST endpoints. TODO: explain authentication.
 
 ## Get started setup
 

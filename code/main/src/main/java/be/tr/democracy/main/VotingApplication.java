@@ -8,10 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "be.tr.democracy")
 public class VotingApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(VotingApplication.class, args);
     }
-
 
 }

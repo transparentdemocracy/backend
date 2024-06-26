@@ -14,7 +14,7 @@ class MotionControllerTest {
 
     @Test
     void pageMotions() {
-        final var motionController = new MotionController(DummyMotionsService.INSTANCE);
+        final var motionController = new MotionController(DummyFindMotions.INSTANCE, DummyFindMotions.INSTANCE);
 
         final var pageViewDTOMono = motionController.getMotions("", 2, 2);
 
@@ -26,7 +26,7 @@ class MotionControllerTest {
 
     @Test
     void singleMotion() {
-        final var motionController = new MotionController(DummyMotionsService.INSTANCE);
+        final var motionController = new MotionController(DummyFindMotions.INSTANCE, DummyFindMotions.INSTANCE);
 
         final var pageViewDTOMono = motionController.getMotion("third");
 

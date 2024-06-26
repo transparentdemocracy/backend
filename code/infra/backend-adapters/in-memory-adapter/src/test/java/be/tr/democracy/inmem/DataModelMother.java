@@ -145,13 +145,13 @@ public class DataModelMother {
     }
 
     private static List<MotionGroupDTO> buildMotionGroupsA() {
-        return List.of(new MotionGroupDTO("motion_group_disc_A_2", 2,
+        return List.of(new MotionGroupDTO("motion_group_disc_A_2", "2",
                         "motion_group_title_nl_A_2",
                         "motion_group_title_fr_A_2",
                         "motion_group_docu_ref_A_2",
                         PROPOSAL_DISCUSSION_1,
                         buildFirstMotionDTOs()),
-                new MotionGroupDTO("motion_group_disc_A_1", 1,
+                new MotionGroupDTO("motion_group_disc_A_1", "1",
                         "motion_group_title_nl_A_1",
                         "motion_group_title_fr_A_1",
                         "motion_group_docu_ref_A_1",
@@ -161,13 +161,13 @@ public class DataModelMother {
     }
 
     private static List<MotionGroupDTO> buildMotionGroupsB() {
-        return List.of(new MotionGroupDTO("motion_group_disc_B_2", 2,
+        return List.of(new MotionGroupDTO("motion_group_disc_B_2", "2",
                         "motion_group_title_nl_B_2",
                         "motion_group_title_fr_B_2",
                         "motion_group_docu_ref_B_2",
                         PROPOSAL_DISCUSSION_2,
                         buildSecondMotionDTOs()),
-                new MotionGroupDTO("motion_group_disc_B_1", 1,
+                new MotionGroupDTO("motion_group_disc_B_1", "1",
                         "motion_group_title_nl_B_1",
                         "motion_group_title_fr_B_1",
                         "motion_group_docu_ref_B_1",
@@ -176,13 +176,13 @@ public class DataModelMother {
     }
 
     private static List<MotionGroupDTO> buildMotionGroupsCorona() {
-        return List.of(new MotionGroupDTO("motion_group_disc_C_2", 2,
+        return List.of(new MotionGroupDTO("motion_group_disc_C_2", "1",
                         "motion_group_title_nl_C_2",
                         "motion_group_title_fr_C_2",
                         "motion_group_docu_ref_C_2",
                         PROPOSAL_DISCUSSION_2,
                         buildSecondMotionDTOs()),
-                new MotionGroupDTO("motion_group_disc_C_1", 1,
+                new MotionGroupDTO("motion_group_disc_C_1", "2",
                         "motion_group_title_nl_C_1",
                         "motion_group_title_fr_C_1",
                         "motion_group_docu_ref_C_1",

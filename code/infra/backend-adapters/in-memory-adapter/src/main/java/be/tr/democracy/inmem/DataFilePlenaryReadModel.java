@@ -111,11 +111,10 @@ public class DataFilePlenaryReadModel implements PlenariesReadModel {
         } else {
             return Optional.of(
                     new Plenary(plenary.id(),
+                            plenary.number(),
                             plenary.title(),
                             plenary.legislature(),
                             plenary.plenaryDate(),
-                            plenary.pdfReportUrl(),
-                            plenary.htmlReportUrl(),
                             filteredMotionGroupLinks));
         }
     }

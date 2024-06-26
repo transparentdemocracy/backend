@@ -18,12 +18,12 @@ class MotionMapperTest {
     void mapping() {
         final MotionViewDTO mappedDTO = MotionMapper.map(FIRST_MOTION);
 
-        assertEquals(FIRST_MOTION.motionId(), mappedDTO.id());
-        assertEquals(FIRST_MOTION.titleNL(), mappedDTO.titleNL());
-        assertEquals(FIRST_MOTION.titleFR(), mappedDTO.titleFR());
-        assertEquals(FIRST_MOTION.votingDate(), mappedDTO.votingDate());
+        assertEquals(FIRST_MOTION.getMotionId(), mappedDTO.id());
+        assertEquals(FIRST_MOTION.getTitleNL(), mappedDTO.titleNL());
+        assertEquals(FIRST_MOTION.getTitleFR(), mappedDTO.titleFR());
+        assertEquals(FIRST_MOTION.getVoteDate(), mappedDTO.votingDate());
 
-        final VoteCount expectedVoteCount = FIRST_MOTION.voteCount();
+        final VoteCount expectedVoteCount = FIRST_MOTION.getVoteCount();
         assertEquals(expectedVoteCount.yesVotes().nrOfVotes(), mappedDTO.yesVotes().nrOfVotes());
         assertEquals(expectedVoteCount.noVotes().nrOfVotes(), mappedDTO.noVotes().nrOfVotes());
         assertEquals(expectedVoteCount.abstention().nrOfVotes(), mappedDTO.absVotes().nrOfVotes());
@@ -64,11 +64,11 @@ class MotionMapperTest {
     void mappingWithNoVotes() {
         final MotionViewDTO mappedDTO = MotionMapper.map(SECOND_MOTION);
 
-        assertEquals(SECOND_MOTION.titleNL(), mappedDTO.titleNL());
-        assertEquals(SECOND_MOTION.titleFR(), mappedDTO.titleFR());
-        assertEquals(SECOND_MOTION.votingDate(), mappedDTO.votingDate());
+        assertEquals(SECOND_MOTION.getTitleNL(), mappedDTO.titleNL());
+        assertEquals(SECOND_MOTION.getTitleFR(), mappedDTO.titleFR());
+        assertEquals(SECOND_MOTION.getVoteDate(), mappedDTO.votingDate());
 
-        final VoteCount voteCount = SECOND_MOTION.voteCount();
+        final VoteCount voteCount = SECOND_MOTION.getVoteCount();
         assertEquals(voteCount.yesVotes().nrOfVotes(), mappedDTO.yesVotes().nrOfVotes());
         assertEquals(voteCount.noVotes().nrOfVotes(), mappedDTO.noVotes().nrOfVotes());
         assertEquals(voteCount.abstention().nrOfVotes(), mappedDTO.absVotes().nrOfVotes());

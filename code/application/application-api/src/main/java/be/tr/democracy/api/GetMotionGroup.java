@@ -6,9 +6,7 @@ import be.tr.democracy.vocabulary.page.PageRequest;
 
 import java.util.Optional;
 
-public interface MotionsService {
-
-    Page<MotionGroup> findMotions(String searchTerm, PageRequest pageRequest);
+public interface GetMotionGroup {
 
     Optional<MotionGroup> getMotionGroup(String motionId);
 }

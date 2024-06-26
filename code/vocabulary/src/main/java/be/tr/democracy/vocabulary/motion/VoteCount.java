@@ -2,7 +2,12 @@ package be.tr.democracy.vocabulary.motion;
 
 import java.util.Objects;
 
-public record VoteCount(String motionId, Votes yesVotes, Votes noVotes, Votes abstention) {
+public record VoteCount(
+    String motionId,
+    Votes yesVotes,
+    Votes noVotes,
+    Votes abstention
+) {
     public VoteCount {
         Objects.requireNonNull(yesVotes);
         Objects.requireNonNull(noVotes);

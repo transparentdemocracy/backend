@@ -2,7 +2,8 @@ package be.tr.democracy.rest.motion;
 
 import static java.util.Objects.requireNonNull;
 
-import be.tr.democracy.api.MotionsService;
+import be.tr.democracy.api.FindMotions;
+import be.tr.democracy.api.GetMotionGroup;
 import be.tr.democracy.rest.MotionGroupViewDTO;
 import be.tr.democracy.rest.MotionMapper;
 import be.tr.democracy.rest.PageViewDTO;
@@ -23,11 +24,12 @@ import java.util.Optional;
 @RestController
 public class MotionController {
     private final Logger logger = LoggerFactory.getLogger(MotionController.class);
-    private final MotionsService motionsService;
+    private final FindMotions findMotions;
+    private final GetMotionGroup getMotionGroup;
 
-    public MotionController(MotionsService motionsService) {
-        requireNonNull(motionsService);
-        this.motionsService = motionsService;
+    public MotionController(FindMotions findMotions, GetMotionGroup getMotionGroup) {
+        this.findMotions = requireNonNull(findMotions);
+        this.getMotionGroup = requireNonNull(getMotionGroup);
     }
 
     @GetMapping("/motions/")
@@ -36,14 +38,14 @@ public class MotionController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "1") int size) {
         logger.trace("Getting motionsGroups for search [{}] for page [{}] of size [{}]", searchTerm, page, size);
-        final var motionPage = this.motionsService.findMotions(searchTerm, new PageRequest(page, size));
+        final var motionPage = this.findMotions.findMotions(searchTerm, new PageRequest(page, size));
         return Mono.just(MotionMapper.mapViewPage(motionPage));
     }
 
     @GetMapping("/motions/{id}")
     public Mono<MotionGroupViewDTO> getMotion(@PathVariable String id) {
         logger.trace("Getting motion for id {}", id);
-        final var motion = this.motionsService.getMotionGroup(id);
+        final var motion = this.getMotionGroup.getMotionGroup(id);
         logMotions(id, motion);
         return motion
                 .map(MotionMapper::map)
