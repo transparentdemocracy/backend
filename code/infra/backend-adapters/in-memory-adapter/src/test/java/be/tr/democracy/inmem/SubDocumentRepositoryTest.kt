@@ -13,6 +13,7 @@ class SubDocumentRepositoryTest : AbstractRepositoryTest() {
     fun upsert() {
         subDocumentRepository.upsert(
             SubDocument(
+                "55/5000/6",
                 5000,
                 6,
                 "summary in dutch",

@@ -32,10 +32,17 @@ class VoteRepository(val jdbcTemplate: NamedParameterJdbcTemplate) : VoteWriteMo
         )
     }
 
+    // TODO persist enriched votes as well so we don't need to reconstruct this for every read?
     override fun getVoteCountsByVotingIds(votingIds: List<String>, politiciansById: Map<String, Politician>): Map<String, VoteCount> {
+        if (votingIds.isEmpty()) {
+            return emptyMap()
+        }
         val votes = jdbcTemplate.query(
             """
-            SELECT voting_id, politician_id, vote_type from vote WHERE voting_id IN :votingIds
+            SELECT voting_id, politician_id, vote_type
+            FROM vote
+            WHERE voting_id
+            IN (:votingIds)
         """,
             MapSqlParameterSource(mapOf("votingIds" to votingIds))
         ) { rs, _ ->

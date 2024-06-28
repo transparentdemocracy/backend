@@ -46,7 +46,7 @@ class MotionGroupRepositoryTest: AbstractRepositoryTest() {
                 voteDate = "2024-07-01",
                 newDocumentReference = DocumentReference(
                     "1234/56", "http://example", listOf(
-                        SubDocument(1234, 56, "dutch summary", "french summary")
+                        SubDocument("55/1234/56", 1234, 56, "dutch summary", "french summary")
                     )
                 ),
                 voteCount = VoteCount("motionId", votes(YES), votes(NO), votes(ABSTENTION)),

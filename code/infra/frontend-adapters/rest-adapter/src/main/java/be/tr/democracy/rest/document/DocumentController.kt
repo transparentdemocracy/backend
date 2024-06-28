@@ -30,6 +30,8 @@ class DocumentController(private val upsertDocumentSummary: UpsertDocumentSummar
         val docSubNr = parts[1].toInt(10)
         upsertDocumentSummary.upsert(
             SubDocument(
+                // TODO hardcoded legislature nr
+                "55/${docNr}/${docSubNr}",
                 documentNr = docNr,
                 documentSubNr = docSubNr,
                 summaryNL = request.summary_nl,

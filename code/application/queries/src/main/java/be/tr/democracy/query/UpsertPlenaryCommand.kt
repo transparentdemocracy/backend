@@ -1,119 +1,108 @@
-package be.tr.democracy.query;
+package be.tr.democracy.query
 
-import static java.util.function.Function.identity;
-
-import be.tr.democracy.api.UpsertPlenary;
-import be.tr.democracy.vocabulary.motion.DocumentReference;
-import be.tr.democracy.vocabulary.motion.Motion;
-import be.tr.democracy.vocabulary.motion.MotionGroup;
-import be.tr.democracy.vocabulary.motion.SubDocument;
-import be.tr.democracy.vocabulary.motion.VoteCount;
-import be.tr.democracy.vocabulary.plenary.MotionGroupLink;
-import be.tr.democracy.vocabulary.plenary.MotionLink;
-import be.tr.democracy.vocabulary.plenary.Plenary;
-import be.tr.democracy.vocabulary.plenary.Politician;
-import kotlin.NotImplementedError;
-import kotlin.Pair;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import be.tr.democracy.api.UpsertPlenary
+import be.tr.democracy.vocabulary.motion.DocumentReference
+import be.tr.democracy.vocabulary.motion.Motion
+import be.tr.democracy.vocabulary.motion.MotionGroup
+import be.tr.democracy.vocabulary.motion.SubDocument
+import be.tr.democracy.vocabulary.motion.VoteCount
+import be.tr.democracy.vocabulary.plenary.MotionGroupLink
+import be.tr.democracy.vocabulary.plenary.MotionLink
+import be.tr.democracy.vocabulary.plenary.Plenary
+import be.tr.democracy.vocabulary.plenary.Politician
+import java.util.function.Consumer
+import java.util.function.Function
+import java.util.stream.Collectors
 
 // TODO make transactional
-public class UpsertPlenaryCommand implements UpsertPlenary {
+class UpsertPlenaryCommand(
+    private val plenaryWriteModel: PlenaryWriteModel,
+    private val subDocumentReadModel: SubDocumentReadModel,
+    private val motionGroupWriteModel: MotionGroupWriteModel,
+    private val voteReadModel: VoteReadModel,
+    private val politicianReadModel: PoliticianReadModel,
+) : UpsertPlenary {
+    override fun upsert(plenary: Plenary) {
+        plenaryWriteModel.upsert(plenary)
 
-    private final PlenaryWriteModel plenaryWriteModel;
-    private final SubDocumentReadModel subDocumentReadModel;
-    private final MotionGroupWriteModel motionGroupWriteModel;
-    private final VoteReadModel voteReadModel;
-    private final PoliticianReadModel politicianReadModel;
-
-    public UpsertPlenaryCommand(PlenaryWriteModel plenaryWriteModel, SubDocumentReadModel subDocumentReadModel, MotionGroupWriteModel motionGroupWriteModel,
-        VoteReadModel voteReadModel, PoliticianReadModel politicianReadModel) {
-        this.plenaryWriteModel = plenaryWriteModel;
-        this.subDocumentReadModel = subDocumentReadModel;
-        this.motionGroupWriteModel = motionGroupWriteModel;
-        this.voteReadModel = voteReadModel;
-        this.politicianReadModel = politicianReadModel;
+        val motionGroups = enrich(plenary)
+        motionGroupWriteModel.deleteByPlenaryId(plenary.id)
+        motionGroups.forEach(Consumer { motionGroup: MotionGroup? ->
+            motionGroupWriteModel.upsert(
+                motionGroup!!
+            )
+        })
     }
 
-    @Override
-    public void upsert(Plenary plenary) {
-        plenaryWriteModel.upsert(plenary);
+    private fun enrich(plenary: Plenary): List<MotionGroup> {
+        val subDocumentIds = gatherSubDocumentIds(plenary)
 
-        List<MotionGroup> motionGroups = enrich(plenary);
-        motionGroupWriteModel.deleteByPlenaryId(plenary.id());
-        motionGroups.forEach(motionGroupWriteModel::upsert);
+        val subDocumentsById = subDocumentReadModel.findSubDocuments(subDocumentIds)
+            .associateBy { it.documentNr to it.documentSubNr }
+
+        val votingIds = getVotingIds(plenary)
+
+        val politiciansById = politicianReadModel.findAll().stream()
+            .collect(Collectors.toMap(Politician::id, Function.identity()))
+        val countsByVotingId = voteReadModel.getVoteCountsByVotingIds(votingIds, politiciansById)
+
+        return plenary.motionsGroups.stream()
+            .map { it: MotionGroupLink -> enrichMotionGroup(plenary, it, subDocumentsById, countsByVotingId) }
+            .toList()
     }
 
-    private List<MotionGroup> enrich(Plenary plenary) {
-        List<Pair<Integer, Integer>> subDocumentIds = gatherSubDocumentIds(plenary);
-
-        Map<Pair<Integer, Integer>, SubDocument> subDocumentsById = subDocumentReadModel.findSubDocuments(subDocumentIds).stream()
-            .collect(Collectors.toMap(this::getId, identity()));
-
-        List<String> votingIds = getVotingIds(plenary);
-
-        Map<String, Politician> politiciansById = politicianReadModel.findAll().stream()
-            .collect(Collectors.toMap(Politician::id, identity()));
-        Map<String, VoteCount> countsByVotingId = voteReadModel.getVoteCountsByVotingIds(votingIds, politiciansById);
-
-        return plenary.motionsGroups().stream()
-            .map(it -> enrichMotionGroup(plenary, it, subDocumentsById, countsByVotingId))
-            .toList();
-    }
-
-    private MotionGroup enrichMotionGroup(Plenary plenary, MotionGroupLink motionGroupLink, Map<Pair<Integer, Integer>, SubDocument> subDocumentsById,
-        Map<String, VoteCount> countsByVotingId) {
-        return new MotionGroup(
-            motionGroupLink.id(),
-            plenary.id(),
-            motionGroupLink.plenaryAgendaItemNumber(),
-            motionGroupLink.titleNL(),
-            motionGroupLink.titleFR(),
-            motionGroupLink.documentReference(),
-            motionGroupLink.motions().stream()
-                .map(it2 -> enrichMotion(plenary, it2, subDocumentsById, countsByVotingId))
+    private fun enrichMotionGroup(
+        plenary: Plenary, motionGroupLink: MotionGroupLink, subDocumentsById: Map<Pair<Int, Int>, SubDocument>,
+        countsByVotingId: Map<String, VoteCount>,
+    ): MotionGroup {
+        return MotionGroup(
+            motionGroupLink.id,
+            plenary.id,
+            motionGroupLink.plenaryAgendaItemNumber,
+            motionGroupLink.titleNL,
+            motionGroupLink.titleFR,
+            motionGroupLink.documentReference,
+            motionGroupLink.motions.stream()
+                .map { it2: MotionLink -> enrichMotion(plenary, it2, subDocumentsById, countsByVotingId) }
                 .toList(),
-            plenary.plenaryDate()
-        );
+            plenary.plenaryDate
+        )
     }
 
-    private Motion enrichMotion(Plenary plenary, MotionLink motionLink, Map<Pair<Integer, Integer>, SubDocument> subDocumentsById,
-        Map<String, VoteCount> countsByVotingId) {
-        return new Motion(
-            motionLink.motionId(),
-            motionLink.titleNL(),
-            motionLink.titleFR(),
-            createDocumentsReference(motionLink.documentsReference(), subDocumentsById),
-            "TODO description", // TODO where does this come from?
-            plenary.plenaryDate(),
-            countsByVotingId.get(motionLink.votingId()),
-            motionLink.votingId(),
-            motionLink.cancelled(),
-            plenary.id(),
-            motionLink.voteSeqNr()
-        );
+    private fun enrichMotion(
+        plenary: Plenary, motionLink: MotionLink, subDocumentsById: Map<Pair<Int, Int>, SubDocument>,
+        countsByVotingId: Map<String, VoteCount>,
+    ): Motion {
+        return Motion(
+            motionLink.motionId,
+            motionLink.titleNL,
+            motionLink.titleFR,
+            createDocumentsReference(motionLink.documentsReference, subDocumentsById),
+            "TODO description",  // TODO where does this come from?
+            plenary.plenaryDate,
+            countsByVotingId[motionLink.votingId]!!,
+            motionLink.votingId,
+            motionLink.cancelled,
+            plenary.id,
+            motionLink.voteSeqNr
+        )
     }
 
-    private DocumentReference createDocumentsReference(String reference, Map<Pair<Integer, Integer>, SubDocument> subDocumentsById) {
-        // TODO write document reference parsing & enriching logic
-        return new DocumentReference(
-            reference,
-            null,
-            List.of()
-        );
+    private fun createDocumentsReference(reference: String, subDocumentsById: Map<Pair<Int, Int>, SubDocument>): DocumentReference {
+        return DocumentReference.parse(reference, subDocumentsById)
     }
 
-    private List<String> getVotingIds(Plenary plenary) {
-        throw new NotImplementedError("TODO");
+    private fun getVotingIds(plenary: Plenary): List<String> {
+        return plenary.motionsGroups.flatMap {
+            it.motions.map {
+                it.votingId
+            }
+        }
     }
 
-    private Pair<Integer, Integer> getId(SubDocument subDocument) {
-        return new Pair(subDocument.getDocumentNr(), subDocument.getDocumentSubNr());
-    }
-
-    private List<Pair<Integer, Integer>> gatherSubDocumentIds(Plenary plenary) {
-        throw new NotImplementedError("TODO");
+    private fun gatherSubDocumentIds(plenary: Plenary): List<String> {
+        return plenary.motionsGroups.flatMap {
+            it.motions.flatMap { DocumentReference.parse(it.documentsReference).subDocuments }
+        }.map { it.documentId }
     }
 }

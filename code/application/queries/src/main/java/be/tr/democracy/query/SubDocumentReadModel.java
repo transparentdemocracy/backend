@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SubDocumentReadModel {
 
-    List<SubDocument> findSubDocuments(List<Pair<Integer, Integer>> subDocumentIds);
+    List<SubDocument> findSubDocuments(List<String> subDocumentIds);
 }

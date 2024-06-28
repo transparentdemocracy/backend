@@ -85,8 +85,12 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
                 .toDomain()
         }
 
-        // TODO CATALYST remove 'totalPages' or implement a count query
+        // TODO remove 'totalPages' or implement a count query
         return Page(pageRequest.pageNr, pageRequest.pageSize, pageRequest.pageSize + 5, motionGroups)
+    }
+
+    override fun deleteByPlenaryId(id: String) {
+        TODO("Not yet implemented")
     }
 
     override fun getMotionGroup(motionId: String): MotionGroup? {
@@ -138,6 +142,7 @@ private fun DocumentReference.toStorage(): MotionGroupStorage.DocumentReference 
 
 private fun SubDocument.toStorage(): MotionGroupStorage.SubDocument {
     return MotionGroupStorage.SubDocument(
+        documentId,
         documentNr,
         documentSubNr,
         summaryNL,
@@ -198,6 +203,7 @@ private fun MotionGroupStorage.DocumentReference.toDomain() = DocumentReference(
 
 private fun MotionGroupStorage.SubDocument.toDomain(): SubDocument {
     return SubDocument(
+        documentId,
         documentNr,
         documentSubNr,
         summaryNL ?: "", // TODO make summaries nullable in vocabulary?
@@ -260,6 +266,7 @@ private data class MotionGroupStorage(
     )
 
     data class SubDocument(
+        val documentId: String,
         val documentNr: Int,
         val documentSubNr: Int,
         val summaryNL: String?,
