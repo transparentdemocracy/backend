@@ -34,10 +34,10 @@ private const val FIND_PLENARY = """
     OFFSET :offset"""
 
 private const val UPSERT_MOTION_GROUP: String = """
-    INSERT INTO motion_group_link (plenary_id, legislature, data, content)
-    VALUES (:id, :legislature, :data, :content)
-    ON CONFLICT (plenary_id)
-    DO UPDATE SET data = :data, content = :content;"""
+    INSERT INTO motion_group_link (plenary_id, id, legislature, data, content)
+    VALUES (:plenary_id, :id, :legislature, :data, :content)
+    ON CONFLICT (plenary_id, id)
+    DO UPDATE SET legislature = :legislature, data = :data, content = :content;"""
 
 // TODO Not sure if we need to store MotionGroupLink separately
 class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : PlenaryWriteModel, PlenariesReadModel {
@@ -53,7 +53,7 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
             UPSERT_PLENARY, MapSqlParameterSource()
                 .addValue("id", plenary.id)
                 .addValue("legislature", plenary.legislature)
-                .addValue("data", toJson(plenary))
+                .addValue("data", toJson(plenary.toPlenaryStorage()))
                 .addValue("content", content)
         )
 
@@ -67,9 +67,10 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
             plenary.motionsGroups.map {
                 MapSqlParameterSource(
                     mapOf(
-                        "motion_group_id" to it.id,
                         "plenary_id" to plenary.id,
-                        "data" to it.toMotionGroupStorage(plenary.id, plenary.plenaryDate),
+                        "id" to it.id,
+                        "legislature" to plenary.legislature,
+                        "data" to toJson(it.toMotionGroupStorage(plenary.id, plenary.plenaryDate)),
                         "content" to it.toContent(),
                     )
                 )
@@ -79,7 +80,7 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
 
     private fun deleteMotionGroups(plenary: Plenary) {
         jdbcTemplate.update(
-            """delete from motion_groups where plenary_id=:plenary_id""",
+            """delete from motion_group where plenary_id=:plenary_id""",
             MapSqlParameterSource(mapOf("plenary_id" to plenary.id))
         )
     }
@@ -110,11 +111,11 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
         throw UnsupportedOperationException("todo")
     }
 
-    private fun toJson(plenary: Plenary): PGobject {
+    private fun toJson(obj: Any): PGobject {
         try {
             return PGobject().apply {
                 type = "json"
-                value = objectMapper.writeValueAsString(plenary.toPlenaryStorage())
+                value = objectMapper.writeValueAsString(obj)
             }
         } catch (e: JsonProcessingException) {
             throw RuntimeException("Can't serialize plenary", e)
@@ -269,7 +270,7 @@ class MotionGroupLinkStorage(
     val id: String,
     val plenary_id: String,
     val plenaryAgendaItemNumber: String,
-    val documentsReference: String,
+    val documentsReference: String?,
     val titleNL: String?,
     val titleFR: String?,
     val voteDate: String?,

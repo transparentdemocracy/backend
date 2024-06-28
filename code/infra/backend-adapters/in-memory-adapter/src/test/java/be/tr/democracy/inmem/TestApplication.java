@@ -1,12 +1,10 @@
 package be.tr.democracy.inmem;
 
+import com.zaxxer.hikari.HikariConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.utility.DockerImageName;
 
 @SpringBootApplication
 class TestApplication {
@@ -34,5 +32,23 @@ class TestApplication {
     @Bean
     MotionGroupRepository motionGroupRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new MotionGroupRepository(jdbcTemplate);
+    }
+
+    @Configuration
+    public class HikariSetting{
+
+        @Bean
+        public HikariConfig config() {
+            HikariConfig hikariConfig = new HikariConfig();
+
+            // other setting
+
+            hikariConfig.setMaximumPoolSize(1000);
+            hikariConfig.addDataSourceProperty("socketTimeout", 5000);
+            hikariConfig.setMaxLifetime(5000);
+
+            return hikariConfig;
+        }
+
     }
 }

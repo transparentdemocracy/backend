@@ -6,9 +6,13 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.containers.startupcheck.StartupCheckStrategy
+import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import java.time.Duration
+import java.time.temporal.ChronoUnit
 
 @SpringBootTest
 @FlywayTestExtension
@@ -17,8 +21,8 @@ import org.testcontainers.utility.DockerImageName
 abstract class AbstractRepositoryTest {
     companion object {
         @Container
-        val postgres: PostgreSQLContainer<*> = PostgreSQLContainer(DockerImageName.parse("postgres:16-alpine"))
-            .withDatabaseName("td")
+        val postgres: UnstoppablePostgresContainer = UnstoppablePostgresContainer.instance
+
 
         @JvmStatic
         @DynamicPropertySource

@@ -23,9 +23,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import java.sql.ResultSet
 
 private const val UPSERT_MOTION_GROUP: String = """
-    INSERT INTO motion_group (id, plenary_id, data, content)
-    VALUES (:id, :plenary_id, :data, :content)
-    ON CONFLICT (id)
+    INSERT INTO motion_group (plenary_id, id, data, content)
+    VALUES (:plenary_id, :id, :data, :content)
+    ON CONFLICT (plenary_id, id)
     DO UPDATE SET plenary_id = :plenary_id, data = to_jsonb(:data), content = :content"""
 
 private const val FIND_MOTION_GROUPS = """
@@ -47,8 +47,8 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
             UPSERT_MOTION_GROUP,
             MapSqlParameterSource(
                 mapOf(
-                    "id" to motionGroup.id,
                     "plenary_id" to motionGroup.plenaryId,
+                    "id" to motionGroup.id,
                     "data" to data,
                     "content" to motionGroup.toContent()
                 )

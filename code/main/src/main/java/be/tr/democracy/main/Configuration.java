@@ -10,15 +10,19 @@ import be.tr.democracy.inmem.SubDocumentRepository;
 import be.tr.democracy.inmem.VoteRepository;
 import be.tr.democracy.query.FindMotionsQuery;
 import be.tr.democracy.query.MotionGroupReadModel;
+import be.tr.democracy.query.MotionGroupWriteModel;
 import be.tr.democracy.query.PlenariesQuery;
 import be.tr.democracy.query.PlenariesReadModel;
 import be.tr.democracy.query.PlenaryWriteModel;
+import be.tr.democracy.query.PoliticianReadModel;
 import be.tr.democracy.query.PoliticianWriteModel;
+import be.tr.democracy.query.SubDocumentReadModel;
 import be.tr.democracy.query.SubDocumentWriteModel;
 import be.tr.democracy.query.UpsertDocumentSummaryCommand;
 import be.tr.democracy.query.UpsertPlenaryCommand;
 import be.tr.democracy.query.UpsertPoliticianCommand;
 import be.tr.democracy.query.UpsertVoteCommand;
+import be.tr.democracy.query.VoteReadModel;
 import be.tr.democracy.query.VoteWriteModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -27,8 +31,19 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class Configuration {
     // Usecases
     @Bean
-    UpsertPlenaryCommand upsertPlenaryCommand(PlenaryWriteModel plenaryWriteModel) {
-        return new UpsertPlenaryCommand(plenaryWriteModel);
+    UpsertPlenaryCommand upsertPlenaryCommand(
+        PlenaryWriteModel plenaryWriteModel,
+        SubDocumentReadModel subDocumentReadModel,
+        MotionGroupWriteModel motionGroupWriteModel,
+        PoliticianReadModel politicianReadModel,
+        VoteReadModel voteReadModel) {
+        return new UpsertPlenaryCommand(
+            plenaryWriteModel,
+            subDocumentReadModel,
+            motionGroupWriteModel,
+            voteReadModel,
+            politicianReadModel
+            );
     }
 
     @Bean
@@ -80,4 +95,5 @@ public class Configuration {
     MotionGroupRepository motionRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         return new MotionGroupRepository(jdbcTemplate);
     }
+
 }
