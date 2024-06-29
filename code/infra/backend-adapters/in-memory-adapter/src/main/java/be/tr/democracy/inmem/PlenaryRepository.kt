@@ -33,12 +33,6 @@ private const val FIND_PLENARY = """
     LIMIT :limit
     OFFSET :offset"""
 
-private const val UPSERT_MOTION_GROUP: String = """
-    INSERT INTO motion_group_link (plenary_id, id, legislature, data, content)
-    VALUES (:plenary_id, :id, :legislature, :data, :content)
-    ON CONFLICT (plenary_id, id)
-    DO UPDATE SET legislature = :legislature, data = :data, content = :content;"""
-
 // TODO Not sure if we need to store MotionGroupLink separately
 class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : PlenaryWriteModel, PlenariesReadModel {
     private val objectMapper: ObjectMapper = ObjectMapper()
@@ -55,33 +49,6 @@ class PlenaryRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : 
                 .addValue("legislature", plenary.legislature)
                 .addValue("data", toJson(plenary.toPlenaryStorage()))
                 .addValue("content", content)
-        )
-
-        deleteMotionGroups(plenary)
-        updateMotionGroups(plenary)
-    }
-
-    private fun updateMotionGroups(plenary: Plenary) {
-        jdbcTemplate.batchUpdate(
-            UPSERT_MOTION_GROUP,
-            plenary.motionsGroups.map {
-                MapSqlParameterSource(
-                    mapOf(
-                        "plenary_id" to plenary.id,
-                        "id" to it.id,
-                        "legislature" to plenary.legislature,
-                        "data" to toJson(it.toMotionGroupStorage(plenary.id, plenary.plenaryDate)),
-                        "content" to it.toContent(),
-                    )
-                )
-            }.toTypedArray()
-        )
-    }
-
-    private fun deleteMotionGroups(plenary: Plenary) {
-        jdbcTemplate.update(
-            """delete from motion_group where plenary_id=:plenary_id""",
-            MapSqlParameterSource(mapOf("plenary_id" to plenary.id))
         )
     }
 
@@ -159,23 +126,6 @@ fun MotionGroupLink.toPlenaryStorage(): PlenaryStorage.MotionGroupLink {
     )
 }
 
-fun MotionGroupLink.toContent(): String {
-    return "TODO" // TODO concatenate all text fields in motiongrouplink for text search
-}
-
-fun MotionGroupLink.toMotionGroupStorage(plenaryId: String, plenaryDate: String): MotionGroupLinkStorage {
-    return MotionGroupLinkStorage(
-        id = id,
-        plenary_id = plenaryId,
-        plenaryAgendaItemNumber = plenaryAgendaItemNumber,
-        titleNL = titleNL,
-        titleFR = titleFR,
-        voteDate = plenaryDate,
-        documentsReference = documentReference,
-        motions = motions.map { it.toPersistence() },
-    )
-}
-
 fun MotionLink.toPersistence(): PlenaryStorage.Motion {
     return PlenaryStorage.Motion(
         id = motionId,
@@ -198,17 +148,6 @@ fun PlenaryStorage.toDomain(): Plenary {
         legislature,
         plenaryDate,
         motionsGroups.map { it.toDomain() }
-    )
-}
-
-fun MotionGroupLinkStorage.toDomain(): MotionGroupLink {
-    return MotionGroupLink(
-        id,
-        plenaryAgendaItemNumber,
-        titleNL,
-        titleFR,
-        documentsReference,
-        motions.map { it.toDomain() },
     )
 }
 
@@ -266,14 +205,3 @@ data class PlenaryStorage(
     )
 }
 
-class MotionGroupLinkStorage(
-    val id: String,
-    val plenary_id: String,
-    val plenaryAgendaItemNumber: String,
-    val documentsReference: String?,
-    val titleNL: String?,
-    val titleFR: String?,
-    val voteDate: String?,
-    val motions: List<PlenaryStorage.Motion>,
-) {
-}
