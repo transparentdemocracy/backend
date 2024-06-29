@@ -103,7 +103,7 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
             FROM motion_group where EXISTS (
                 SELECT 1
                 FROM jsonb_array_elements(data->'motions') AS element
-                WHERE element->>'motionId' = :motionId'
+                WHERE element->>'motionId' = :motionId
             );
             """,
             MapSqlParameterSource(mapOf("motionId" to motionId)),
