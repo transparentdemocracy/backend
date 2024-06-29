@@ -97,7 +97,23 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
     }
 
     override fun getMotionGroup(motionId: String): MotionGroup? {
-        TODO("Not yet implemented")
+        return jdbcTemplate.query(
+            """
+            SELECT *
+            FROM motion_group where EXISTS (
+                SELECT 1
+                FROM jsonb_array_elements(data->'motions') AS element
+                WHERE element->>'motionId' = :motionId'
+            );
+            """,
+            MapSqlParameterSource(mapOf("motionId" to motionId)),
+
+            ) { rs: ResultSet, _: Int ->
+            val dataJson = (rs.getObject("data") as PGobject).value
+            objectMapper
+                .readValue(dataJson, MotionGroupStorage::class.java)
+                .toDomain()
+        }.firstOrNull()
     }
 
 }
