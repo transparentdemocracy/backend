@@ -20,11 +20,14 @@ public record DocumentReference(
     public static final Logger LOGGER = LoggerFactory.getLogger(DocumentReference.class);
     private static final Pattern VALID_REFERENCE_PATTERN = Pattern.compile("(\\d+)/(\\d+)(-\\d+)?");
 
-    public static DocumentReference parse(String documentReference) {
-        return parse(documentReference, Map.of());
+    public static DocumentReference parseDocumentReference(String documentReference) {
+        return parseDocumentReference(documentReference, Map.of());
     }
 
-    public static DocumentReference parse(String documentReference, Map<Pair<Integer, Integer>, SubDocument> subDocumentsById) {
+    public static DocumentReference parseDocumentReference(String documentReference, Map<Pair<Integer, Integer>, SubDocument> subDocumentsById) {
+        if (documentReference == null) {
+            return null;
+        }
         Matcher matcher = VALID_REFERENCE_PATTERN.matcher(documentReference);
         if (!matcher.matches()) {
             return new DocumentReference(documentReference, null, List.of());

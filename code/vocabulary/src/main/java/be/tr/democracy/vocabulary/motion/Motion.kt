@@ -8,7 +8,7 @@ data class Motion(
     val newDocumentReference: DocumentReference?,
     val description: String,
     val voteDate: String,
-    val voteCount: VoteCount,
+    val voteCount: VoteCount?, // nullable because votes are sent separately, and we might not have them
     val votingId: String,
     val voteCancelled: Boolean,
     val plenaryId: String,

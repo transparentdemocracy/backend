@@ -11,8 +11,8 @@ import java.util.List;
 class DocumentReferenceTest {
 
     @Test
-    void parseInvalid() {
-        DocumentReference actual = DocumentReference.parse("garbage123");
+    void parseDocumentReferenceInvalid() {
+        DocumentReference actual = DocumentReference.parseDocumentReference("garbage123");
 
         assertThat(actual)
             .usingRecursiveComparison()
@@ -20,8 +20,8 @@ class DocumentReferenceTest {
     }
 
     @Test
-    void parseSingle() {
-        DocumentReference actual = DocumentReference.parse("1234/5");
+    void parseDocumentReferenceSingle() {
+        DocumentReference actual = DocumentReference.parseDocumentReference("1234/5");
 
         assertThat(actual)
             .usingRecursiveComparison()
@@ -31,8 +31,8 @@ class DocumentReferenceTest {
     }
 
     @Test
-    void parseRange() {
-        DocumentReference actual = DocumentReference.parse("1234/5-10");
+    void parseDocumentReferenceRange() {
+        DocumentReference actual = DocumentReference.parseDocumentReference("1234/5-10");
 
         assertThat(actual)
             .usingRecursiveComparison()
@@ -47,8 +47,8 @@ class DocumentReferenceTest {
     }
 
     @Test
-    void parseHugeRange()  {
-        DocumentReference actual = DocumentReference.parse("1234/100-201");
+    void parseDocumentReferenceHugeRange()  {
+        DocumentReference actual = DocumentReference.parseDocumentReference("1234/100-201");
 
         assertThat(actual)
             .usingRecursiveComparison()

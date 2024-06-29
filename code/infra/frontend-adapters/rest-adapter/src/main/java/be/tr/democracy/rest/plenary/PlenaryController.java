@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin
@@ -79,11 +80,16 @@ public class PlenaryController {
             request.getDocuments_reference(),
             request.getMotions().stream()
                 .map(this::toMotion)
+                .filter(Objects::nonNull)
                 .toList()
         );
     }
 
     private MotionLink toMotion(UpsertPlenaryJsonRequest.Motion request) {
+        if (request.getVoting_id() == null) {
+            logger.info("Motion {} has no voting id", request.getId());
+            return null;
+        }
         // TODO copied from PlenaryMapper. Feels pretty hacky, add required properties at the source instead of parsing the id?
         final var id = request.getId();
         try {
@@ -94,19 +100,12 @@ public class PlenaryController {
             final var agendaSeqNr = Integer.parseInt(split[last - 1]);
             final var documentsReference = request.getDocuments_reference();
             final var cancelled = request.getCancelled();
-            return new MotionLink(id, agendaSeqNr, voteSeqNr, request.getTitle_nl(), request.getTitle_fr(), documentsReference, null, cancelled);
+            return new MotionLink(id, agendaSeqNr, voteSeqNr, request.getTitle_nl(), request.getTitle_fr(), documentsReference, request.getVoting_id(),
+                cancelled);
         } catch (Throwable e) {
             // TODO when does this happen? let it blow up here and fix!
             logger.error("Error parsing the motion link, extracting the agendaSeqNr and voteSegNr", e);
-            return new MotionLink(
-                id,
-                0,
-                0,
-                request.getTitle_nl(),
-                request.getTitle_fr(),
-                null,
-                null,
-                true);
+            return null;
         }
     }
 }

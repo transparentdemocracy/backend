@@ -1,7 +1,7 @@
 package be.tr.democracy.query
 
 import be.tr.democracy.api.UpsertPlenary
-import be.tr.democracy.vocabulary.motion.DocumentReference
+import be.tr.democracy.vocabulary.motion.DocumentReference.parseDocumentReference
 import be.tr.democracy.vocabulary.motion.Motion
 import be.tr.democracy.vocabulary.motion.MotionGroup
 import be.tr.democracy.vocabulary.motion.SubDocument
@@ -77,19 +77,15 @@ class UpsertPlenaryCommand(
             motionLink.motionId,
             motionLink.titleNL,
             motionLink.titleFR,
-            createDocumentsReference(motionLink.documentsReference, subDocumentsById),
+            parseDocumentReference(motionLink.documentsReference, subDocumentsById),
             "TODO description",  // TODO where does this come from?
             plenary.plenaryDate,
-            countsByVotingId[motionLink.votingId]!!,
+            countsByVotingId[motionLink.votingId],
             motionLink.votingId,
             motionLink.cancelled,
             plenary.id,
             motionLink.voteSeqNr
         )
-    }
-
-    private fun createDocumentsReference(reference: String, subDocumentsById: Map<Pair<Int, Int>, SubDocument>): DocumentReference {
-        return DocumentReference.parse(reference, subDocumentsById)
     }
 
     private fun getVotingIds(plenary: Plenary): List<String> {
@@ -102,7 +98,7 @@ class UpsertPlenaryCommand(
 
     private fun gatherSubDocumentIds(plenary: Plenary): List<String> {
         return plenary.motionsGroups.flatMap {
-            it.motions.flatMap { DocumentReference.parse(it.documentsReference).subDocuments }
+            it.motions.flatMap { parseDocumentReference(it.documentsReference)?.subDocuments ?: emptyList() }
         }.map { it.documentId }
     }
 }

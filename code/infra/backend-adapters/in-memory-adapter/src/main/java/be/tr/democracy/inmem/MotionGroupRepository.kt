@@ -89,8 +89,11 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
         return Page(pageRequest.pageNr, pageRequest.pageSize, pageRequest.pageSize + 5, motionGroups)
     }
 
-    override fun deleteByPlenaryId(id: String) {
-        TODO("Not yet implemented")
+    override fun deleteByPlenaryId(plenaryId: String) {
+        jdbcTemplate.update("""
+            DELETE FROM motion_group
+            WHERE plenary_id = :id
+            """, MapSqlParameterSource(mapOf("id" to plenaryId)))
     }
 
     override fun getMotionGroup(motionId: String): MotionGroup? {
@@ -100,7 +103,18 @@ class MotionGroupRepository(private val jdbcTemplate: NamedParameterJdbcTemplate
 }
 
 private fun MotionGroup.toContent(): String? {
-    return "tomato"
+    return buildList {
+        add(titleNL)
+        add(titleFR)
+        motions.forEach {
+            add(it.titleNL)
+            add(it.titleFR)
+            it.newDocumentReference?.subDocuments?.forEach {
+                add(it.summaryNL)
+                add(it.summaryFR)
+            }
+        }
+    }.joinToString(" ")
 }
 
 private fun MotionGroup.toStorage(): MotionGroupStorage {
@@ -124,7 +138,7 @@ private fun Motion.toStorage(): MotionGroupStorage.Motion {
         newDocumentReference?.toStorage(), // TODO fix document references
         description,
         voteDate,
-        voteCount.toStorage(),
+        voteCount?.toStorage(),
         votingId,
         voteCancelled,
         plenaryId,
@@ -188,7 +202,7 @@ private fun MotionGroupStorage.Motion.toDomain(): Motion {
         documentReference?.toDomain(),
         description,
         voteDate,
-        voteCount.toDomain(),
+        voteCount?.toDomain(),
         votingId,
         voteCancelled,
         plenaryId,
@@ -252,7 +266,7 @@ private data class MotionGroupStorage(
         val documentReference: DocumentReference?,
         val description: String,
         val voteDate: String,
-        val voteCount: VoteCount,
+        val voteCount: VoteCount?,
         val votingId: String,
         val voteCancelled: Boolean,
         val plenaryId: String,

@@ -259,7 +259,7 @@ data class PlenaryStorage(
         val voteSeqNr: Int,
         val title_nl: String,
         val title_fr: String,
-        val documents_reference: String,
+        val documents_reference: String?,
         val voting_id: String,
         val proposal_id: String?,
         val cancelled: Boolean,
