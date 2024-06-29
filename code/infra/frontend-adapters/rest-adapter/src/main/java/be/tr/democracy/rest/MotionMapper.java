@@ -15,8 +15,7 @@ public class MotionMapper {
 
     public static MotionGroupViewDTO map(MotionGroup group) {
         final var motionViewDTOS = group.motions().stream().map(MotionMapper::map).toList();
-        // TODO pass voting data
-        return new MotionGroupViewDTO(group.id(), group.titleNL(), group.titleFR(), motionViewDTOS, null);
+        return new MotionGroupViewDTO(group.id(), group.titleNL(), group.titleFR(), motionViewDTOS, group.voteDate());
     }
 
     public static MotionViewDTO map(Motion motion) {
