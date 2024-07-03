@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export PUBLIC_IP=$(terraform output -json|jq '.public_ip.value' -r)  
+
+fab -i ./myKey.pem -H ec2-user@$PUBLIC_IP $@
