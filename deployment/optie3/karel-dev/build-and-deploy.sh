@@ -35,4 +35,6 @@ terraform apply
 
 # upload documents
 cd ../../..
+export PUBLIC_IP=$(tf output -json|jq '.public_ip.value' -r)
+export WDDP_BACKEND_URL="http://${PUBLIC_IP}:8080"
 scripts/upload-all.sh

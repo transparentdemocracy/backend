@@ -19,3 +19,12 @@ Export variables
 ## Deployment example
 
 See [karel-dev/build-and-deploy.sh](karel-dev/build-and-deploy.sh)
+
+## Troubleshooting
+
+To SSH into the ec2 instance:
+
+    export PUBLIC_IP=$(tf output -json|jq '.public_ip.value' -r)
+    ssh -i myKey.pem ec2-user@$PUBLIC_IP                        
+
+

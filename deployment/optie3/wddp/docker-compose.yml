@@ -7,6 +7,7 @@ services:
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
       - ./postgres-data:/var/lib/postgresql/data
+    mem_limit: 300m
     environment:
       POSTGRES_DB: td
       POSTGRES_USER: td_admin
@@ -15,9 +16,11 @@ services:
 
   wddp:
     image: ${wddp_image}
+    mem_limit: 500m
     ports:
       - "8080:8080"
     depends_on:
       - postgres
     environment:
+      JAVA_OPTS: "-Xmx400m -Xms256m"
       spring_datasource_url: "jdbc:postgresql://postgres:5432/td"
