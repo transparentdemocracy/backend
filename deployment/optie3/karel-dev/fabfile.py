@@ -12,6 +12,7 @@ def init(c):
 def start(c):
     # TODO: get rid of harcoded account id here, maybe pass it via a template init script
     c.run("aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 820650340922.dkr.ecr.eu-west-1.amazonaws.com")
+    c.run("mkdir -p postgres-data")
     c.run("docker-compose up -d", pty=True)
 
 

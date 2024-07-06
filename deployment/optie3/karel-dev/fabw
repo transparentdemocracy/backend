@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Stupid little wrapper for fabric so we don't have to specify key and hostname every time
+# Could be solved in fabfile as well
+
 export PUBLIC_IP=$(terraform output -json|jq '.public_ip.value' -r)  
 
 fab -i ./myKey.pem -H ec2-user@$PUBLIC_IP $@

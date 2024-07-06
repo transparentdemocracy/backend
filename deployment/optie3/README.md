@@ -18,20 +18,4 @@ Export variables
 
 ## Deployment example
 
-In this file we'll be using `karel-dev` as example environment.
-
-Create infra
-
-    cd karel-dev
-    tfenv use
-    tf apply
-
-Download dependencies
-
-    fab init
-
-Start backend
-
-    fab start
-
-TODO: instructions for uploading
+See [karel-dev/build-and-deploy.sh](karel-dev/build-and-deploy.sh)

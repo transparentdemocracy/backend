@@ -2,6 +2,8 @@
 
 # init
 export AWS_PROFILE=transparentdemocracy
+
+# Make sure this matches variables.auto.tfvars
 export AWS_REGION=eu-west-1
 
 cd ../..
@@ -26,9 +28,11 @@ terraform plan
 terraform apply
 
 # set up docker, docker-compose
-./wddp init
+./fabw init
 
 # start backend
-./wddp start
+./fabw start
 
-# TODO: upload documents
+# upload documents
+cd ../../..
+scripts/upload-all.sh

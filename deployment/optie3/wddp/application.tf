@@ -70,7 +70,9 @@ resource "aws_security_group" "security_group" {
     from_port = 8080
     to_port   = 8080
     protocol  = "tcp"
-    cidr_blocks = [aws_subnet.private.cidr_block]
+    # TODO: 0.0.0.0/0 is for testing only, should be limited to load balancer
+#     cidr_blocks = [aws_subnet.private.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {

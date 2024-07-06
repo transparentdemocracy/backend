@@ -6,13 +6,18 @@ services:
       - "5432:5432"
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: td
+      POSTGRES_USER: td_admin
+      # TODO: use a randomly generated password for better security
+      POSTGRES_PASSWORD: password
 
   wddp:
     image: ${wddp_image}
     ports:
       - "8080:8080"
-    # TODO: env vars for db connection?
+    depends_on:
+      - postgres
+    environment:
+      spring_datasource_url: "jdbc:postgresql://postgres:5432/td"
