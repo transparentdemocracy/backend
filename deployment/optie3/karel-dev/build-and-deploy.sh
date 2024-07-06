@@ -6,7 +6,7 @@ export AWS_PROFILE=transparentdemocracy
 # Make sure this matches variables.auto.tfvars
 export AWS_REGION=eu-west-1
 
-cd ../..
+cd ../../..
 
 # build & run tests
 ./mvnw install

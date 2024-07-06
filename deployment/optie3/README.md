@@ -6,6 +6,7 @@ When setting up a new environment, just copy one of the existing ones, and updat
 Install dependencies (OSX example):
 
     brew install tfenv
+    pip install fabric
 
 Configure an AWS profile (replace YOUR_PROFILE with something you choose)
 
@@ -15,7 +16,7 @@ Export variables
 
     export AWS_PROFILE=YOUR_PROFILE
     export AWS_REGION=eu-west-1
-
+    
 ## Deployment example
 
 See [karel-dev/build-and-deploy.sh](karel-dev/build-and-deploy.sh)
@@ -24,7 +25,7 @@ See [karel-dev/build-and-deploy.sh](karel-dev/build-and-deploy.sh)
 
 To SSH into the ec2 instance:
 
-    export PUBLIC_IP=$(tf output -json|jq '.public_ip.value' -r)
+    export PUBLIC_IP=$(terraform output -json|jq '.public_ip.value' -r)
     ssh -i myKey.pem ec2-user@$PUBLIC_IP                        
 
 

@@ -9,8 +9,8 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     mem_limit: 300m
     environment:
-      POSTGRES_DB: td
-      POSTGRES_USER: td_admin
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
       # TODO: use a randomly generated password for better security
       POSTGRES_PASSWORD: password
 
