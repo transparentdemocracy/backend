@@ -6,7 +6,7 @@ export AWS_REGION=eu-west-1
 
 cd ../..
 
-# run tests
+# build & run tests
 ./mvnw install
 
 # build docker image
@@ -14,6 +14,10 @@ docker buildx build --platform linux/amd64 -t transparent-democracy/voting-backe
 
 # push docker image to ECR
 deployment/pushImageToECR.sh
+
+# Go to deployment environment folder
+cd deployment/optie3/karel-dev
+tfenv use
 
 # plan
 terraform plan

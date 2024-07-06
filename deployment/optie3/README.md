@@ -11,9 +11,10 @@ Configure an AWS profile (replace YOUR_PROFILE with something you choose)
 
     aws configure --profile YOUR_PROFILE
 
-Set your AWS_PROFILE environment variable (replace YOUR_PROFILE with something you choose)
+Export variables
 
     export AWS_PROFILE=YOUR_PROFILE
+    export AWS_REGION=eu-west-1
 
 ## Deployment example
 
@@ -25,11 +26,12 @@ Create infra
     tfenv use
     tf apply
 
-TODO: instructions for uploading docker-compose.yml or do that via TF
-TODO: instructions for setting up docker & docker-compose on the ec2 instance (init.sh)
-TODO: instructions for `docker-compose up -d`
+Download dependencies
 
-TODO: automate the all ssh stuff, use fabric or capistrano? (Or is that too old school?)
+    fab init
 
-    
+Start backend
 
+    fab start
+
+TODO: instructions for uploading

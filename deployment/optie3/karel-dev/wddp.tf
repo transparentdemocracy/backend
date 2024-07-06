@@ -10,15 +10,22 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-1"
-  # DO NOT PUSH THESE KEYS TO GIT!!!!!!!
-  access_key = ""
-  secret_key = ""
+  region = var.region
+#   DO NOT PUSH THESE KEYS TO GIT!!!!!!!
+#   access_key = ""
+#   secret_key = ""
+
+  alias = "aws"
 }
 
 module "wddp" {
   source     = "../wddp"
+
+  region = var.region
+  availability_zone = var.availability_zone
   wddp_image = "${var.aws_account_id}.dkr.ecr.eu-west-1.amazonaws.com/wddp-ecr-repo:latest"
+  zone_name = var.zone_name
+  domain_name = var.domain_name
 }
 
 output public_ip {

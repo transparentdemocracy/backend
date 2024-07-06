@@ -39,6 +39,13 @@ resource "aws_subnet" "public" {
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 }
+
+resource "aws_subnet" "private" {
+  cidr_block = "10.0.2.0/24"
+  vpc_id     = aws_vpc.main.id
+  availability_zone = var.availability_zone
+}
+
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 }
@@ -63,7 +70,7 @@ resource "aws_security_group" "security_group" {
     from_port = 8080
     to_port   = 8080
     protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_subnet.private.cidr_block]
   }
 
   ingress {
@@ -120,7 +127,7 @@ resource "aws_iam_role_policy" "ecr_pull_policy" {
                 "ecr:DescribeImages",
                 "ecr:BatchGetImage"
             ],
-            "Resource": "arn:aws:ecr:eu-west-1:${local.account_id}:repository/wddp-ecr-repo"
+            "Resource": "arn:aws:ecr:${var.region}:${local.account_id}:repository/wddp-ecr-repo"
         },
         {
           "Effect": "Allow",
@@ -165,7 +172,7 @@ resource "aws_iam_instance_profile" "wddp" {
 
 # Create an EC2 instance
 resource "aws_instance" "wddp" {
-  ami = "ami-08ba52a61087f1bd6" #Amazon linux eu-west 1
+  ami = var.ami
   instance_type        = "t2.micro"
   subnet_id            = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.security_group.id]
