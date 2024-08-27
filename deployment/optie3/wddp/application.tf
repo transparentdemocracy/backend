@@ -15,11 +15,21 @@ data "http" "myip" {
   url = "https://ipv4.icanhazip.com"
 }
 
+resource "random_password" "admin_password" {
+  length  = 16  # Length of the password
+  special = true # Include special characters
+  upper   = true # Include uppercase letters
+  lower   = true # Include lowercase letters
+  number  = true # Include numbers
+}
+
 locals {
   account_id = data.aws_caller_identity.current.account_id
   myip = chomp(data.http.myip.response_body)
   docker_compose_rendered = templatefile("${path.module}/docker-compose.yml", {
     wddp_image = var.wddp_image
+    ADMIN_USERNAME = "admin"
+    ADMIN_PASSWORD = random_password.admin_password.result
   })
 }
 

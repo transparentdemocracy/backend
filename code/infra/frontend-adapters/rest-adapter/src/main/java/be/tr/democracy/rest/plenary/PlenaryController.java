@@ -14,6 +14,7 @@ import be.tr.democracy.vocabulary.plenary.Plenary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,7 @@ public class PlenaryController {
         return Mono.just(data);
     }
 
-    // TODO add security
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(value = "/plenaries", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Void> upsertPlenary(@RequestBody UpsertPlenaryJsonRequest plenary) {
         upsertPlenary.upsert(toPlenary(plenary));

@@ -13,6 +13,8 @@ services:
       POSTGRES_USER: postgres
       # TODO: use a randomly generated password for better security
       POSTGRES_PASSWORD: password
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
 
   wddp:
     image: ${wddp_image}

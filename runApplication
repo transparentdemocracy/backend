@@ -1,2 +1,6 @@
+
+echo "WARNING: don't use the default username and password in production!"
+export ADMIN_USERNAME=admin
+export ADMIN_PASSWORD=secret
 ./mvnw clean install
 java -jar code/main/target/main-1.0.0-SNAPSHOT.jar

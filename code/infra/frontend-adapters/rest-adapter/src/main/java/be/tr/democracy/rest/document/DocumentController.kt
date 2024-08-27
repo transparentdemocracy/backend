@@ -3,6 +3,7 @@ package be.tr.democracy.rest.document
 import be.tr.democracy.api.UpsertDocumentSummary
 import be.tr.democracy.vocabulary.motion.SubDocument
 import jakarta.annotation.PreDestroy
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,6 +24,7 @@ class DocumentController(private val upsertDocumentSummary: UpsertDocumentSummar
         executorService.awaitTermination(10, TimeUnit.SECONDS)
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/document-summaries")
     fun upsert(@RequestBody request: DocumentSummaryDTO) {
         val parts = request.document_id.split("/")
@@ -40,6 +42,7 @@ class DocumentController(private val upsertDocumentSummary: UpsertDocumentSummar
         )
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/document-summaries/bulk")
     fun upsertBulk(@RequestBody request: List<DocumentSummaryDTO>) {
         request.forEach {

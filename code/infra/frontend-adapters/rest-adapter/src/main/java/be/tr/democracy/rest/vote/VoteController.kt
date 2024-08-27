@@ -5,6 +5,7 @@ import be.tr.democracy.vocabulary.motion.VoteType
 import be.tr.democracy.vocabulary.vote.Vote
 import jakarta.annotation.PreDestroy
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,6 +26,7 @@ class VoteController(private val upsertVote: UpsertVote) {
         executorService.awaitTermination(10, TimeUnit.SECONDS)
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/votes", consumes = [MediaType.APPLICATION_JSON_VALUE])
     // TODO secure this endpoint
     fun upsert(@RequestBody vote: UpsertVoteDTO) {
@@ -39,6 +41,7 @@ class VoteController(private val upsertVote: UpsertVote) {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/votes/bulk", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun bulkUpsert(@RequestBody request: List<UpsertVoteDTO>) {
         request.forEach {

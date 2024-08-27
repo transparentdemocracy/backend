@@ -3,6 +3,7 @@ package be.tr.democracy.rest.politician
 import be.tr.democracy.api.UpsertPolitician
 import be.tr.democracy.vocabulary.plenary.Politician
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class PoliticianController(private val upsertPolitician: UpsertPolitician) {
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/politicians", consumes = [MediaType.APPLICATION_JSON_VALUE])
     // TODO secure this endpoint
     fun upsert(@RequestBody politician: UpsertPoliticianDTO) {
