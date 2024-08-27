@@ -22,8 +22,7 @@ open class SecurityConfig(
     open fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         http
             .authorizeExchange {
-                it.pathMatchers("/admin/**").hasRole("MANAGER")
-                    .anyExchange().permitAll()
+                it.anyExchange().permitAll()
             }
             .httpBasic {}
             .formLogin { it.disable() }
